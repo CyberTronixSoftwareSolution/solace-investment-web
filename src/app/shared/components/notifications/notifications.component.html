@@ -1,0 +1,51 @@
+<ul class="p-0 mx-0 mt-0 mb-4 list-none">
+  <ng-container *ngFor="let item of notifications">
+    <!-- Expense extension notification -->
+    <li
+      class="flex-column card hover:shadow-2 hover:bg-gray-100 cursor-pointer"
+      *ngIf="item.type === 1"
+      pTooltip="Click to approve expense extension request"
+    >
+      <div class="flex align-items-center">
+        <div
+          class="w-3rem h-3rem flex align-items-center justify-content-center bg-blue-100 border-circle mr-3 flex-shrink-0"
+        >
+          <i class="pi pi-dollar text-xl text-blue-500"></i>
+        </div>
+        <span class="text-900 line-height-3 font-medium font-semibold"
+          >{{ item.requestedUserName }}
+          <span class="text-700 font-normal"
+            >has requested an expense extension of
+            <span class="text-primary font-medium"
+              >LKR {{ item?.requestedAmount | number : "1.2-2" }}</span
+            >
+            for Trip {{ item?.tripConfirmedNumber }}.
+          </span>
+        </span>
+      </div>
+
+      <div class="flex justify-content-end align-content-center mt-1">
+        <span class="text-500 text-sm">{{ item.createdAt | dateAgo }}</span>
+      </div>
+    </li>
+  </ng-container>
+
+  <ng-container *ngIf="notifications.length === 0">
+    <li
+      class="flex-column"
+      style="
+        height: 70vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div class="flex flex-column align-items-center">
+        <i class="pi pi-inbox text-5xl text-bluegray-200"></i>
+        <span class="line-height-3 text-xl text-bluegray-200"
+          >No Notifications</span
+        >
+      </div>
+    </li>
+  </ng-container>
+</ul>

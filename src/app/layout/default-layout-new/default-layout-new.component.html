@@ -1,0 +1,40 @@
+<div class="flex flex-column surface-ground">
+  <div class="fixed" style="width: 100%">
+    <div
+      class="surface-overlay p-3 flex align-items-center justify-content-between"
+    >
+      <a
+        pRipple
+        class="cursor-pointer inline-flex align-items-center justify-content-center lg:hidden text-700"
+        pStyleClass="#app-sidebar-12"
+        enterFromClass="hidden"
+        enterActiveClass="fadeinleft"
+        leaveToClass="hidden"
+        leaveActiveClass="fadeoutleft"
+      >
+        <i class="pi pi-bars text-4xl"></i>
+      </a>
+      <img
+        src="assets/signin-4.png"
+        alt="Image"
+        height="40"
+        class="mr-0 lg:mr-6"
+      />
+    </div>
+
+    <div class="flex p-3">
+      <div
+        id="app-sidebar-12"
+        class="surface-card hidden lg:block flex-shrink-0 absolute lg:static left-0 top-0 z-1 select-none shadow-2"
+        style="width: 280px; border-radius: 12px; height: auto"
+      >
+        <div class="flex flex-column flex-auto overflow-y-auto">
+          <div
+            class="shadow-2 card surface-card flex-auto lg:ml-3 p-4"
+            style="border-radius: 8px"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

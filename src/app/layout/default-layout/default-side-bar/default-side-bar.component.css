@@ -1,0 +1,11 @@
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--bg-gray-900) !important;
+  padding: 2px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--bg-gray-900) !important;
+  border-radius: 10px;
+}

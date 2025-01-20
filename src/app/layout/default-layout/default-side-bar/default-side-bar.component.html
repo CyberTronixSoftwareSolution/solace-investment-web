@@ -1,0 +1,210 @@
+<div
+  id="app-sidebar-12"
+  class="bg-bluegray-800 h-screen hidden lg:block flex-shrink-0 fixed lg:sticky left-0 top-0 z-1 select-none"
+  style="width: 280px"
+>
+  <div class="flex flex-column h-full">
+    <div
+      class="flex align-items-center px-5 bg-bluegray-900 flex-shrink-0"
+      style="height: 60px"
+    >
+      <img
+        src="assets/images/blocks/logos/hyper-300.svg"
+        alt="Image"
+        height="30"
+      />
+    </div>
+    <div class="overflow-y-auto mt-3">
+      <ul class="list-none p-3 m-0">
+        <ng-container *ngFor="let menuItem of DynamicItems">
+          <li class="mb-1" *ngIf="menuItem.isVisible">
+            <a
+              pRipple
+              (click)="
+                menuItem?.command
+                  ? menuItem?.command($event)
+                  : moveToRouter(menuItem?.routerLink)
+              "
+              [ngClass]="
+                activeTab === menuItem.menuId
+                  ? 'bg-bluegray-900 border-gray-600 border-left-3'
+                  : 'hover:bg-bluegray-700 hover:text-bluegray-50 transition-duration-150 transition-colors'
+              "
+              class="flex align-items-center cursor-pointer p-3 border-round text-bluegray-100"
+            >
+              <i class="pi {{ menuItem?.icon }} mr-2"></i>
+              <span class="font-medium">{{ menuItem?.label }}</span>
+            </a>
+          </li>
+        </ng-container>
+        <!--     <li>
+          <a
+            pRipple
+            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+          >
+            <i class="pi pi-bookmark mr-2"></i>
+            <span class="font-medium">Bookmarks</span>
+          </a>
+        </li>
+      <li>
+          <a
+            pRipple
+            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+            pStyleClass="@next"
+            enterClass="hidden"
+            enterActiveClass="slidedown"
+            leaveToClass="hidden"
+            leaveActiveClass="slideup"
+          >
+            <i class="pi pi-chart-line mr-2"></i>
+            <span class="font-medium">Reports</span>
+            <i class="pi pi-chevron-down ml-auto"></i>
+          </a>
+          <ul
+            class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out"
+          >
+            <li>
+              <a
+                pRipple
+                class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+                pStyleClass="@next"
+                enterClass="hidden"
+                enterActiveClass="slidedown"
+                leaveToClass="hidden"
+                leaveActiveClass="slideup"
+              >
+                <i class="pi pi-chart-line mr-2"></i>
+                <span class="font-medium">Revenue</span>
+                <i class="pi pi-chevron-down ml-auto"></i>
+              </a>
+              <ul
+                class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out"
+              >
+                <li>
+                  <a
+                    pRipple
+                    class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+                  >
+                    <i class="pi pi-table mr-2"></i>
+                    <span class="font-medium">View</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    pRipple
+                    class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+                  >
+                    <i class="pi pi-search mr-2"></i>
+                    <span class="font-medium">Search</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a
+                pRipple
+                class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+              >
+                <i class="pi pi-chart-line mr-2"></i>
+                <span class="font-medium">Expenses</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a
+            pRipple
+            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+          >
+            <i class="pi pi-users mr-2"></i>
+            <span class="font-medium">Team</span>
+          </a>
+        </li>
+        <li>
+          <a
+            pRipple
+            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+          >
+            <i class="pi pi-comments mr-2"></i>
+            <span class="font-medium">Messages</span>
+            <span
+              class="inline-flex align-items-center justify-content-center ml-auto bg-yellow-500 text-bluegray-900 border-circle"
+              style="min-width: 1.5rem; height: 1.5rem"
+              >3</span
+            >
+          </a>
+        </li>
+        <li>
+          <a
+            pRipple
+            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+          >
+            <i class="pi pi-calendar mr-2"></i>
+            <span class="font-medium">Calendar</span>
+          </a>
+        </li>
+        <li>
+          <a
+            pRipple
+            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+          >
+            <i class="pi pi-cog mr-2"></i>
+            <span class="font-medium">Settings</span>
+          </a>
+        </li> -->
+      </ul>
+    </div>
+    <div class="mt-auto">
+      <hr class="mb-3 mx-3 border-top-1 border-none border-bluegray-600" />
+      <ul
+        class="list-none p-2 m-0 hidden origin-bottom animation-duration-150 overflow-hidden animation-ease-in-out"
+      >
+        <li>
+          <a
+            pRipple
+            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+          >
+            <i class="pi pi-user mr-2"></i>
+            <span class="font-medium">Profile</span>
+          </a>
+        </li>
+        <!-- <li>
+          <a
+            pRipple
+            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+          >
+            <i class="pi pi-cog mr-2"></i>
+            <span class="font-medium">Settings</span>
+          </a>
+        </li> -->
+        <li>
+          <a
+            pRipple
+            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+          >
+            <i class="pi pi-sign-out mr-2"></i>
+            <span class="font-medium">Sign Out</span>
+          </a>
+        </li>
+      </ul>
+      <a
+        pRipple
+        class="m-3 px-3 py-2 flex align-items-center hover:bg-bluegray-900 border-round cursor-pointer text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+        pStyleClass="@prev"
+        enterClass="hidden"
+        enterActiveClass="slidedown"
+        leaveToClass="hidden"
+        leaveActiveClass="slideup"
+      >
+        <p-avatar
+          image="assets/images/user/avatar-f-2.png"
+          styleClass="mr-2"
+          shape="circle"
+        />
+
+        <span class="font-medium">Amy Elsner</span>
+        <i class="pi pi-chevron-up ml-auto"></i>
+      </a>
+    </div>
+  </div>
+</div>
