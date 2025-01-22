@@ -153,6 +153,7 @@
             formControlName="role"
             appendTo="body"
             [autoOptionFocus]="false"
+            (onChange)="onRoleChange()"
           ></p-dropdown>
         </div>
 
@@ -198,7 +199,9 @@
             <ng-template pTemplate="caption">
               <div class="grid formgrid">
                 <div class="field col-6 md:col-3">
-                  <label for="addressType" class="text-base font-normal"
+                  <label
+                    for="addressType"
+                    class="text-base font-normal required"
                     >Address Type</label
                   >
                   <p-dropdown
@@ -212,7 +215,7 @@
                   ></p-dropdown>
                 </div>
                 <div class="field col-6 md:col-2">
-                  <label for="line1" class="text-base font-normal"
+                  <label for="line1" class="text-base font-normal required"
                     >Line 01</label
                   >
                   <input
@@ -225,7 +228,7 @@
                   />
                 </div>
                 <div class="field col-6 md:col-3">
-                  <label for="line2" class="text-base font-normal"
+                  <label for="line2" class="text-base font-normal required"
                     >Line 02</label
                   >
                   <input
@@ -254,21 +257,11 @@
                       icon="pi pi-plus"
                       pTooltip="Add"
                       tooltipPosition="bottom"
+                      (onClick)="addNewAddress()"
                     ></p-button>
                   </div>
                 </div>
               </div>
-              <!-- <div class="flex justify-content-end align-items-center">
-                <button
-                  type="button"
-                  pButton
-                  pRipple
-                  icon="pi pi-plus"
-                  pTooltip="Add New Address"
-                  tooltipPosition="right"
-                  styleClass="p-button-sm mb:p-button"
-                ></button>
-              </div> -->
             </ng-template>
             <ng-template pTemplate="header" let-columns>
               <tr>
@@ -276,6 +269,41 @@
                   {{ col.header }}
                 </th>
                 <th class="text-center">Action</th>
+              </tr>
+            </ng-template>
+
+            <ng-template
+              pTemplate="body"
+              let-rowData
+              let-columns="columns"
+              let-rowIndex="rowIndex"
+            >
+              <tr>
+                <td
+                  *ngFor="let col of columns"
+                  [ngClass]="{
+                    'bg-blue': rowIndex % 2 !== 0,
+                  }"
+                >
+                  <ng-container>
+                    <span class="p-column-title font-bold">{{
+                      col.header
+                    }}</span
+                    >{{ rowData[col.field] || "-" }}
+                  </ng-container>
+                </td>
+                <td
+                  class="text-center"
+                  [ngClass]="{ 'bg-blue': rowIndex % 2 !== 0, }"
+                >
+                  <p-button
+                    icon="pi pi-trash"
+                    pTooltip="Delete"
+                    tooltipPosition="right"
+                    styleClass="p-button-danger p-button-outlined"
+                    (onClick)="deleteAddress(rowData)"
+                  ></p-button>
+                </td>
               </tr>
             </ng-template>
 
@@ -329,7 +357,9 @@
         </div>
 
         <div class="field col-6 md:col-3">
-          <label for="email" class="required">Email</label>
+          <label for="email" class="{{ isEmailRequired ? 'required' : '' }}"
+            >Email</label
+          >
           <input
             id="email"
             type="email"

@@ -1,0 +1,41 @@
+const incomeTypes = [
+  { id: 11, name: "Basic Salary" },
+  { id: 12, name: "Overtime" },
+  { id: 13, name: "Bonus" },
+  { id: 14, name: "Commission" },
+  { id: 15, name: "Allowances" },
+  { id: 1, name: "Sales Revenue" },
+  { id: 2, name: "Service Income" },
+  { id: 3, name: "Rental Income" },
+  { id: 4, name: "Interest Received" },
+  { id: 5, name: "Dividend Income" },
+  { id: 6, name: "Commission Income" },
+  { id: 7, name: "Consultancy Fees" },
+  { id: 8, name: "Royalty Income" },
+  { id: 9, name: "Miscellaneous Income" },
+  { id: 10, name: "Grants & Donations" },
+];
+
+const expenseTypes = [
+  { id: 1, name: "Petty Cash" },
+  { id: 16, name: "Salary & Wages" },
+  { id: 17, name: "Telephone Bill" },
+  { id: 18, name: "Interest Payment" },
+  { id: 20, name: "Building Rent" },
+  { id: 21, name: "Water Bill" },
+  { id: 22, name: "Electricity Bill" },
+  { id: 23, name: "Stationery" },
+  { id: 24, name: "System Cost (IT-Charges)" },
+  { id: 25, name: "Other Expenses" },
+  { id: 26, name: "Loan Installment - FD" },
+  { id: 27, name: "Legal And Stamp Fee" },
+  { id: 28, name: "Bank Loan Installment" },
+  { id: 29, name: "Employees' Trust Fund" },
+  { id: 30, name: "Employees' Provident Fund" },
+  { id: 31, name: "Transport Cost" },
+  { id: 32, name: "Insurance" },
+  { id: 33, name: "Account And Audit Fee" },
+  { id: 34, name: "Inland Revenue Department - Income Tax" },
+];
+
+export { incomeTypes, expenseTypes };

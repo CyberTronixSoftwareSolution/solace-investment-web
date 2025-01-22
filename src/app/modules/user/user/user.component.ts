@@ -46,6 +46,16 @@ export class UserComponent implements OnInit {
       { field: "residenceNo", header: "Residence No" },
       { field: "roleName", header: "Role" },
     ];
+
+    this.sidebarService.sidebarEvent.subscribe((response) => {
+      if (response) {
+        this.getAllUsers();
+      }
+
+      this.sidebarService.removeComponent();
+      this.appComponent.sidebarVisible = false;
+      // this.addUserControlFlowService.resetData();
+    });
   }
 
   toggleMenu(menu: any, event: any, rowData: any) {

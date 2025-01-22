@@ -74,4 +74,31 @@ const addressTypes = [
   },
 ];
 
-export { genders, titles, civilStatus, addressTypes };
+const relationTypes = [
+  {
+    name: "Father",
+    id: 1,
+  },
+  {
+    name: "Mother",
+    id: 2,
+  },
+  {
+    name: "Brother",
+    id: 3,
+  },
+  {
+    name: "Sister",
+    id: 4,
+  },
+  {
+    name: "Son",
+    id: 5,
+  },
+  {
+    name: "Daughter",
+    id: 6,
+  },
+];
+
+export { genders, titles, civilStatus, addressTypes, relationTypes };

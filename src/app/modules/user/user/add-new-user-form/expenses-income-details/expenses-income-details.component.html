@@ -27,20 +27,25 @@
             <ng-template pTemplate="caption">
               <div class="grid formgrid">
                 <div class="field col-12 md:col-4">
-                  <label for="expenseType" class="text-base font-normal"
+                  <label
+                    for="expenseType"
+                    class="text-base font-normal required"
                     >Expense Type</label
                   >
-                  <input
+                  <!-- expenseTypeArr -->
+                  <p-dropdown
                     id="expenseType"
-                    pInputText
-                    type="text"
-                    class="w-full"
+                    [options]="expenseTypeArr"
+                    optionLabel="name"
+                    optionValue="id"
                     formControlName="expenseType"
-                    maxlength="200"
-                  />
+                    appendTo="body"
+                    [autoOptionFocus]="false"
+                    [filter]="true"
+                  ></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
-                  <label for="amount" class="text-base font-normal"
+                  <label for="amount" class="text-base font-normal required"
                     >Amount</label
                   >
                   <div class="flex gap-3">
@@ -57,6 +62,7 @@
                       icon="pi pi-plus"
                       pTooltip="Add"
                       tooltipPosition="bottom"
+                      (onClick)="addNewExpenseIncome(1)"
                     ></p-button>
                   </div>
                 </div>
@@ -64,10 +70,58 @@
             </ng-template>
             <ng-template pTemplate="header" let-columns>
               <tr>
-                <th *ngFor="let col of columns">
+                <th
+                  *ngFor="let col of columns"
+                  [ngClass]="{
+                    'text-right': col.field === 'amount'
+                  }"
+                >
                   {{ col.header }}
                 </th>
                 <th class="text-center">Action</th>
+              </tr>
+            </ng-template>
+
+            <ng-template
+              pTemplate="body"
+              let-rowData
+              let-columns="columns"
+              let-rowIndex="rowIndex"
+            >
+              <tr>
+                <td
+                  *ngFor="let col of columns"
+                  [ngClass]="{
+                  'bg-blue': rowIndex % 2 !== 0,
+                  'text-right': col.field === 'amount',
+                }"
+                >
+                  <ng-container *ngIf="col.field === 'amount'">
+                    <span class="p-column-title font-bold">{{
+                      col.header
+                    }}</span
+                    >{{ rowData[col.field] | currency : "" : "" }}
+                  </ng-container>
+
+                  <ng-container *ngIf="col.field !== 'amount'">
+                    <span class="p-column-title font-bold">{{
+                      col.header
+                    }}</span
+                    >{{ rowData[col.field] || "-" }}
+                  </ng-container>
+                </td>
+                <td
+                  class="text-center"
+                  [ngClass]="{ 'bg-blue': rowIndex % 2 !== 0, }"
+                >
+                  <p-button
+                    icon="pi pi-trash"
+                    pTooltip="Delete"
+                    tooltipPosition="right"
+                    styleClass="p-button-danger p-button-outlined"
+                    (onClick)="deleteExpenseIncomeDetail(rowData, 1)"
+                  ></p-button>
+                </td>
               </tr>
             </ng-template>
 
@@ -116,20 +170,23 @@
             <ng-template pTemplate="caption">
               <div class="grid formgrid">
                 <div class="field col-12 md:col-4">
-                  <label for="incomeType" class="text-base font-normal"
+                  <label for="incomeType" class="text-base font-normal required"
                     >Income Type</label
                   >
-                  <input
+                  <!-- incomeTypeArr -->
+                  <p-dropdown
                     id="incomeType"
-                    pInputText
-                    type="text"
-                    class="w-full"
+                    [options]="incomeTypeArr"
+                    optionLabel="name"
+                    optionValue="id"
                     formControlName="incomeType"
-                    maxlength="200"
-                  />
+                    appendTo="body"
+                    [autoOptionFocus]="false"
+                    [filter]="true"
+                  ></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
-                  <label for="amount" class="text-base font-normal"
+                  <label for="amount" class="text-base font-normal required"
                     >Amount</label
                   >
                   <div class="flex gap-3">
@@ -147,6 +204,7 @@
                       icon="pi pi-plus"
                       pTooltip="Add"
                       tooltipPosition="bottom"
+                      (onClick)="addNewExpenseIncome(2)"
                     ></p-button>
                   </div>
                 </div>
@@ -154,10 +212,58 @@
             </ng-template>
             <ng-template pTemplate="header" let-columns>
               <tr>
-                <th *ngFor="let col of columns">
+                <th
+                  *ngFor="let col of columns"
+                  [ngClass]="{
+                    'text-right': col.field === 'amount'
+                  }"
+                >
                   {{ col.header }}
                 </th>
                 <th class="text-center">Action</th>
+              </tr>
+            </ng-template>
+
+            <ng-template
+              pTemplate="body"
+              let-rowData
+              let-columns="columns"
+              let-rowIndex="rowIndex"
+            >
+              <tr>
+                <td
+                  *ngFor="let col of columns"
+                  [ngClass]="{
+                  'bg-blue': rowIndex % 2 !== 0,
+                  'text-right': col.field === 'amount',
+                }"
+                >
+                  <ng-container *ngIf="col.field === 'amount'">
+                    <span class="p-column-title font-bold">{{
+                      col.header
+                    }}</span
+                    >{{ rowData[col.field] | currency : "" : "" }}
+                  </ng-container>
+
+                  <ng-container *ngIf="col.field !== 'amount'">
+                    <span class="p-column-title font-bold">{{
+                      col.header
+                    }}</span
+                    >{{ rowData[col.field] || "-" }}
+                  </ng-container>
+                </td>
+                <td
+                  class="text-center"
+                  [ngClass]="{ 'bg-blue': rowIndex % 2 !== 0, }"
+                >
+                  <p-button
+                    icon="pi pi-trash"
+                    pTooltip="Delete"
+                    tooltipPosition="right"
+                    styleClass="p-button-danger p-button-outlined"
+                    (onClick)="deleteExpenseIncomeDetail(rowData, 2)"
+                  ></p-button>
+                </td>
               </tr>
             </ng-template>
 

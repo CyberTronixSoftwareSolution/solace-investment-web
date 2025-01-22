@@ -13,6 +13,10 @@ import { userRoles } from "src/app/shared/data/useRoles";
 import { WellKnownUploadType } from "src/app/shared/enums/well-known-upload-type.enum";
 import { PopupService } from "src/app/shared/services/popup.service";
 import { WebcamViewComponent } from "src/app/shared/components/webcam-view/webcam-view.component";
+import { HelperService } from "src/app/shared/services/helper.service";
+import { AppMessageService } from "src/app/shared/services/app-message.service";
+import { MasterDataService } from "src/app/shared/services/master-data.service";
+import { WellKnownUserRole } from "src/app/shared/enums/well-known-user-role.enum";
 
 @Component({
   selector: "app-personal-details",
@@ -47,16 +51,30 @@ export class PersonalDetailsComponent implements OnInit {
   uploadProfileImage: any = null;
   selectedProfileImage: File = null;
 
+  isEmailRequired: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private addUserControlFlowService: AddUserControlFlowService,
     private datePipe: DatePipe,
-    private popUpService: PopupService
+    private popUpService: PopupService,
+    private helper: HelperService,
+    private messageService: AppMessageService,
+    private masterDataService: MasterDataService
   ) {
     this.createForm();
   }
 
   ngOnInit() {
+    let userRole = this.masterDataService.Role;
+
+    if (userRole == WellKnownUserRole.ADMIN) {
+      this.roleArr = this.roleArr.filter((x) => x.id === 3);
+      this.FV.setValue("role", this.roleArr[0].id);
+    } else {
+      this.FV.setValue("role", WellKnownUserRole.CUSTOMER);
+    }
+
     this.addressCols = [
       { field: "addressType", header: "Address Type" },
       { field: "line1", header: "Line 1" },
@@ -97,7 +115,7 @@ export class PersonalDetailsComponent implements OnInit {
       addressType: ["", Validators.required],
       line1: ["", Validators.required],
       line2: ["", Validators.required],
-      line3: ["", Validators.required],
+      line3: [""],
     });
   }
 
@@ -207,6 +225,19 @@ export class PersonalDetailsComponent implements OnInit {
       });
   }
 
+  onRoleChange() {
+    let role = this.FV.getValue("role");
+
+    if (
+      role == WellKnownUserRole.ADMIN ||
+      role == WellKnownUserRole.SUPERADMIN
+    ) {
+      this.isEmailRequired = true;
+    } else {
+      this.isEmailRequired = false;
+    }
+  }
+
   validateAndShowNicDetails() {
     let nicNumber = this.FV.getValue("nicNumber").trim();
 
@@ -269,5 +300,61 @@ export class PersonalDetailsComponent implements OnInit {
     }
 
     return age;
+  }
+
+  // Address functions
+  addNewAddress() {
+    let validateParam = "addressType,line1,line2,line3";
+
+    if (this.FV.validateControllers(validateParam)) {
+      return;
+    }
+
+    if (this.addressRecodes.length >= 3) {
+      this.messageService.showWarnAlert("You can add only 3 addresses!");
+      this.clearAddressData();
+      return;
+    }
+
+    let addressType = this.FV.getValue("addressType");
+    let line1 = this.FV.getValue("line1") ?? "";
+    let line2 = this.FV.getValue("line2") ?? "";
+    let line3 = this.FV.getValue("line3") ?? "";
+
+    let selectedType = this.addressTypeArr.find((x) => x.id === addressType);
+
+    this.addressRecodes.push({
+      _id: this.helper.generateUniqueId(this.addressRecodes),
+      addressTypeId: addressType,
+      addressType: selectedType.name,
+      line1: line1.trim(),
+      line2: line2.trim(),
+      line3: line3.trim(),
+    });
+
+    this.clearAddressData();
+  }
+
+  clearAddressData() {
+    this.FV.clearValues("addressType,line1,line2,line3");
+  }
+
+  deleteAddress(rowData: any) {
+    let confirmationConfig = {
+      message: `Are you sure you want to delete this address?`,
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+    };
+
+    this.messageService.ConfirmPopUp(
+      confirmationConfig,
+      (isConfirm: boolean) => {
+        if (isConfirm) {
+          this.addressRecodes = this.addressRecodes.filter(
+            (x) => x._id !== rowData._id
+          );
+        }
+      }
+    );
   }
 }

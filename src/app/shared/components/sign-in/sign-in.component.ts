@@ -43,7 +43,7 @@ export class SignInComponent implements OnInit {
 
   createForm() {
     this.FV.formGroup = this.formBuilder.group({
-      username: ["", Validators.required],
+      email: ["", Validators.required],
       password: ["", Validators.required],
     });
   }
@@ -61,11 +61,11 @@ export class SignInComponent implements OnInit {
       return;
     }
 
-    let userName = this.FV.getValue("username");
+    let email = this.FV.getValue("email");
     let password = this.FV.getValue("password");
 
     let request = {
-      userName: userName,
+      email: email,
       password: password,
     };
 
@@ -73,6 +73,7 @@ export class SignInComponent implements OnInit {
 
     this.transactionService.userLogin(request).subscribe((response) => {
       if (response.IsSuccessful) {
+        debugger;
         this.messageService.showSuccessAlert(response.Message);
         this.masterDataService.setUserData(response.Result);
         this.router.navigate(["/dashboard"]);

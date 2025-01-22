@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { AppModule } from "src/app/shared/enums/app-module.enum";
+import { MasterDataService } from "src/app/shared/services/master-data.service";
 
 @Component({
   selector: "app-default-side-bar",
@@ -9,9 +11,15 @@ import { Router } from "@angular/router";
 export class DefaultSideBarComponent implements OnInit {
   DynamicItems: any[] = [];
   activeTab: number = -1;
-  constructor(private router: Router) {}
+  moduleIds: number[] = [];
+  constructor(
+    private router: Router,
+    private masterDataService: MasterDataService
+  ) {}
 
   ngOnInit() {
+    this.moduleIds = this.masterDataService.MenuList;
+
     let module = this.router.url.split("/")[1];
 
     this.DynamicItems = [
@@ -20,18 +28,29 @@ export class DefaultSideBarComponent implements OnInit {
         label: "Dashboard",
         icon: "pi pi-home",
         routerLink: "/dashboard",
-        isVisible: true,
+        isVisible: this.checkUserAuthorizedToAccess([AppModule.Dashboard]),
       },
       {
         menuId: 2,
         label: "User",
         icon: "pi pi-user",
         routerLink: "/user",
-        isVisible: true,
+        isVisible: this.checkUserAuthorizedToAccess([AppModule.UserManagement]),
       },
     ];
 
     this.ModuleActivate(module);
+  }
+
+  checkUserAuthorizedToAccess(moduleIds: number[]): boolean {
+    let flag: boolean = false;
+
+    moduleIds.forEach((element) => {
+      if (this.moduleIds.includes(element)) {
+        flag = true;
+      }
+    });
+    return flag;
   }
 
   moveToRouter(routerLink: string) {

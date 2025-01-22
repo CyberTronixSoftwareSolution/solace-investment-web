@@ -43,8 +43,6 @@ export class DefaultLayoutNewComponent {
   ) {}
 
   ngOnInit(): void {
-    this.workingDate = this.masterDataService.WorkingDate;
-
     this.showWorkingDate = this.datePipe.transform(
       this.workingDate,
       "y - MMMM"
@@ -52,97 +50,97 @@ export class DefaultLayoutNewComponent {
     this.moduleIds = this.masterDataService.MenuList;
     let module = this.router.url.split("/")[1];
 
-    this.DynamicItems = [
-      {
-        menuId: 1,
-        label: "Dashboard",
-        icon: "pi pi-home",
-        routerLink: "/dashboard",
-        isVisible: this.checkUserAuthorizedToAccess([
-          AppModule.SuperAdminDashboard,
-        ]),
-      },
-      {
-        menuId: 2,
-        label: "User",
-        icon: "pi pi-user",
-        routerLink: "/user",
-        isVisible: this.checkUserAuthorizedToAccess([
-          AppModule.SuperAdminUserManagement,
-        ]),
-      },
-      {
-        menuId: 3,
-        label: "Leave Management",
-        icon: "pi pi-user",
-        routerLink: "/leave-management",
-        isVisible: this.checkUserAuthorizedToAccess([
-          AppModule.SuperAdminLeaveManagement,
-          AppModule.AdminLeaveManagement,
-          AppModule.DriverLeaveManagement,
-        ]),
-      },
-      {
-        menuId: 4,
-        label: "Trip Management",
-        icon: "pi pi-map",
-        routerLink: "/trip-management",
-        isVisible: this.checkUserAuthorizedToAccess([
-          AppModule.AdminTripManagement,
-          AppModule.SuperAdminTripManagement,
-        ]),
-      },
-      {
-        menuId: 5,
-        label: "Vehicle Management",
-        icon: "pi pi-car",
-        routerLink: "/vehicle-management",
-        isVisible: this.checkUserAuthorizedToAccess([
-          AppModule.SuperAdminVehicleManagement,
-          AppModule.AdminVehicleManagement,
-        ]),
-      },
-      {
-        menuId: 6,
-        label: "Your Trips",
-        icon: "pi pi-map",
-        routerLink: "/trip-management",
-        isVisible: this.checkUserAuthorizedToAccess([
-          AppModule.DriverTripManagement,
-        ]),
-      },
-      {
-        menuId: 7,
-        label: "Month Audit",
-        icon: "pi pi-briefcase",
-        // routerLink: "/month-audit",
-        isVisible: this.checkUserAuthorizedToAccess([
-          AppModule.SuperAdminMonthAudit,
-        ]),
-        command: (event: any) => {
-          this.openMonthAudit();
-        },
-      },
-      {
-        menuId: 8,
-        label: "Vehicle Tracking",
-        icon: "pi pi-map-marker",
-        routerLink: "/vehicle-tracking",
-        isVisible: this.checkUserAuthorizedToAccess([
-          AppModule.SuperAdminVehicleTracking,
-        ]),
-      },
-      {
-        menuId: 9,
-        label: "Reports",
-        icon: "pi pi-file",
-        routerLink: "/reports",
-        isVisible: this.checkUserAuthorizedToAccess([
-          AppModule.AdminReportManagement,
-          AppModule.SuperAdminReportManagement,
-        ]),
-      },
-    ];
+    // this.DynamicItems = [
+    //   {
+    //     menuId: 1,
+    //     label: "Dashboard",
+    //     icon: "pi pi-home",
+    //     routerLink: "/dashboard",
+    //     isVisible: this.checkUserAuthorizedToAccess([
+    //       AppModule.SuperAdminDashboard,
+    //     ]),
+    //   },
+    //   {
+    //     menuId: 2,
+    //     label: "User",
+    //     icon: "pi pi-user",
+    //     routerLink: "/user",
+    //     isVisible: this.checkUserAuthorizedToAccess([
+    //       AppModule.SuperAdminUserManagement,
+    //     ]),
+    //   },
+    //   {
+    //     menuId: 3,
+    //     label: "Leave Management",
+    //     icon: "pi pi-user",
+    //     routerLink: "/leave-management",
+    //     isVisible: this.checkUserAuthorizedToAccess([
+    //       AppModule.SuperAdminLeaveManagement,
+    //       AppModule.AdminLeaveManagement,
+    //       AppModule.DriverLeaveManagement,
+    //     ]),
+    //   },
+    //   {
+    //     menuId: 4,
+    //     label: "Trip Management",
+    //     icon: "pi pi-map",
+    //     routerLink: "/trip-management",
+    //     isVisible: this.checkUserAuthorizedToAccess([
+    //       AppModule.AdminTripManagement,
+    //       AppModule.SuperAdminTripManagement,
+    //     ]),
+    //   },
+    //   {
+    //     menuId: 5,
+    //     label: "Vehicle Management",
+    //     icon: "pi pi-car",
+    //     routerLink: "/vehicle-management",
+    //     isVisible: this.checkUserAuthorizedToAccess([
+    //       AppModule.SuperAdminVehicleManagement,
+    //       AppModule.AdminVehicleManagement,
+    //     ]),
+    //   },
+    //   {
+    //     menuId: 6,
+    //     label: "Your Trips",
+    //     icon: "pi pi-map",
+    //     routerLink: "/trip-management",
+    //     isVisible: this.checkUserAuthorizedToAccess([
+    //       AppModule.DriverTripManagement,
+    //     ]),
+    //   },
+    //   {
+    //     menuId: 7,
+    //     label: "Month Audit",
+    //     icon: "pi pi-briefcase",
+    //     // routerLink: "/month-audit",
+    //     isVisible: this.checkUserAuthorizedToAccess([
+    //       AppModule.SuperAdminMonthAudit,
+    //     ]),
+    //     command: (event: any) => {
+    //       this.openMonthAudit();
+    //     },
+    //   },
+    //   {
+    //     menuId: 8,
+    //     label: "Vehicle Tracking",
+    //     icon: "pi pi-map-marker",
+    //     routerLink: "/vehicle-tracking",
+    //     isVisible: this.checkUserAuthorizedToAccess([
+    //       AppModule.SuperAdminVehicleTracking,
+    //     ]),
+    //   },
+    //   {
+    //     menuId: 9,
+    //     label: "Reports",
+    //     icon: "pi pi-file",
+    //     routerLink: "/reports",
+    //     isVisible: this.checkUserAuthorizedToAccess([
+    //       AppModule.AdminReportManagement,
+    //       AppModule.SuperAdminReportManagement,
+    //     ]),
+    //   },
+    // ];
 
     this.items = [
       {
@@ -221,21 +219,7 @@ export class DefaultLayoutNewComponent {
   }
 
   openMonthAudit() {
-    let systemMonth = this.masterDataService.WorkingMonth;
-    let systemYear = this.masterDataService.WorkingYear;
-
     let today = new Date();
-
-    let lastDayOfSystemDate = new Date(systemYear, systemMonth, 0).getDate();
-    let systemDate = new Date(systemYear, systemMonth - 1, lastDayOfSystemDate);
-
-    if (today >= systemDate) {
-      this.router.navigate(["/month-audit"]);
-    } else {
-      this.messageService.showInfoAlert(
-        `Month Audit is closed. You can do monthly audit for this month on or after the last day of this month (${systemYear}-${systemMonth}-${lastDayOfSystemDate})!`
-      );
-    }
   }
 
   moveToRouter(routerLink: string) {
