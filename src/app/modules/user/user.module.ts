@@ -33,25 +33,26 @@ import { InputNumberModule } from "primeng/inputnumber";
 import { IconFieldModule } from "primeng/iconfield";
 import { InputIconModule } from "primeng/inputicon";
 import { ImageModule } from "primeng/image";
+import { InputMaskModule } from "primeng/inputmask";
 
-import { AddNewUserComponent } from "./add-new-user/add-new-user.component";
-import { AddNewUserFormComponent } from "./add-new-user/add-new-user-form/add-new-user-form.component";
 import { StepsModule } from "primeng/steps";
 import { ToastModule } from "primeng/toast";
-import { PersonalDetailsComponent } from "./add-new-user/add-new-user-form/personal-details/personal-details.component";
-import { BankDetailsComponent } from "./add-new-user/add-new-user-form/bank-details/bank-details.component";
-import { UploadVerificationsComponent } from "./add-new-user/add-new-user-form/upload-verifications/upload-verifications.component";
 import { UserComponent } from "./user/user.component";
+import { AddNewUserFormComponent } from "./user/add-new-user-form/add-new-user-form.component";
+import { BankDetailsComponent } from "./user/add-new-user-form/bank-details/bank-details.component";
+import { ExpensesIncomeDetailsComponent } from "./user/add-new-user-form/expenses-income-details/expenses-income-details.component";
+import { FamilyDetailsComponent } from "./user/add-new-user-form/family-details/family-details.component";
+import { PersonalDetailsComponent } from "./user/add-new-user-form/personal-details/personal-details.component";
 
 @NgModule({
   declarations: [
     ChangePasswordComponent,
-    AddNewUserComponent,
-    AddNewUserFormComponent,
-    PersonalDetailsComponent,
-    BankDetailsComponent,
-    UploadVerificationsComponent,
     UserComponent,
+    AddNewUserFormComponent,
+    BankDetailsComponent,
+    ExpensesIncomeDetailsComponent,
+    FamilyDetailsComponent,
+    PersonalDetailsComponent,
   ],
   imports: [
     ButtonModule,
@@ -88,6 +89,7 @@ import { UserComponent } from "./user/user.component";
     IconFieldModule,
     InputIconModule,
     ImageModule,
+    InputMaskModule,
   ],
 })
 export class UserModule {}

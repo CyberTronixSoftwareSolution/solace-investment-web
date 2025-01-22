@@ -1,0 +1,169 @@
+<form [formGroup]="FV.formGroup" autocomplete="off">
+  <!-- <div class="card"> -->
+  <div class="grid mt-3 p-4">
+    <div class="col-12">
+      <div class="p-fluid grid formgrid align-items-end">
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >SPOUSE DETAILS</span
+          >
+        </div>
+
+        <!-- SFullName: [""],
+        SNic: [""],
+        SOccupation: [""],
+        SIncome: [""], -->
+        <div class="field col-12 md:col-3">
+          <label for="SFullName">Full Name</label>
+          <input
+            id="SFullName"
+            pInputText
+            type="text"
+            class="w-full"
+            formControlName="SFullName"
+            maxlength="200"
+          />
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <label for="SNic">NIC</label>
+          <input
+            #nicNumber
+            id="SNic"
+            pInputText
+            type="text"
+            class="w-full"
+            formControlName="SNic"
+            maxlength="12"
+            oninput="this.value = this.value.replace(/[^0-9XVxv]/g, '').substring(0, 12)"
+            (input)="nicNumber.value = nicNumber.value.toUpperCase()"
+          />
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <label for="SOccupation">Occupation</label>
+          <input
+            id="SOccupation"
+            pInputText
+            type="text"
+            class="w-full"
+            formControlName="SOccupation"
+            maxlength="200"
+          />
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <label for="SIncome">Income</label>
+
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">LKR</span>
+            <p-inputNumber
+              formControlName="SIncome"
+              mode="decimal"
+              [minFractionDigits]="2"
+              [maxFractionDigits]="2"
+            ></p-inputNumber>
+          </div>
+        </div>
+
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >FAMILY DETAILS</span
+          >
+        </div>
+
+        <div class="field col-12 md:col-12">
+          <p-table
+            #dt
+            styleClass=""
+            [columns]="familyCols"
+            [value]="familyRecodes"
+            responsiveLayout="stack"
+            [breakpoint]="'960px'"
+            dataKey="_id"
+            [responsive]="true"
+            styleClass="p-datatable-gridlines"
+            [rowHover]="true"
+            [rowHover]="true"
+          >
+            <!-- Caption -->
+            <ng-template pTemplate="caption">
+              <div class="grid formgrid">
+                <div class="field col-12 md:col-3">
+                  <label for="FiRelationship" class="text-base font-normal"
+                    >Relationship</label
+                  >
+                  <input
+                    id="FiRelationship"
+                    pInputText
+                    type="text"
+                    class="w-full"
+                    formControlName="FiRelationship"
+                    maxlength="200"
+                  />
+                </div>
+                <div class="field col-12 md:col-5">
+                  <label for="FiFullName" class="text-base font-normal"
+                    >Full Name</label
+                  >
+                  <input
+                    id="FiFullName"
+                    pInputText
+                    type="text"
+                    class="w-full"
+                    formControlName="FiFullName"
+                    maxlength="200"
+                  />
+                </div>
+                <div class="field col-12 md:col-4">
+                  <label for="FiNic" class="text-base font-normal">NIC</label>
+                  <div class="flex gap-3">
+                    <input
+                      #FiNic
+                      id="FiNic"
+                      pInputText
+                      type="text"
+                      class="w-full"
+                      formControlName="FiNic"
+                      maxlength="12"
+                      oninput="this.value = this.value.replace(/[^0-9XVxv]/g, '').substring(0, 12)"
+                      (input)="FiNic.value = FiNic.value.toUpperCase()"
+                    />
+
+                    <p-button
+                      icon="pi pi-plus"
+                      pTooltip="Add"
+                      tooltipPosition="bottom"
+                    ></p-button>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns">
+                  {{ col.header }}
+                </th>
+                <th class="text-center">Action</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="columns.length + 2">
+                  <div
+                    class="flex flex-column justify-content-center align-items-center gap-2"
+                    style="height: 100px; width: 100%"
+                  >
+                    <i class="pi pi-inbox text-5xl text-gray-400"></i>
+                    <small class="">No Family Details Found</small>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

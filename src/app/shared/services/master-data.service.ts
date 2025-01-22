@@ -10,18 +10,9 @@ export class MasterDataService {
     this.MenuList = loginData?.moduleIds ?? [];
     this.SessionKey = loginData.token;
     this.ClientId = loginData.user._id;
-    this.CurrentUserName = loginData.user.userName;
     this.Role = loginData.role;
     this.TimedOut = "false";
-    this.WorkingMonth = loginData.workingMonth;
-    this.WorkingYear = loginData.workingYear;
-    this.WorkingDate = loginData.workingDate;
-  }
-
-  setWorkingInfo(workingInfo: any) {
-    this.WorkingMonth = workingInfo.workingMonth;
-    this.WorkingYear = workingInfo.workingYear;
-    this.WorkingDate = workingInfo.workingDate;
+    this.User = loginData.user;
   }
 
   get TimedOut(): any {
@@ -73,28 +64,13 @@ export class MasterDataService {
     return localStorage.getItem(AppKeys.Role) ?? "";
   }
 
-  set WorkingMonth(month: any) {
-    localStorage.setItem(AppKeys.WorkingMonth, month);
+  set User(user: any) {
+    localStorage.setItem(AppKeys.User, JSON.stringify(user));
   }
 
-  get WorkingMonth(): any {
-    return localStorage.getItem(AppKeys.WorkingMonth) ?? "";
-  }
-
-  set WorkingYear(year: any) {
-    localStorage.setItem(AppKeys.WorkingYear, year);
-  }
-
-  get WorkingYear(): any {
-    return localStorage.getItem(AppKeys.WorkingYear) ?? "";
-  }
-
-  set WorkingDate(date: any) {
-    localStorage.setItem(AppKeys.WorkingDate, date);
-  }
-
-  get WorkingDate(): any {
-    return localStorage.getItem(AppKeys.WorkingDate) ?? "";
+  get User(): any {
+    let user = localStorage.getItem(AppKeys.User) ?? "";
+    return JSON.parse(user);
   }
 
   clearLoginData() {
@@ -104,9 +80,7 @@ export class MasterDataService {
     localStorage.removeItem(AppKeys.ClientId);
     localStorage.removeItem(AppKeys.TimedOut);
     localStorage.removeItem(AppKeys.Role);
-    localStorage.removeItem(AppKeys.WorkingMonth);
-    localStorage.removeItem(AppKeys.WorkingYear);
-    localStorage.removeItem(AppKeys.WorkingDate);
+    localStorage.removeItem(AppKeys.User);
   }
 }
 
@@ -117,7 +91,5 @@ export class AppKeys {
   static readonly ClientId = "ClientId";
   static readonly TimedOut = "TimedOut";
   static readonly Role = "Role";
-  static readonly WorkingMonth = "WorkingMonth";
-  static readonly WorkingYear = "WorkingYear";
-  static readonly WorkingDate = "WorkingDate";
+  static readonly User = "User";
 }

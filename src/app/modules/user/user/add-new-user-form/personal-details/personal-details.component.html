@@ -1,0 +1,542 @@
+<form [formGroup]="FV.formGroup" autocomplete="off">
+  <!-- <div class="card"> -->
+  <div class="grid mt-3 p-4">
+    <div class="col-12">
+      <div class="p-fluid grid formgrid align-items-end">
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >GENERAL DETAILS</span
+          >
+        </div>
+        <!--
+      mobileNo1: ["", Validators.required],
+      mobileNo2: [""],
+      residenceNo: ["", Validators.required],
+      email: ["", Validators.required], -->
+        <div class="field col-12 md:col-3">
+          <label for="nic" class="required">NIC Number</label>
+          <input
+            #nicNumber
+            id="nicNumber"
+            type="text"
+            formControlName="nicNumber"
+            pInputText
+            maxlength="12"
+            (input)="nicNumber.value = nicNumber.value.toUpperCase()"
+            oninput="this.value = this.value.replace(/[^0-9XVxv]/g, '').substring(0, 12)"
+            (change)="validateAndShowNicDetails()"
+          />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="fullName" class="required">Full Name</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [options]="titleArr"
+              optionLabel="name"
+              optionValue="id"
+              formControlName="title"
+              appendTo="body"
+              [autoOptionFocus]="false"
+            ></p-dropdown>
+
+            <input
+              id="fullName"
+              type="text"
+              formControlName="fullName"
+              pInputText
+              maxlength="200"
+              class="w-fit"
+            />
+          </div>
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <label for="initials" class="required">Initials</label>
+          <input
+            #initials
+            id="initials"
+            type="text"
+            formControlName="initials"
+            pInputText
+            maxlength="50"
+            (input)="initials.value = initials.value.toUpperCase()"
+          />
+        </div>
+        <div class="field col-12 md:col-3">
+          <label for="firstName" class="required">First Name</label>
+          <input
+            #firstName
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            pInputText
+            maxlength="200"
+          />
+        </div>
+        <div class="field col-12 md:col-3">
+          <label for="lastName" class="required">Last Name</label>
+          <input
+            #lastName
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            pInputText
+            maxlength="200"
+          />
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <label for="gender" class="required">Gender</label>
+          <p-dropdown
+            id="gender"
+            [options]="genderArr"
+            optionLabel="name"
+            optionValue="id"
+            formControlName="gender"
+            appendTo="body"
+            [autoOptionFocus]="false"
+          ></p-dropdown>
+        </div>
+        <div class="field col-12 md:col-3">
+          <label for="dateOfBirth" class="required">Date of Birth</label>
+          <p-calendar
+            id="dateOfBirth"
+            formControlName="dateOfBirth"
+            [showTime]="false"
+            dateFormat="yy-mm-dd"
+            appendTo="body"
+          ></p-calendar>
+        </div>
+        <div class="field col-12 md:col-2">
+          <label for="age" class="required">Age</label>
+          <p-inputNumber
+            id="age"
+            formControlName="age"
+            [showButtons]="true"
+            inputId="minmax-buttons"
+            [min]="18"
+            [max]="100"
+          />
+        </div>
+        <div class="field col-12 md:col-3">
+          <label for="civilStatus" class="required">Civil Status</label>
+          <p-dropdown
+            id="civilStatus"
+            [options]="civilStatusArr"
+            optionLabel="name"
+            optionValue="id"
+            formControlName="civilStatus"
+            appendTo="body"
+            [autoOptionFocus]="false"
+          ></p-dropdown>
+        </div>
+
+        <div class="field col-12 md:col-4">
+          <label for="occupation" class="required">Occupation</label>
+          <input
+            id="occupation"
+            type="text"
+            formControlName="occupation"
+            pInputText
+            maxlength="200"
+          />
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <label for="userRole" class="required">User Role</label>
+          <p-dropdown
+            id="userRole"
+            [options]="roleArr"
+            optionLabel="name"
+            optionValue="id"
+            formControlName="role"
+            appendTo="body"
+            [autoOptionFocus]="false"
+          ></p-dropdown>
+        </div>
+
+        <div class="field col-12">
+          <label for="userRole">Special Note</label>
+          <textarea
+            id="specialNote"
+            formControlName="specialNote"
+            pInputTextarea
+            [autoResize]="true"
+            [rows]="3"
+            [cols]="30"
+          ></textarea>
+
+          <div style="float: right">
+            <small class="text-500 text-xs"
+              >{{ FV.getValue("specialNote")?.length || 0 }} / 500</small
+            >
+          </div>
+        </div>
+
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >ADDRESS DETAILS</span
+          >
+        </div>
+
+        <div class="field col-12 md:col-12">
+          <p-table
+            #dt
+            styleClass=""
+            [columns]="addressCols"
+            [value]="addressRecodes"
+            responsiveLayout="stack"
+            [breakpoint]="'960px'"
+            dataKey="_id"
+            [responsive]="true"
+            styleClass="p-datatable-gridlines"
+            [rowHover]="true"
+            [rowHover]="true"
+          >
+            <!-- Caption -->
+            <ng-template pTemplate="caption">
+              <div class="grid formgrid">
+                <div class="field col-6 md:col-3">
+                  <label for="addressType" class="text-base font-normal"
+                    >Address Type</label
+                  >
+                  <p-dropdown
+                    id="addressType"
+                    [options]="addressTypeArr"
+                    optionLabel="name"
+                    optionValue="id"
+                    formControlName="addressType"
+                    appendTo="body"
+                    [autoOptionFocus]="false"
+                  ></p-dropdown>
+                </div>
+                <div class="field col-6 md:col-2">
+                  <label for="line1" class="text-base font-normal"
+                    >Line 01</label
+                  >
+                  <input
+                    id="line1"
+                    pInputText
+                    type="text"
+                    class="w-full"
+                    formControlName="line1"
+                    maxlength="200"
+                  />
+                </div>
+                <div class="field col-6 md:col-3">
+                  <label for="line2" class="text-base font-normal"
+                    >Line 02</label
+                  >
+                  <input
+                    id="line2"
+                    pInputText
+                    type="text"
+                    class="w-full"
+                    formControlName="line2"
+                    maxlength="200"
+                  />
+                </div>
+                <div class="field col-6 md:col-4">
+                  <label for="line3" class="text-base font-normal"
+                    >Line 03</label
+                  >
+                  <div class="flex gap-3">
+                    <input
+                      id="line3"
+                      pInputText
+                      type="text"
+                      class="w-full"
+                      formControlName="line3"
+                      maxlength="200"
+                    />
+                    <p-button
+                      icon="pi pi-plus"
+                      pTooltip="Add"
+                      tooltipPosition="bottom"
+                    ></p-button>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="flex justify-content-end align-items-center">
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-plus"
+                  pTooltip="Add New Address"
+                  tooltipPosition="right"
+                  styleClass="p-button-sm mb:p-button"
+                ></button>
+              </div> -->
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns">
+                  {{ col.header }}
+                </th>
+                <th class="text-center">Action</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="columns.length + 2">
+                  <div
+                    class="flex flex-column justify-content-center align-items-center gap-2"
+                    style="height: 100px; width: 100%"
+                  >
+                    <i class="pi pi-inbox text-5xl text-gray-400"></i>
+                    <small class="">No Address Found</small>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >CONTACT DETAILS</span
+          >
+        </div>
+
+        <div class="field col-6 md:col-3">
+          <label for="mobileNo1" class="required">Mobile No 01 </label>
+          <p-inputMask
+            mask="(999) 999-9999"
+            formControlName="mobileNo1"
+            placeholder="(xxx) xxx-xxxx"
+          />
+        </div>
+
+        <div class="field col-6 md:col-3">
+          <label for="mobileNo2">Mobile No 02 (optional)</label>
+          <p-inputMask
+            mask="(999) 999-9999"
+            formControlName="mobileNo2"
+            placeholder="(xxx) xxx-xxxx"
+          />
+        </div>
+
+        <div class="field col-6 md:col-3">
+          <label for="residenceNo" class="required">Residence No </label>
+          <p-inputMask
+            mask="(999) 999-9999"
+            formControlName="residenceNo"
+            placeholder="(xxx) xxx-xxxx"
+          />
+        </div>
+
+        <div class="field col-6 md:col-3">
+          <label for="email" class="required">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            pInputText
+            maxlength="200"
+          />
+        </div>
+
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >VERIFICATION DETAILS</span
+          >
+        </div>
+
+        <div class="field mb-3 col-12 md:col-6">
+          <label for="postalCode" class="font-medium text-900"
+            >Profile Image</label
+          >
+          <div class="flex gap-4">
+            <div
+              class="surface-border border-2 border-round surface-card w-9rem h-9rem flex flex-column upload-btn-wrapper text-gray-400"
+              [ngClass]="
+                profileImageUrl
+                  ? 'border-2'
+                  : 'border-dashed justify-content-center align-items-center'
+              "
+            >
+              <i class="pi pi-image text-2xl" *ngIf="!profileImageUrl"></i>
+
+              <p-image
+                [src]="profileImageUrl"
+                alt="Image"
+                [preview]="true"
+                *ngIf="profileImageUrl"
+              />
+            </div>
+
+            <div
+              class="flex flex-column gap-2 align-items-center justify-content-center"
+            >
+              <button
+                pButton
+                [disabled]="!profileImageUrl"
+                type="button"
+                label="Remove Image"
+                icon="pi pi-times"
+                class="p-button-danger p-button-outlined"
+                (click)="removeImage(WellKnownUploadType.ProfileImage)"
+              ></button>
+              <button
+                pButton
+                type="button"
+                label="Upload Image"
+                icon="pi pi-camera"
+                class="p-button-primary p-button-outlined"
+                (click)="openUploadDialog(WellKnownUploadType.ProfileImage)"
+              ></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field mb-3 col-12 md:col-6">
+          <label for="postalCode" class="font-medium text-900">NIC Image</label>
+          <div class="flex gap-4">
+            <div
+              class="surface-border border-2 border-round surface-card w-9rem h-9rem flex flex-column upload-btn-wrapper text-gray-400"
+              [ngClass]="
+                nicImageUrl
+                  ? 'border-2'
+                  : 'border-dashed justify-content-center align-items-center'
+              "
+            >
+              <i class="pi pi-image text-2xl" *ngIf="!nicImageUrl"></i>
+
+              <p-image
+                [src]="nicImageUrl"
+                alt="Image"
+                [preview]="true"
+                *ngIf="nicImageUrl"
+              />
+            </div>
+
+            <div
+              class="flex flex-column gap-2 align-items-center justify-content-center"
+            >
+              <button
+                pButton
+                [disabled]="!nicImageUrl"
+                type="button"
+                label="Remove Image"
+                icon="pi pi-times"
+                class="p-button-danger p-button-outlined"
+                (click)="removeImage(WellKnownUploadType.NICImage)"
+              ></button>
+              <button
+                pButton
+                type="button"
+                label="Upload Image"
+                icon="pi pi-camera"
+                class="p-button-primary p-button-outlined"
+                (click)="openUploadDialog(WellKnownUploadType.NICImage)"
+              ></button>
+            </div>
+          </div>
+        </div>
+        <div class="field mb-3 col-12 md:col-6">
+          <label for="postalCode" class="font-medium text-900"
+            >Driving License</label
+          >
+          <div class="flex gap-4">
+            <div
+              class="surface-border border-2 border-round surface-card w-9rem h-9rem flex flex-column upload-btn-wrapper text-gray-400"
+              [ngClass]="
+                drivingLicenseImageUrl
+                  ? 'border-2'
+                  : 'border-dashed justify-content-center align-items-center'
+              "
+            >
+              <i
+                class="pi pi-image text-2xl"
+                *ngIf="!drivingLicenseImageUrl"
+              ></i>
+
+              <p-image
+                [src]="drivingLicenseImageUrl"
+                alt="Image"
+                [preview]="true"
+                *ngIf="drivingLicenseImageUrl"
+              />
+            </div>
+
+            <div
+              class="flex flex-column gap-2 align-items-center justify-content-center"
+            >
+              <button
+                pButton
+                [disabled]="!drivingLicenseImageUrl"
+                type="button"
+                label="Remove Image"
+                icon="pi pi-times"
+                class="p-button-danger p-button-outlined"
+                (click)="removeImage(WellKnownUploadType.DrivingLicense)"
+              ></button>
+              <button
+                pButton
+                type="button"
+                label="Upload Image"
+                icon="pi pi-camera"
+                class="p-button-primary p-button-outlined"
+                (click)="openUploadDialog(WellKnownUploadType.DrivingLicense)"
+              ></button>
+            </div>
+          </div>
+        </div>
+        <div class="field mb-3 col-12 md:col-6">
+          <label for="postalCode" class="font-medium text-900"
+            >Business Registration</label
+          >
+          <div class="flex gap-4">
+            <div
+              class="surface-border border-2 border-round surface-card w-9rem h-9rem flex flex-column upload-btn-wrapper text-gray-400"
+              [ngClass]="
+                businessRegistrationImageUrl
+                  ? 'border-2'
+                  : 'border-dashed justify-content-center align-items-center'
+              "
+            >
+              <i
+                class="pi pi-image text-2xl"
+                *ngIf="!businessRegistrationImageUrl"
+              ></i>
+
+              <p-image
+                [src]="businessRegistrationImageUrl"
+                alt="Image"
+                [preview]="true"
+                *ngIf="businessRegistrationImageUrl"
+              />
+            </div>
+
+            <div
+              class="flex flex-column gap-2 align-items-center justify-content-center"
+            >
+              <button
+                pButton
+                [disabled]="!businessRegistrationImageUrl"
+                type="button"
+                label="Remove Image"
+                icon="pi pi-times"
+                class="p-button-danger p-button-outlined"
+                (click)="removeImage(WellKnownUploadType.BusinessRegistration)"
+              ></button>
+              <button
+                pButton
+                type="button"
+                label="Upload Image"
+                icon="pi pi-camera"
+                class="p-button-primary p-button-outlined"
+                (click)="
+                  openUploadDialog(WellKnownUploadType.BusinessRegistration)
+                "
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

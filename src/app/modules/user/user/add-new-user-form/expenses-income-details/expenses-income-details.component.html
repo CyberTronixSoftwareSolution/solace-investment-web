@@ -1,0 +1,188 @@
+<form [formGroup]="FV.formGroup" autocomplete="off">
+  <!-- <div class="card"> -->
+  <div class="grid mt-3 p-4">
+    <div class="col-12">
+      <div class="p-fluid grid formgrid align-items-end">
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >EXPENSES DETAILS</span
+          >
+        </div>
+
+        <div class="field col-12 md:col-12">
+          <p-table
+            #dt
+            styleClass=""
+            [columns]="expensesCols"
+            [value]="expensesRecodes"
+            responsiveLayout="stack"
+            [breakpoint]="'960px'"
+            dataKey="_id"
+            [responsive]="true"
+            styleClass="p-datatable-gridlines"
+            [rowHover]="true"
+            [rowHover]="true"
+          >
+            <!-- Caption -->
+            <ng-template pTemplate="caption">
+              <div class="grid formgrid">
+                <div class="field col-12 md:col-4">
+                  <label for="expenseType" class="text-base font-normal"
+                    >Expense Type</label
+                  >
+                  <input
+                    id="expenseType"
+                    pInputText
+                    type="text"
+                    class="w-full"
+                    formControlName="expenseType"
+                    maxlength="200"
+                  />
+                </div>
+                <div class="field col-12 md:col-4">
+                  <label for="amount" class="text-base font-normal"
+                    >Amount</label
+                  >
+                  <div class="flex gap-3">
+                    <div class="p-inputgroup">
+                      <span class="p-inputgroup-addon">LKR</span>
+                      <p-inputNumber
+                        formControlName="expenseAmount"
+                        mode="decimal"
+                        [minFractionDigits]="2"
+                        [maxFractionDigits]="2"
+                      ></p-inputNumber>
+                    </div>
+                    <p-button
+                      icon="pi pi-plus"
+                      pTooltip="Add"
+                      tooltipPosition="bottom"
+                    ></p-button>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns">
+                  {{ col.header }}
+                </th>
+                <th class="text-center">Action</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="columns.length + 2">
+                  <div
+                    class="flex flex-column justify-content-center align-items-center gap-2"
+                    style="height: 100px; width: 100%"
+                  >
+                    <i class="pi pi-inbox text-5xl text-gray-400"></i>
+                    <small class="">No Expenses Details Found</small>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+              <div class="flex align-items-center justify-content-end">
+                Total Expenses : {{ totalExpenses | currency : "LKR " }}
+              </div>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >INCOME DETAILS</span
+          >
+        </div>
+
+        <div class="field col-12 md:col-12">
+          <p-table
+            #dt
+            styleClass=""
+            [columns]="incomeCols"
+            [value]="incomeRecodes"
+            responsiveLayout="stack"
+            [breakpoint]="'960px'"
+            dataKey="_id"
+            [responsive]="true"
+            styleClass="p-datatable-gridlines"
+            [rowHover]="true"
+            [rowHover]="true"
+          >
+            <!-- Caption -->
+            <ng-template pTemplate="caption">
+              <div class="grid formgrid">
+                <div class="field col-12 md:col-4">
+                  <label for="incomeType" class="text-base font-normal"
+                    >Income Type</label
+                  >
+                  <input
+                    id="incomeType"
+                    pInputText
+                    type="text"
+                    class="w-full"
+                    formControlName="incomeType"
+                    maxlength="200"
+                  />
+                </div>
+                <div class="field col-12 md:col-4">
+                  <label for="amount" class="text-base font-normal"
+                    >Amount</label
+                  >
+                  <div class="flex gap-3">
+                    <div class="p-inputgroup">
+                      <span class="p-inputgroup-addon">LKR</span>
+                      <p-inputNumber
+                        formControlName="incomeAmount"
+                        mode="decimal"
+                        [minFractionDigits]="2"
+                        [maxFractionDigits]="2"
+                      ></p-inputNumber>
+                    </div>
+
+                    <p-button
+                      icon="pi pi-plus"
+                      pTooltip="Add"
+                      tooltipPosition="bottom"
+                    ></p-button>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns">
+                  {{ col.header }}
+                </th>
+                <th class="text-center">Action</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="columns.length + 2">
+                  <div
+                    class="flex flex-column justify-content-center align-items-center gap-2"
+                    style="height: 100px; width: 100%"
+                  >
+                    <i class="pi pi-inbox text-5xl text-gray-400"></i>
+                    <small class="">No Income Details Found</small>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="summary">
+              <div class="flex align-items-center justify-content-end">
+                Total Income : {{ totalIncome | currency : "LKR " }}
+              </div>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

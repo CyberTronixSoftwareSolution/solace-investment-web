@@ -3,14 +3,13 @@ import { Router } from "@angular/router";
 import { AppComponent } from "src/app/app.component";
 import { PopupService } from "src/app/shared/services/popup.service";
 import { SidebarService } from "src/app/shared/services/sidebar.service";
-import { AddUserControlFlowService } from "../add-new-user/add-new-user-form/add-user-control-flow.service";
 import { UserService } from "src/app/shared/services/api-services/user.service";
 import { AppMessageService } from "src/app/shared/services/app-message.service";
 import { TransactionHandlerService } from "src/app/shared/services/transaction-handler.service";
 import { ExcelService } from "src/app/shared/services/excel.service";
 import { DatePipe } from "@angular/common";
-import { AddNewUserFormComponent } from "../add-new-user/add-new-user-form/add-new-user-form.component";
 import { firstValueFrom } from "rxjs";
+import { AddNewUserFormComponent } from "./add-new-user-form/add-new-user-form.component";
 
 @Component({
   selector: "app-user",
@@ -29,7 +28,7 @@ export class UserComponent implements OnInit {
     private appComponent: AppComponent,
     private popupService: PopupService,
     private router: Router,
-    private addUserControlFlowService: AddUserControlFlowService,
+    // private addUserControlFlowService: AddUserControlFlowService,
     private userService: UserService,
     private messageService: AppMessageService,
     private transactionService: TransactionHandlerService,
@@ -82,10 +81,10 @@ export class UserComponent implements OnInit {
       isEdit: false,
     };
 
-    this.addUserControlFlowService.resetData();
+    // this.addUserControlFlowService.resetData();
 
     let properties = {
-      width: "50vw",
+      width: "60vw",
       position: "right",
     };
 
@@ -109,11 +108,11 @@ export class UserComponent implements OnInit {
 
     if (userResult.IsSuccessful) {
       data.userData = userResult.Result;
-      this.addUserControlFlowService.setUserDetail(data.userData);
+      // this.addUserControlFlowService.setUserDetail(data.userData);
     }
 
     let properties = {
-      width: "50vw",
+      width: "60vw",
       position: "right",
     };
 

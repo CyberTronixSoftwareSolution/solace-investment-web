@@ -5,21 +5,12 @@
       <div class="p-fluid grid formgrid align-items-end">
         <div class="field col-12 md:col-4">
           <label for="bankName" class="required">Bank Name</label>
-          <!-- <input
-            id="bankName"
-            pInputText
-            type="text"
-            class="w-full"
-            formControlName="bankName"
-            maxlength="50"
-            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-          /> -->
+
           <p-dropdown
             id="bankName"
             [options]="bankArr"
             optionLabel="name"
             optionValue="id"
-            placeholder="Select bank"
             formControlName="bankName"
             appendTo="body"
             [autoOptionFocus]="false"
@@ -63,19 +54,48 @@
             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
           />
         </div>
-        <div class="field col-12 md:col-8">
-          <label for="accHolderAddress" class="required"
-            >Account Holder Address</label
-          >
-          <input
-            id="accHolderAddress"
-            pInputText
-            type="text"
-            class="w-full"
-            formControlName="accHolderAddress"
-            maxlength="100"
-            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-          />
+
+        <div class="field mb-3 col-12 md:col-12">
+          <label for="postalCode" class="font-medium text-900">Bank Book</label>
+          <div class="flex gap-4">
+            <div
+              class="surface-border border-2 border-round surface-card w-9rem h-9rem flex flex-column upload-btn-wrapper text-gray-400"
+              [ngClass]="
+                BankBookImageUrl
+                  ? 'border-2'
+                  : 'border-dashed justify-content-center align-items-center'
+              "
+            >
+              <i class="pi pi-image text-2xl" *ngIf="!BankBookImageUrl"></i>
+
+              <p-image
+                [src]="BankBookImageUrl"
+                alt="Image"
+                [preview]="true"
+                *ngIf="BankBookImageUrl"
+              />
+            </div>
+
+            <div
+              class="flex flex-column gap-2 align-items-center justify-content-center"
+            >
+              <button
+                pButton
+                [disabled]="!BankBookImageUrl"
+                type="button"
+                label="Remove Image"
+                icon="pi pi-times"
+                class="p-button-danger p-button-outlined"
+              ></button>
+              <button
+                pButton
+                type="button"
+                label="Upload Image"
+                icon="pi pi-camera"
+                class="p-button-primary p-button-outlined"
+              ></button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
