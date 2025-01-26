@@ -66,6 +66,7 @@
       <a
         pRipple
         class="flex p-3 lg:px-3 lg:py-2 align-items-center hover:surface-100 font-medium border-round cursor-pointer transition-duration-150 transition-colors"
+        (click)="onClickProfile()"
       >
         <!-- <img
           src="assets/images/user/avatar-f-2.png"
@@ -74,13 +75,15 @@
         /> -->
 
         <p-avatar
-          image="assets/images/user/avatar-f-2.png"
+          image="{{ logInUser?.profileImageUrl }}"
           styleClass="mr-2"
           shape="circle"
         />
         <div class="block lg:hidden">
-          <div class="text-900 font-medium">Josephine Lillard</div>
-          <span class="text-600 font-medium text-sm">Marketing Specialist</span>
+          <div class="text-900 font-medium">{{ logInUser?.name }}</div>
+          <span class="text-600 font-medium text-sm">{{
+            logInUser?.email
+          }}</span>
         </div>
       </a>
     </li>

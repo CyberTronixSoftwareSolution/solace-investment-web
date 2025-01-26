@@ -10,6 +10,9 @@ import { ExcelService } from "src/app/shared/services/excel.service";
 import { DatePipe } from "@angular/common";
 import { firstValueFrom } from "rxjs";
 import { AddNewUserFormComponent } from "./add-new-user-form/add-new-user-form.component";
+import { AddUserControlFlowService } from "./add-new-user-form/add-user-control-flow.service";
+import { MasterDataService } from "src/app/shared/services/master-data.service";
+import { WellKnownUserRole } from "src/app/shared/enums/well-known-user-role.enum";
 
 @Component({
   selector: "app-user",
@@ -23,20 +26,26 @@ export class UserComponent implements OnInit {
   template: TemplateRef<any>;
   items: any[];
   filteredItems: any[];
+  moduleName: string = "";
   constructor(
     private sidebarService: SidebarService,
     private appComponent: AppComponent,
     private popupService: PopupService,
     private router: Router,
-    // private addUserControlFlowService: AddUserControlFlowService,
+    private addUserControlFlowService: AddUserControlFlowService,
     private userService: UserService,
     private messageService: AppMessageService,
     private transactionService: TransactionHandlerService,
     private excelService: ExcelService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private masterDateService: MasterDataService
   ) {}
 
   ngOnInit() {
+    this.moduleName =
+      this.masterDateService.Role == WellKnownUserRole.SUPERADMIN
+        ? "User"
+        : "Customer";
     this.cols = [
       { field: "customerCode", header: "Code" },
       { field: "fullName", header: "Full Name" },
@@ -44,7 +53,60 @@ export class UserComponent implements OnInit {
       { field: "email", header: "Email" },
       { field: "mobileNo", header: "Mobile No" },
       { field: "residenceNo", header: "Residence No" },
-      { field: "roleName", header: "Role" },
+      { field: "status", header: "Status" },
+    ];
+
+    this.getAllUsers();
+
+    this.items = [
+      {
+        id: 6,
+        label: `View ${this.moduleName}`,
+        icon: "pi pi-eye",
+        command: (event: any) => {
+          this.onClickVIew(event.item.data);
+        },
+      },
+      {
+        id: 1,
+        label: `Edit ${this.moduleName}`,
+        icon: "pi pi-pencil",
+        command: (event: any) => {
+          this.onClickEdit(event.item.data);
+        },
+      },
+      {
+        id: 5,
+        label: "Reset Password",
+        icon: "pi pi-refresh",
+        command: (event: any) => {
+          this.resetUserPassword(event.item.data);
+        },
+      },
+      {
+        id: 2,
+        label: `Delete ${this.moduleName}`,
+        icon: "pi pi-trash",
+        command: (event: any) => {
+          this.deleteUserById(event.item.data);
+        },
+      },
+      {
+        id: 3,
+        label: `Blacklist ${this.moduleName}`,
+        icon: "pi pi-ban",
+        command: (event: any) => {
+          this.blockUnblockUser(1, event.item.data);
+        },
+      },
+      {
+        id: 4,
+        label: `Whitelist ${this.moduleName}`,
+        icon: "pi pi-check-circle",
+        command: (event: any) => {
+          this.blockUnblockUser(2, event.item.data);
+        },
+      },
     ];
 
     this.sidebarService.sidebarEvent.subscribe((response) => {
@@ -54,7 +116,7 @@ export class UserComponent implements OnInit {
 
       this.sidebarService.removeComponent();
       this.appComponent.sidebarVisible = false;
-      // this.addUserControlFlowService.resetData();
+      this.addUserControlFlowService.resetData();
     });
   }
 
@@ -62,6 +124,10 @@ export class UserComponent implements OnInit {
     this.filteredItems = [];
 
     this.filteredItems = this.items.filter((menuItem: any) => {
+      if (rowData.role == 3 && menuItem.id == 5) {
+        return false;
+      }
+
       if (rowData?.isBlackListed && menuItem.id === 3) {
         return false;
       } else if (!rowData?.isBlackListed && menuItem.id === 4) {
@@ -91,7 +157,38 @@ export class UserComponent implements OnInit {
       isEdit: false,
     };
 
-    // this.addUserControlFlowService.resetData();
+    this.addUserControlFlowService.resetData();
+    this.addUserControlFlowService.setIsEdit(false);
+    let properties = {
+      width: "60vw",
+      position: "right",
+    };
+
+    this.sidebarService.addComponent(
+      `Add New ${this.moduleName}`,
+      AddNewUserFormComponent,
+      properties,
+      data
+    );
+  }
+
+  async onClickVIew(rowData: any) {
+    let data = {
+      userData: null,
+      isEdit: false,
+      isView: true,
+    };
+
+    this.addUserControlFlowService.resetData();
+    this.addUserControlFlowService.setIsView(true);
+    const userResult = await firstValueFrom(
+      this.userService.getUserById(rowData._id)
+    );
+
+    if (userResult.IsSuccessful) {
+      data.userData = userResult.Result;
+      this.addUserControlFlowService.setUserDetail(data.userData);
+    }
 
     let properties = {
       width: "60vw",
@@ -99,7 +196,7 @@ export class UserComponent implements OnInit {
     };
 
     this.sidebarService.addComponent(
-      "Add New User",
+      `View ${this.moduleName}`,
       AddNewUserFormComponent,
       properties,
       data
@@ -112,13 +209,15 @@ export class UserComponent implements OnInit {
       isEdit: true,
     };
 
+    this.addUserControlFlowService.resetData();
+    this.addUserControlFlowService.setIsEdit(true);
     const userResult = await firstValueFrom(
       this.userService.getUserById(rowData._id)
     );
 
     if (userResult.IsSuccessful) {
       data.userData = userResult.Result;
-      // this.addUserControlFlowService.setUserDetail(data.userData);
+      this.addUserControlFlowService.setUserDetail(data.userData);
     }
 
     let properties = {
@@ -127,7 +226,7 @@ export class UserComponent implements OnInit {
     };
 
     this.sidebarService.addComponent(
-      "Edit User",
+      `Edit ${this.moduleName}`,
       AddNewUserFormComponent,
       properties,
       data
@@ -137,8 +236,8 @@ export class UserComponent implements OnInit {
   blockUnblockUser(type: number, rowData: any) {
     let confirmationConfig = {
       message: `Are you sure you want to ${
-        type == 1 ? "block" : "unblock"
-      } this user?`,
+        type == 1 ? "blacklist" : "whitelist"
+      } this ${this.moduleName}?`,
       header: "Confirmation",
       icon: "pi pi-exclamation-triangle",
     };
@@ -203,7 +302,7 @@ export class UserComponent implements OnInit {
 
   deleteUserById(rowData: any) {
     let confirmationConfig = {
-      message: `Are you sure you want to delete this user?`,
+      message: `Are you sure you want to delete this ${this.moduleName}?`,
       header: "Confirmation",
       icon: "pi pi-exclamation-triangle",
     };

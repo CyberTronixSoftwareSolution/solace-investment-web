@@ -34,6 +34,7 @@ import { IconFieldModule } from "primeng/iconfield";
 import { InputIconModule } from "primeng/inputicon";
 import { ImageModule } from "primeng/image";
 import { InputMaskModule } from "primeng/inputmask";
+import { TagModule } from "primeng/tag";
 
 import { StepsModule } from "primeng/steps";
 import { ToastModule } from "primeng/toast";
@@ -43,6 +44,7 @@ import { BankDetailsComponent } from "./user/add-new-user-form/bank-details/bank
 import { ExpensesIncomeDetailsComponent } from "./user/add-new-user-form/expenses-income-details/expenses-income-details.component";
 import { FamilyDetailsComponent } from "./user/add-new-user-form/family-details/family-details.component";
 import { PersonalDetailsComponent } from "./user/add-new-user-form/personal-details/personal-details.component";
+import { ProfileComponent } from "./profile/profile.component";
 
 @NgModule({
   declarations: [
@@ -53,6 +55,7 @@ import { PersonalDetailsComponent } from "./user/add-new-user-form/personal-deta
     ExpensesIncomeDetailsComponent,
     FamilyDetailsComponent,
     PersonalDetailsComponent,
+    ProfileComponent,
   ],
   imports: [
     ButtonModule,
@@ -90,6 +93,7 @@ import { PersonalDetailsComponent } from "./user/add-new-user-form/personal-deta
     InputIconModule,
     ImageModule,
     InputMaskModule,
+    TagModule,
   ],
 })
 export class UserModule {}

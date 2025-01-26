@@ -7,6 +7,7 @@ import {
 import { CommonForm } from "src/app/shared/services/app-common-form";
 import { AppMessageService } from "src/app/shared/services/app-message.service";
 import { HelperService } from "src/app/shared/services/helper.service";
+import { AddUserControlFlowService } from "../add-user-control-flow.service";
 
 @Component({
   selector: "app-expenses-income-details",
@@ -23,10 +24,14 @@ export class ExpensesIncomeDetailsComponent implements OnInit {
   totalIncome: number = 0;
   incomeTypeArr: any[] = incomeTypes;
   expenseTypeArr: any[] = expenseTypes;
+  userDetail: any;
+
+  isView: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private helperService: HelperService,
-    private messageService: AppMessageService
+    private messageService: AppMessageService,
+    private addUserControlFlowService: AddUserControlFlowService
   ) {
     this.createForm();
   }
@@ -41,6 +46,10 @@ export class ExpensesIncomeDetailsComponent implements OnInit {
       { field: "incomeType", header: "Income Type" },
       { field: "amount", header: "Amount" },
     ];
+
+    this.userDetail = this.addUserControlFlowService.getUserDetail();
+    this.isView = this.addUserControlFlowService.getIsView();
+    this.setValue();
   }
 
   createForm() {
@@ -53,6 +62,26 @@ export class ExpensesIncomeDetailsComponent implements OnInit {
       incomeType: [""],
       incomeAmount: [""],
     });
+  }
+
+  setValue() {
+    if (this.userDetail?.expensesDetails) {
+      this.expensesRecodes = this.userDetail.expensesDetails?.expenses;
+      this.totalExpenses = this.userDetail.expensesDetails?.totalExpenses;
+
+      this.recalculateTotalAmounts();
+    }
+
+    if (this.userDetail?.incomeDetails) {
+      this.incomeRecodes = this.userDetail.incomeDetails?.incomes;
+      this.totalIncome = this.userDetail.incomeDetails?.totalIncome;
+
+      this.recalculateTotalAmounts();
+    }
+
+    if (this.isView) {
+      this.FV.disableFormControlls();
+    }
   }
 
   addNewExpenseIncome(type: number) {

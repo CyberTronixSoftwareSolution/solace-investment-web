@@ -22,10 +22,15 @@
             formControlName="nicNumber"
             pInputText
             maxlength="12"
-            (input)="nicNumber.value = nicNumber.value.toUpperCase()"
+            (input)="
+              nicNumber.value = nicNumber.value.toUpperCase();
+              validateAndShowNicDetails()
+            "
             oninput="this.value = this.value.replace(/[^0-9XVxv]/g, '').substring(0, 12)"
-            (change)="validateAndShowNicDetails()"
           />
+          <!-- 
+            (change)="validateAndShowNicDetails()"
+          -->
         </div>
 
         <div class="field col-12 md:col-6">
@@ -34,7 +39,6 @@
             <p-dropdown
               [options]="titleArr"
               optionLabel="name"
-              optionValue="id"
               formControlName="title"
               appendTo="body"
               [autoOptionFocus]="false"
@@ -92,7 +96,6 @@
             id="gender"
             [options]="genderArr"
             optionLabel="name"
-            optionValue="id"
             formControlName="gender"
             appendTo="body"
             [autoOptionFocus]="false"
@@ -106,6 +109,7 @@
             [showTime]="false"
             dateFormat="yy-mm-dd"
             appendTo="body"
+            [readonlyInput]="true"
           ></p-calendar>
         </div>
         <div class="field col-12 md:col-2">
@@ -125,7 +129,6 @@
             id="civilStatus"
             [options]="civilStatusArr"
             optionLabel="name"
-            optionValue="id"
             formControlName="civilStatus"
             appendTo="body"
             [autoOptionFocus]="false"
@@ -196,7 +199,7 @@
             [rowHover]="true"
           >
             <!-- Caption -->
-            <ng-template pTemplate="caption">
+            <ng-template pTemplate="caption" *ngIf="!isView">
               <div class="grid formgrid">
                 <div class="field col-6 md:col-3">
                   <label
@@ -268,7 +271,7 @@
                 <th *ngFor="let col of columns">
                   {{ col.header }}
                 </th>
-                <th class="text-center">Action</th>
+                <th class="text-center" *ngIf="!isView">Action</th>
               </tr>
             </ng-template>
 
@@ -295,6 +298,7 @@
                 <td
                   class="text-center"
                   [ngClass]="{ 'bg-blue': rowIndex % 2 !== 0, }"
+                  *ngIf="!isView"
                 >
                   <p-button
                     icon="pi pi-trash"
@@ -375,7 +379,10 @@
           >
         </div>
 
-        <div class="field mb-3 col-12 md:col-6">
+        <div
+          class="field mb-3 col-12 md:col-6"
+          *ngIf="(isView && profileImageUrl) || isEdit || !isView"
+        >
           <label for="postalCode" class="font-medium text-900"
             >Profile Image</label
           >
@@ -400,6 +407,7 @@
 
             <div
               class="flex flex-column gap-2 align-items-center justify-content-center"
+              *ngIf="!isView"
             >
               <button
                 pButton
@@ -422,7 +430,10 @@
           </div>
         </div>
 
-        <div class="field mb-3 col-12 md:col-6">
+        <div
+          class="field mb-3 col-12 md:col-6"
+          *ngIf="(isView && nicImageUrl) || isEdit || !isView"
+        >
           <label for="postalCode" class="font-medium text-900">NIC Image</label>
           <div class="flex gap-4">
             <div
@@ -445,6 +456,7 @@
 
             <div
               class="flex flex-column gap-2 align-items-center justify-content-center"
+              *ngIf="!isView"
             >
               <button
                 pButton
@@ -466,7 +478,10 @@
             </div>
           </div>
         </div>
-        <div class="field mb-3 col-12 md:col-6">
+        <div
+          class="field mb-3 col-12 md:col-6"
+          *ngIf="(isView && drivingLicenseImageUrl) || isEdit || !isView"
+        >
           <label for="postalCode" class="font-medium text-900"
             >Driving License</label
           >
@@ -494,6 +509,7 @@
 
             <div
               class="flex flex-column gap-2 align-items-center justify-content-center"
+              *ngIf="!isView"
             >
               <button
                 pButton
@@ -515,7 +531,10 @@
             </div>
           </div>
         </div>
-        <div class="field mb-3 col-12 md:col-6">
+        <div
+          class="field mb-3 col-12 md:col-6"
+          *ngIf="(isView && businessRegistrationImageUrl) || isEdit || !isView"
+        >
           <label for="postalCode" class="font-medium text-900"
             >Business Registration</label
           >
@@ -543,6 +562,7 @@
 
             <div
               class="flex flex-column gap-2 align-items-center justify-content-center"
+              *ngIf="!isView"
             >
               <button
                 pButton

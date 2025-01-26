@@ -24,7 +24,7 @@
             [rowHover]="true"
           >
             <!-- Caption -->
-            <ng-template pTemplate="caption">
+            <ng-template pTemplate="caption" *ngIf="!isView">
               <div class="grid formgrid">
                 <div class="field col-12 md:col-4">
                   <label
@@ -78,7 +78,7 @@
                 >
                   {{ col.header }}
                 </th>
-                <th class="text-center">Action</th>
+                <th class="text-center" *ngIf="!isView">Action</th>
               </tr>
             </ng-template>
 
@@ -113,12 +113,13 @@
                 <td
                   class="text-center"
                   [ngClass]="{ 'bg-blue': rowIndex % 2 !== 0, }"
+                  *ngIf="!isView"
                 >
                   <p-button
                     icon="pi pi-trash"
                     pTooltip="Delete"
                     tooltipPosition="right"
-                    styleClass="p-button-danger p-button-outlined"
+                    styleClass="p-button-danger p-button-outlined p-button-sm"
                     (onClick)="deleteExpenseIncomeDetail(rowData, 1)"
                   ></p-button>
                 </td>
@@ -167,7 +168,7 @@
             [rowHover]="true"
           >
             <!-- Caption -->
-            <ng-template pTemplate="caption">
+            <ng-template pTemplate="caption" *ngIf="!isView">
               <div class="grid formgrid">
                 <div class="field col-12 md:col-4">
                   <label for="incomeType" class="text-base font-normal required"
@@ -220,7 +221,7 @@
                 >
                   {{ col.header }}
                 </th>
-                <th class="text-center">Action</th>
+                <th class="text-center" *ngIf="!isView">Action</th>
               </tr>
             </ng-template>
 
@@ -255,12 +256,13 @@
                 <td
                   class="text-center"
                   [ngClass]="{ 'bg-blue': rowIndex % 2 !== 0, }"
+                  *ngIf="!isView"
                 >
                   <p-button
                     icon="pi pi-trash"
                     pTooltip="Delete"
                     tooltipPosition="right"
-                    styleClass="p-button-danger p-button-outlined"
+                    styleClass="p-button-danger p-button-outlined p-button-sm"
                     (onClick)="deleteExpenseIncomeDetail(rowData, 2)"
                   ></p-button>
                 </td>

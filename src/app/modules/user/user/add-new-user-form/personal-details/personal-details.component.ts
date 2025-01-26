@@ -32,6 +32,10 @@ export class PersonalDetailsComponent implements OnInit {
   addressTypeArr: any[] = addressTypes;
   addressCols: any[] = [];
   addressRecodes: any[] = [];
+  userDetail: any;
+  isEdit: boolean = false;
+  isView: boolean = false;
+  userRole: number = 0;
 
   WellKnownUploadType = WellKnownUploadType;
 
@@ -66,13 +70,16 @@ export class PersonalDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    let userRole = this.masterDataService.Role;
+    this.userRole = this.masterDataService.Role;
+    this.userDetail = this.addUserControlFlowService.getUserDetail();
+    this.isEdit = this.addUserControlFlowService.getIsEdit();
+    this.isView = this.addUserControlFlowService.getIsView();
 
-    if (userRole == WellKnownUserRole.ADMIN) {
+    this.FV.clearValue("age");
+    this.setData();
+
+    if (this.userRole == WellKnownUserRole.ADMIN) {
       this.roleArr = this.roleArr.filter((x) => x.id === 3);
-      this.FV.setValue("role", this.roleArr[0].id);
-    } else {
-      this.FV.setValue("role", WellKnownUserRole.CUSTOMER);
     }
 
     this.addressCols = [
@@ -108,7 +115,7 @@ export class PersonalDetailsComponent implements OnInit {
       mobileNo1: ["", Validators.required],
       mobileNo2: [""],
       residenceNo: ["", Validators.required],
-      email: ["", Validators.required],
+      email: [""],
       specialNote: ["", [Validators.maxLength(500)]],
 
       // Address
@@ -119,53 +126,124 @@ export class PersonalDetailsComponent implements OnInit {
     });
   }
 
+  setData() {
+    debugger;
+    this.FV.setValue("nicNumber", this.userDetail.nicNumber);
+    let selectedTitle = this.titleArr.find(
+      (x) => x.id == this.userDetail.titleId
+    );
+    this.FV.setValue("title", selectedTitle);
+
+    let selectedGender = this.genderArr.find(
+      (x) => x.id == this.userDetail.genderId
+    );
+    this.FV.setValue("gender", selectedGender);
+
+    let selectedCivilStatus = this.civilStatusArr.find(
+      (x) => x.id == this.userDetail.civilStatusId
+    );
+    this.FV.setValue("civilStatus", selectedCivilStatus);
+
+    this.addressRecodes = this.userDetail.addresses;
+
+    this.FV.setValue("fullName", this.userDetail.fullName);
+    this.FV.setValue("initials", this.userDetail.initial);
+    this.FV.setValue("firstName", this.userDetail.firstName);
+    this.FV.setValue("lastName", this.userDetail.lastName);
+    this.FV.setValue("dateOfBirth", new Date(this.userDetail.dateOfBirth));
+    this.FV.setValue("age", this.userDetail.age);
+    this.FV.setValue("occupation", this.userDetail.occupation);
+    if (this.userDetail.role) {
+      this.FV.setValue("role", this.userDetail.role);
+    } else {
+      if (this.userRole == WellKnownUserRole.ADMIN) {
+        this.FV.setValue("role", this.roleArr[0].id);
+      } else {
+        this.FV.setValue("role", WellKnownUserRole.CUSTOMER);
+      }
+    }
+    this.onRoleChange();
+    this.FV.setValue("mobileNo1", this.userDetail.mobileNo1);
+    this.FV.setValue("mobileNo2", this.userDetail.mobileNo2);
+    this.FV.setValue("residenceNo", this.userDetail.residenceNo);
+    this.FV.setValue("email", this.userDetail.email);
+    this.FV.setValue("specialNote", this.userDetail.specialNote);
+
+    // Set images
+    if (this.userDetail.profileImageUrl) {
+      this.profileImageUrl = this.userDetail.profileImageUrl;
+    }
+
+    if (this.userDetail.nicImageUrl) {
+      this.nicImageUrl = this.userDetail.nicImageUrl;
+    }
+
+    if (this.userDetail.drivingLicenseUrl) {
+      this.drivingLicenseImageUrl = this.userDetail.drivingLicenseUrl;
+    }
+
+    if (this.userDetail.businessRegistrationUrl) {
+      this.businessRegistrationImageUrl =
+        this.userDetail.businessRegistrationUrl;
+    }
+
+    if (this.isEdit) {
+      this.FV.disableField("nicNumber");
+      this.FV.disableField("role");
+    } else if (this.isView) {
+      this.FV.disableFormControlls();
+    }
+  }
+
   removeImage(uploadType: number) {
     switch (uploadType) {
       case WellKnownUploadType.ProfileImage:
         this.uploadProfileImage = null;
         this.profileImageUrl = null;
         this.selectedProfileImage = null;
-        // let userDetails = {
-        //   ...this.userDetail,
-        //   profileImageUrl: "",
-        // };
-        // this.addUserControlFlowService.setUserDetail(userDetails);
+        let userDetails = {
+          ...this.userDetail,
+          profileImageUrl: "",
+        };
+        this.addUserControlFlowService.setUserDetail(userDetails);
         break;
       case WellKnownUploadType.NICImage:
         this.uploadNicImage = null;
         this.nicImageUrl = null;
         this.selectedNicImage = null;
-        // let userDetailsNIC = {
-        //   ...this.userDetail,
-        //   nicImageUrl: "",
-        // };
-        // this.addUserControlFlowService.setUserDetail(userDetailsNIC);
+        let userDetailsNIC = {
+          ...this.userDetail,
+          nicImageUrl: "",
+        };
+        this.addUserControlFlowService.setUserDetail(userDetailsNIC);
         break;
 
       case WellKnownUploadType.DrivingLicense:
         this.uploadDrivingLicenseImage = null;
         this.drivingLicenseImageUrl = null;
         this.selectedDrivingLicenseImage = null;
-        // let userDetailsDL = {
-        //   ...this.userDetail,
-        //   drivingLicenseUrl: "",
-        // };
+        let userDetailsDL = {
+          ...this.userDetail,
+          drivingLicenseUrl: "",
+        };
 
-        // this.addUserControlFlowService.setUserDetail(userDetailsDL);
+        this.addUserControlFlowService.setUserDetail(userDetailsDL);
         break;
       case WellKnownUploadType.BusinessRegistration:
         this.uploadBusinessRegistrationImage = null;
         this.businessRegistrationImageUrl = null;
         this.selectedBusinessRegistrationImage = null;
-        // let userDetailsSLTDA = {
-        //   ...this.userDetail,
-        //   sltdaCertificateUrl: "",
-        // };
-        // this.addUserControlFlowService.setUserDetail(userDetailsSLTDA);
+        let userDetailsBusinessRegistration = {
+          ...this.userDetail,
+          businessRegistrationUrl: "",
+        };
+        this.addUserControlFlowService.setUserDetail(
+          userDetailsBusinessRegistration
+        );
         break;
     }
 
-    // this.addUserControlFlowService.setUploadImage(uploadType, null, "");
+    this.addUserControlFlowService.setUploadImage(uploadType, null, "");
   }
 
   openUploadDialog(uploadType: number) {
@@ -193,6 +271,7 @@ export class PersonalDetailsComponent implements OnInit {
       })
       .subscribe((res) => {
         if (res?.isSave) {
+          debugger;
           switch (uploadType) {
             case WellKnownUploadType.ProfileImage:
               this.uploadProfileImage = res;
@@ -216,11 +295,11 @@ export class PersonalDetailsComponent implements OnInit {
               break;
           }
 
-          // this.addUserControlFlowService.setUploadImage(
-          //   uploadType,
-          //   res.file,
-          //   res.imageUrl
-          // );
+          this.addUserControlFlowService.setUploadImage(
+            uploadType,
+            res.file,
+            res.imageUrl
+          );
         }
       });
   }
@@ -233,9 +312,15 @@ export class PersonalDetailsComponent implements OnInit {
       role == WellKnownUserRole.SUPERADMIN
     ) {
       this.isEmailRequired = true;
+      this.FV.clearValue("email");
+      this.FV.formGroup.get("email").setValidators([Validators.required]);
     } else {
       this.isEmailRequired = false;
+      this.FV.clearValue("email");
+      this.FV.formGroup.get("email").clearValidators();
     }
+
+    this.FV.formGroup.get("email").updateValueAndValidity();
   }
 
   validateAndShowNicDetails() {
@@ -275,9 +360,11 @@ export class PersonalDetailsComponent implements OnInit {
       let dob = this.getBirthDate(year, days);
       let age = this.calculateAge(dob);
 
+      let selectedGender = this.genderArr.find((x) => x.id === gender);
+
       this.FV.setValue("dateOfBirth", new Date(dob));
       this.FV.setValue("age", age);
-      this.FV.setValue("gender", gender);
+      this.FV.setValue("gender", selectedGender);
     }
   }
 
@@ -356,5 +443,23 @@ export class PersonalDetailsComponent implements OnInit {
         }
       }
     );
+  }
+
+  validateNicOrDrivingLicenseImage() {
+    if (!this.profileImageUrl) {
+      this.messageService.showWarnAlert(
+        "Profile image is required, Please upload profile image!"
+      );
+      return true;
+    }
+
+    if (!this.drivingLicenseImageUrl && !this.nicImageUrl) {
+      this.messageService.showWarnAlert(
+        "Please upload driving license image or nic image to continue!"
+      );
+      return true;
+    }
+
+    return false;
   }
 }

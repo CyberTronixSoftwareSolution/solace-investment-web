@@ -14,7 +14,9 @@
         SOccupation: [""],
         SIncome: [""], -->
         <div class="field col-12 md:col-3">
-          <label for="SFullName">Full Name</label>
+          <label for="SFullName" class="{{ isSpouseReq ? 'required' : '' }}"
+            >Full Name</label
+          >
           <input
             id="SFullName"
             pInputText
@@ -26,7 +28,9 @@
         </div>
 
         <div class="field col-12 md:col-3">
-          <label for="SNic">NIC</label>
+          <label for="SNic" class="{{ isSpouseReq ? 'required' : '' }}"
+            >NIC</label
+          >
           <input
             #nicNumber
             id="SNic"
@@ -41,7 +45,9 @@
         </div>
 
         <div class="field col-12 md:col-3">
-          <label for="SOccupation">Occupation</label>
+          <label for="SOccupation" class="{{ isSpouseReq ? 'required' : '' }}"
+            >Occupation</label
+          >
           <input
             id="SOccupation"
             pInputText
@@ -53,7 +59,9 @@
         </div>
 
         <div class="field col-12 md:col-3">
-          <label for="SIncome">Income</label>
+          <label for="SIncome" class="{{ isSpouseReq ? 'required' : '' }}"
+            >Income</label
+          >
 
           <div class="p-inputgroup">
             <span class="p-inputgroup-addon">LKR</span>
@@ -87,7 +95,7 @@
             [rowHover]="true"
           >
             <!-- Caption -->
-            <ng-template pTemplate="caption">
+            <ng-template pTemplate="caption" *ngIf="!isView">
               <div class="grid formgrid">
                 <div class="field col-12 md:col-3">
                   <label
@@ -150,7 +158,7 @@
                 <th *ngFor="let col of columns">
                   {{ col.header }}
                 </th>
-                <th class="text-center">Action</th>
+                <th class="text-center" *ngIf="!isView">Action</th>
               </tr>
             </ng-template>
 
@@ -177,6 +185,7 @@
                 <td
                   class="text-center"
                   [ngClass]="{ 'bg-blue': rowIndex % 2 !== 0, }"
+                  *ngIf="!isView"
                 >
                   <p-button
                     icon="pi pi-trash"

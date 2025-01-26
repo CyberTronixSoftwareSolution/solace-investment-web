@@ -366,4 +366,12 @@ export class HelperService {
 
     return generatedId;
   }
+
+  formatPhoneNumberToRaw(value: string) {
+    return value.replace(/[^0-9]/g, "");
+  }
+
+  formatPhoneNumber(value: string) {
+    return value.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+  }
 }

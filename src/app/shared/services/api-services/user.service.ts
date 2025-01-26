@@ -11,16 +11,11 @@ export class UserService {
     private resource: ResourceService
   ) {}
 
-  checkUserNameExist(
-    userName: string,
-    userId: string,
-    email: string,
-    nic: string
-  ) {
+  checkUserDataExist(role: number, userId: string, email: string, nic: string) {
     return this.dataAccess
       .GET(
         this.resource.user.validateUser +
-          `?userName=${userName}&id=${userId}&email=${email}&nic=${nic}`
+          `?role=${role}&id=${userId}&email=${email}&nic=${nic}`
       )
       .pipe((response) => {
         return response;
@@ -83,9 +78,9 @@ export class UserService {
       });
   }
 
-  GetAllUsersByRole(roleId: number) {
+  GetUserProfile() {
     return this.dataAccess
-      .GET(this.resource.user.getUsersByRole + `/${roleId}`)
+      .GET(this.resource.user.userProfile)
       .pipe((response) => {
         return response;
       });

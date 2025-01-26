@@ -163,6 +163,7 @@
           <a
             pRipple
             class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+            (click)="onClickProfile()"
           >
             <i class="pi pi-user mr-2"></i>
             <span class="font-medium">Profile</span>
@@ -181,6 +182,7 @@
           <a
             pRipple
             class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+            (click)="onClickLogout()"
           >
             <i class="pi pi-sign-out mr-2"></i>
             <span class="font-medium">Sign Out</span>
@@ -197,12 +199,12 @@
         leaveActiveClass="slideup"
       >
         <p-avatar
-          image="assets/images/user/avatar-f-2.png"
+          image="{{ logInUser?.profileImageUrl }}"
           styleClass="mr-2"
           shape="circle"
         />
 
-        <span class="font-medium">Amy Elsner</span>
+        <span class="font-medium">{{ logInUser?.name }}</span>
         <i class="pi pi-chevron-up ml-auto"></i>
       </a>
     </div>

@@ -10,21 +10,30 @@
         </div>
 
         <div class="field col-12 md:col-4">
-          <label for="bankName" class="required">Bank Name</label>
+          <label for="bankName">Bank Name</label>
 
           <p-dropdown
             id="bankName"
             [options]="bankArr"
             optionLabel="name"
-            optionValue="id"
             formControlName="bankName"
             appendTo="body"
             [autoOptionFocus]="false"
             [filter]="true"
+            [showClear]="true"
+            [resetFilterOnHide]="true"
+            (onChange)="onBankChange($event)"
+            (onClear)="onBankClear()"
           ></p-dropdown>
         </div>
         <div class="field col-12 md:col-4">
-          <label for="branchName" class="required">Branch Name</label>
+          <label
+            for="branchName"
+            [ngClass]="{
+              required: isBankSelected
+            }"
+            >Branch Name</label
+          >
           <input
             id="branchName"
             pInputText
@@ -36,7 +45,13 @@
           />
         </div>
         <div class="field col-12 md:col-4">
-          <label for="accNumber" class="required">Account Number</label>
+          <label
+            for="accNumber"
+            [ngClass]="{
+              required: isBankSelected
+            }"
+            >Account Number</label
+          >
           <input
             id="accNumber"
             pInputText
@@ -47,7 +62,11 @@
           />
         </div>
         <div class="field col-12 md:col-4">
-          <label for="accHolderName" class="required"
+          <label
+            for="accHolderName"
+            [ngClass]="{
+              required: isBankSelected
+            }"
             >Account Holder Name</label
           >
           <input
@@ -61,7 +80,10 @@
           />
         </div>
 
-        <div class="field mb-3 col-12 md:col-12">
+        <div
+          class="field mb-3 col-12 md:col-12"
+          *ngIf="(isView && BankBookImageUrl) || isEdit || !isView"
+        >
           <label for="postalCode" class="font-medium text-900">Bank Book</label>
           <div class="flex gap-4">
             <div
@@ -84,6 +106,7 @@
 
             <div
               class="flex flex-column gap-2 align-items-center justify-content-center"
+              *ngIf="!isView"
             >
               <button
                 pButton
@@ -92,6 +115,7 @@
                 label="Remove Image"
                 icon="pi pi-times"
                 class="p-button-danger p-button-outlined"
+                (click)="removeImage(WellKnownUploadType.BankBook)"
               ></button>
               <button
                 pButton
@@ -99,6 +123,7 @@
                 label="Upload Image"
                 icon="pi pi-camera"
                 class="p-button-primary p-button-outlined"
+                (click)="openUploadDialog(WellKnownUploadType.BankBook)"
               ></button>
             </div>
           </div>

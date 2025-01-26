@@ -59,6 +59,7 @@ export class InactiveLoginComponent implements OnInit {
         if (response.IsSuccessful) {
           this.messageService.showSuccessAlert(response.Message);
           this.masterDataService.SessionKey = response.Result;
+          this.ref.close(true);
         } else {
           this.messageService.showErrorAlert(response.Message);
         }

@@ -36,15 +36,15 @@ export class ResourceService {
   };
 
   user = {
-    validateUser: this.User + "/validateUser",
+    validateUser: this.User + "/validateUser/data",
     saveUser: this.User,
     getAllUsers: this.User,
     getUserById: this.User,
-    blockUser: this.User + "/block",
-    unblockUser: this.User + "/unblock",
-    updateUser: this.User,
-    deleteUser: this.User,
-    getUsersByRole: this.User + "/userByRole",
+    blockUser: this.User + "/blacklist",
+    unblockUser: this.User + "/whitelist",
+    updateUser: this.User + "/update",
+    deleteUser: this.User + "/delete",
+    userProfile: this.User + "/profile",
   };
 
   leave = {
