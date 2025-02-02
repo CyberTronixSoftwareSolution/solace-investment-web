@@ -35,6 +35,7 @@ export class DefaultSideBarComponent implements OnInit {
         icon: "pi pi-gauge",
         routerLink: "/dashboard",
         isVisible: this.checkUserAuthorizedToAccess([AppModule.Dashboard]),
+        isSumMenu: false,
       },
       {
         menuId: 2,
@@ -46,6 +47,7 @@ export class DefaultSideBarComponent implements OnInit {
         icon: "pi pi-users",
         routerLink: "/user",
         isVisible: this.checkUserAuthorizedToAccess([AppModule.UserManagement]),
+        isSumMenu: false,
       },
 
       {
@@ -55,6 +57,7 @@ export class DefaultSideBarComponent implements OnInit {
         icon: "pi pi-money-bill",
         routerLink: "/user",
         isVisible: true,
+        isSumMenu: false,
       },
       {
         menuId: 4,
@@ -63,6 +66,7 @@ export class DefaultSideBarComponent implements OnInit {
         icon: "pi pi-wallet",
         routerLink: "/user",
         isVisible: true,
+        isSumMenu: false,
       },
 
       {
@@ -72,8 +76,8 @@ export class DefaultSideBarComponent implements OnInit {
         icon: "pi pi-receipt",
         routerLink: "/user",
         isVisible: true,
+        isSumMenu: false,
       },
-
       {
         menuId: 6,
         label: "Reports",
@@ -81,6 +85,36 @@ export class DefaultSideBarComponent implements OnInit {
         icon: "pi pi-file-o",
         routerLink: "/user",
         isVisible: true,
+        isSumMenu: false,
+      },
+      {
+        menuId: 7,
+        label: "System Configuration",
+        labelForRoute: "report",
+        icon: "pi pi-cog",
+        routerLink: "/user",
+        isVisible: true,
+        isSumMenu: true,
+        subMenu: [
+          {
+            menuId: 61,
+            label: "User Management",
+            labelForRoute: "User",
+            icon: "pi pi-users",
+            routerLink: "/user",
+            isVisible: true,
+            isSumMenu: false,
+          },
+          {
+            menuId: 62,
+            label: "Role Management",
+            labelForRoute: "Role",
+            icon: "pi pi-users",
+            routerLink: "/user",
+            isVisible: true,
+            isSumMenu: false,
+          },
+        ],
       },
     ];
 

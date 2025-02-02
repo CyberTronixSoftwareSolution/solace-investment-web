@@ -17,7 +17,7 @@
     <div class="overflow-y-auto mt-3">
       <ul class="list-none p-3 m-0">
         <ng-container *ngFor="let menuItem of DynamicItems">
-          <li class="mb-1" *ngIf="menuItem.isVisible">
+          <li class="mb-1" *ngIf="menuItem.isVisible && !menuItem.isSumMenu">
             <a
               pRipple
               (click)="
@@ -36,122 +36,38 @@
               <span class="font-medium">{{ menuItem?.label }}</span>
             </a>
           </li>
-        </ng-container>
-        <!--     <li>
-          <a
-            pRipple
-            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
-          >
-            <i class="pi pi-bookmark mr-2"></i>
-            <span class="font-medium">Bookmarks</span>
-          </a>
-        </li>
-      <li>
-          <a
-            pRipple
-            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
-            pStyleClass="@next"
-            enterClass="hidden"
-            enterActiveClass="slidedown"
-            leaveToClass="hidden"
-            leaveActiveClass="slideup"
-          >
-            <i class="pi pi-chart-line mr-2"></i>
-            <span class="font-medium">Reports</span>
-            <i class="pi pi-chevron-down ml-auto"></i>
-          </a>
-          <ul
-            class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out"
-          >
-            <li>
-              <a
-                pRipple
-                class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
-                pStyleClass="@next"
-                enterClass="hidden"
-                enterActiveClass="slidedown"
-                leaveToClass="hidden"
-                leaveActiveClass="slideup"
-              >
-                <i class="pi pi-chart-line mr-2"></i>
-                <span class="font-medium">Revenue</span>
-                <i class="pi pi-chevron-down ml-auto"></i>
-              </a>
-              <ul
-                class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out"
-              >
-                <li>
-                  <a
-                    pRipple
-                    class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
-                  >
-                    <i class="pi pi-table mr-2"></i>
-                    <span class="font-medium">View</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    pRipple
-                    class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
-                  >
-                    <i class="pi pi-search mr-2"></i>
-                    <span class="font-medium">Search</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a
-                pRipple
-                class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
-              >
-                <i class="pi pi-chart-line mr-2"></i>
-                <span class="font-medium">Expenses</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a
-            pRipple
-            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
-          >
-            <i class="pi pi-users mr-2"></i>
-            <span class="font-medium">Team</span>
-          </a>
-        </li>
-        <li>
-          <a
-            pRipple
-            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
-          >
-            <i class="pi pi-comments mr-2"></i>
-            <span class="font-medium">Messages</span>
-            <span
-              class="inline-flex align-items-center justify-content-center ml-auto bg-yellow-500 text-bluegray-900 border-circle"
-              style="min-width: 1.5rem; height: 1.5rem"
-              >3</span
+
+          <li *ngIf="menuItem.isVisible && menuItem.isSumMenu">
+            <a
+              pRipple
+              class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+              pStyleClass="@next"
+              enterClass="hidden"
+              enterActiveClass="slidedown"
+              leaveToClass="hidden"
+              leaveActiveClass="slideup"
             >
-          </a>
-        </li>
-        <li>
-          <a
-            pRipple
-            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
-          >
-            <i class="pi pi-calendar mr-2"></i>
-            <span class="font-medium">Calendar</span>
-          </a>
-        </li>
-        <li>
-          <a
-            pRipple
-            class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
-          >
-            <i class="pi pi-cog mr-2"></i>
-            <span class="font-medium">Settings</span>
-          </a>
-        </li> -->
+              <i class="pi {{ menuItem?.icon }} mr-2"></i>
+              <span class="font-medium">{{ menuItem?.label }}</span>
+              <i class="pi pi-chevron-down ml-auto"></i>
+            </a>
+            <ul
+              class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out"
+            >
+              <ng-container *ngFor="let submenu of menuItem.subMenu">
+                <li>
+                  <a
+                    pRipple
+                    class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+                  >
+                    <i class="pi {{ submenu?.icon }} mr-2"></i>
+                    <span class="font-medium">{{ submenu?.label }}</span>
+                  </a>
+                </li></ng-container
+              >
+            </ul>
+          </li>
+        </ng-container>
       </ul>
     </div>
     <div class="mt-auto">

@@ -150,7 +150,13 @@ export class PersonalDetailsComponent implements OnInit {
     this.FV.setValue("initials", this.userDetail.initial);
     this.FV.setValue("firstName", this.userDetail.firstName);
     this.FV.setValue("lastName", this.userDetail.lastName);
-    this.FV.setValue("dateOfBirth", new Date(this.userDetail.dateOfBirth));
+    if (
+      this.userDetail.dateOfBirth != null &&
+      this.userDetail.dateOfBirth != undefined &&
+      this.userDetail.dateOfBirth != ""
+    ) {
+      this.FV.setValue("dateOfBirth", new Date(this.userDetail.dateOfBirth));
+    }
     this.FV.setValue("age", this.userDetail.age);
     this.FV.setValue("occupation", this.userDetail.occupation);
     if (this.userDetail.role) {
@@ -324,48 +330,125 @@ export class PersonalDetailsComponent implements OnInit {
   }
 
   validateAndShowNicDetails() {
+    debugger;
     let nicNumber = this.FV.getValue("nicNumber").trim();
+    var dayText = 0;
+    var year = "";
+    var month = "";
+    var day = 0;
+    var gender = "";
 
     if (
-      nicNumber.length === 10 &&
-      (nicNumber.charAt(9) === "V" || nicNumber.charAt(9) === "X") &&
-      !isNaN(Number(...nicNumber.slice(0, 9)))
+      (nicNumber.length === 10 &&
+        (nicNumber.charAt(9) === "V" || nicNumber.charAt(9) === "X") &&
+        !isNaN(Number(...nicNumber.slice(0, 9)))) ||
+      (nicNumber.length === 12 && !isNaN(Number(nicNumber)))
     ) {
-      debugger;
-      let year = Number(nicNumber.slice(0, 2));
-      let days = Number(nicNumber.slice(2, 5));
-
-      year = year > 0 && year < 22 ? 2000 + year : 1900 + year;
-
-      let gender = days > 500 ? 2 : 1;
-      if (days > 500) {
-        days -= 500;
+      if (nicNumber.length == 10) {
+        year = "19" + nicNumber.substr(0, 2);
+        dayText = parseInt(nicNumber.substr(2, 3));
+      } else {
+        year = nicNumber.substr(0, 4);
+        dayText = parseInt(nicNumber.substr(4, 3));
       }
 
-      let dob = this.getBirthDate(year, days);
-      let age = this.calculateAge(dob);
-
-      this.FV.setValue("dateOfBirth", new Date(dob));
-      this.FV.setValue("age", age);
-      this.FV.setValue("gender", gender);
-    } else if (nicNumber.length === 12 && !isNaN(Number(nicNumber))) {
-      let year = Number(nicNumber.slice(0, 4));
-      let days = Number(nicNumber.slice(4, 7));
-
-      let gender = days > 500 ? 2 : 1;
-      if (days > 500) {
-        days -= 500;
+      if (dayText > 500) {
+        gender = "Female";
+        dayText = dayText - 500;
+      } else {
+        gender = "Male";
       }
 
-      let dob = this.getBirthDate(year, days);
-      let age = this.calculateAge(dob);
+      //Month
+      if (dayText > 335) {
+        day = dayText - 335;
+        month = "December";
+      } else if (dayText > 305) {
+        day = dayText - 305;
+        month = "November";
+      } else if (dayText > 274) {
+        day = dayText - 274;
+        month = "October";
+      } else if (dayText > 244) {
+        day = dayText - 244;
+        month = "September";
+      } else if (dayText > 213) {
+        day = dayText - 213;
+        month = "Auguest";
+      } else if (dayText > 182) {
+        day = dayText - 182;
+        month = "July";
+      } else if (dayText > 152) {
+        day = dayText - 152;
+        month = "June";
+      } else if (dayText > 121) {
+        day = dayText - 121;
+        month = "May";
+      } else if (dayText > 91) {
+        day = dayText - 91;
+        month = "April";
+      } else if (dayText > 60) {
+        day = dayText - 60;
+        month = "March";
+      } else if (dayText < 32) {
+        month = "January";
+        day = dayText;
+      } else if (dayText > 31) {
+        day = dayText - 31;
+        month = "Febuary";
+      }
 
-      let selectedGender = this.genderArr.find((x) => x.id === gender);
+      this.FV.setValue("dateOfBirth", new Date(year + "-" + month + "-" + day));
 
-      this.FV.setValue("dateOfBirth", new Date(dob));
+      let age = this.calculateAge(year + "-" + month + "-" + day);
+
       this.FV.setValue("age", age);
+      let selectedGender = this.genderArr.find(
+        (x) => x.id === (gender == "Female" ? 2 : 1)
+      );
       this.FV.setValue("gender", selectedGender);
     }
+
+    // if (
+    //   nicNumber.length === 10 &&
+    //   (nicNumber.charAt(9) === "V" || nicNumber.charAt(9) === "X") &&
+    //   !isNaN(Number(...nicNumber.slice(0, 9)))
+    // ) {
+    //   debugger;
+    //   let year = Number(nicNumber.slice(0, 2));
+    //   let days = Number(nicNumber.slice(2, 5));
+
+    //   year = year > 0 && year < 22 ? 2000 + year : 1900 + year;
+
+    //   let gender = days > 500 ? 2 : 1;
+    //   if (days > 500) {
+    //     days -= 500;
+    //   }
+
+    //   let dob = this.getBirthDate(year, days);
+    //   let age = this.calculateAge(dob);
+
+    //   this.FV.setValue("dateOfBirth", new Date(dob));
+    //   this.FV.setValue("age", age);
+    //   this.FV.setValue("gender", gender);
+    // } else if (nicNumber.length === 12 && !isNaN(Number(nicNumber))) {
+    //   let year = Number(nicNumber.slice(0, 4));
+    //   let days = Number(nicNumber.slice(4, 7));
+
+    //   let gender = days > 500 ? 2 : 1;
+    //   if (days > 500) {
+    //     days -= 500;
+    //   }
+
+    //   let dob = this.getBirthDate(year, days);
+    //   let age = this.calculateAge(dob);
+
+    //   let selectedGender = this.genderArr.find((x) => x.id === gender);
+
+    //   this.FV.setValue("dateOfBirth", new Date(dob));
+    //   this.FV.setValue("age", age);
+    //   this.FV.setValue("gender", selectedGender);
+    // }
   }
 
   getBirthDate(year: number, days: number): string {
