@@ -55,6 +55,10 @@ export class AddProductFormComponent implements OnInit {
       { field: "rate", header: "Rate" },
       { field: "amount", header: "Amount" },
     ];
+
+    if (this.isEdit || this.isView) {
+      this.setValue();
+    }
   }
 
   createForm() {
@@ -76,6 +80,30 @@ export class AddProductFormComponent implements OnInit {
       deductionChargeRate: ["", [Validators.required]],
       deductionChargeIsPercentage: [true],
     });
+  }
+
+  setValue() {
+    this.FV.setValue("productName", this.productInfo?.productName);
+    this.FV.setValue("productCode", this.productInfo?.productCode);
+    this.FV.setValue("isPercentage", this.productInfo?.isPercentage);
+    this.FV.setValue("rate", this.productInfo?.rate);
+    this.FV.setValue("amount", this.productInfo?.amount);
+    this.FV.setValue("maxAmount", this.productInfo?.maxAmount);
+    this.FV.setValue("minAmount", this.productInfo?.minAmount);
+    this.FV.setValue("termsCount", this.productInfo?.termsCount);
+    this.FV.setValue("rateAmount", this.productInfo?.rateAmount);
+    this.FV.setValue("type", this.productInfo?.type);
+    this.FV.setValue(
+      "isOpenDeductionCharges",
+      this.productInfo?.isOpenDeductionCharges
+    );
+    if (!this.productInfo?.isOpenDeductionCharges) {
+      this.deductionCharges = this.productInfo?.deductionCharges;
+    }
+
+    if (this.isView) {
+      this.FV.disableFormControlls();
+    }
   }
 
   ngAfterContentChecked(): void {
@@ -170,6 +198,7 @@ export class AddProductFormComponent implements OnInit {
   }
 
   onSave() {
+    debugger;
     let validateParams =
       "productName,productCode,isPercentage,rate,amount,maxAmount,minAmount,termsCount,rateAmount,type";
 

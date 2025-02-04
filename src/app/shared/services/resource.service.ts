@@ -51,6 +51,6 @@ export class ResourceService {
     deleteProduct: this.Product + "/delete",
     getAllProducts: this.Product,
     activeInactiveProduct: this.Product + "/activeInactive",
-    getProductById: this.Product + "/:id",
+    getProductById: this.Product,
   };
 }

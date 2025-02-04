@@ -6,6 +6,7 @@ import { AppMessageService } from "src/app/shared/services/app-message.service";
 import { ExcelService } from "src/app/shared/services/excel.service";
 import { MasterDataService } from "src/app/shared/services/master-data.service";
 import { AddProductFormComponent } from "./add-product-form/add-product-form.component";
+import { firstValueFrom } from "rxjs";
 
 @Component({
   selector: "app-product-management",
@@ -61,7 +62,11 @@ export class ProductManagementComponent implements OnInit {
         width: "50vw",
         data: data,
       })
-      .subscribe((res) => {});
+      .subscribe((res) => {
+        if (res) {
+          this.getAllProducts();
+        }
+      });
   }
 
   onStatusChange(rowData: any) {
@@ -118,7 +123,65 @@ export class ProductManagementComponent implements OnInit {
     );
   }
 
-  onEdit(rowData: any) {}
+  async onEdit(rowData: any) {
+    try {
+      let data = {
+        isAdd: false,
+        isEdit: true,
+        isView: false,
+        productInfo: null,
+      };
+
+      const productResult = await firstValueFrom(
+        this.productService.GetProductById(rowData._id)
+      );
+
+      if (productResult.IsSuccessful) {
+        data.productInfo = productResult.Result;
+      }
+
+      this.popupService
+        .OpenModel(AddProductFormComponent, {
+          header: "EDIT PRODUCT",
+          width: "50vw",
+          data: data,
+        })
+        .subscribe((res) => {
+          if (res) {
+            this.getAllProducts();
+          }
+        });
+    } catch (error) {
+      this.messageService.showErrorAlert(error?.message || error);
+    }
+  }
+
+  async onView(rowData: any) {
+    try {
+      let data = {
+        isAdd: false,
+        isEdit: false,
+        isView: true,
+        productInfo: null,
+      };
+
+      const productResult = await firstValueFrom(
+        this.productService.GetProductById(rowData._id)
+      );
+
+      if (productResult.IsSuccessful) {
+        data.productInfo = productResult.Result;
+      }
+
+      this.popupService.OpenModel(AddProductFormComponent, {
+        header: "VIEW PRODUCT",
+        width: "50vw",
+        data: data,
+      });
+    } catch (error) {
+      this.messageService.showErrorAlert(error?.message || error);
+    }
+  }
 
   exportToExcel() {
     let cols = [

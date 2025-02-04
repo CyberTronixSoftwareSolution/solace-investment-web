@@ -40,7 +40,59 @@
           <li *ngIf="menuItem.isVisible && menuItem.isSumMenu">
             <a
               pRipple
-              class="flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors"
+              [ngClass]="
+                isMainMenuId === menuItem.menuId
+                  ? 'flex align-items-center cursor-pointer p-3 bg-bluegray-900 border-round text-bluegray-50 transition-duration-150 transition-colors'
+                  : 'flex align-items-center cursor-pointer p-3 border-round text-bluegray-100 transition-duration-150 transition-colors hover:bg-bluegray-700 hover:text-bluegray-50'
+              "
+              pStyleClass="@next"
+              enterClass="hidden"
+              enterActiveClass="slidedown"
+              leaveToClass="hidden"
+              leaveActiveClass="slideup"
+            >
+              <i class="pi {{ menuItem?.icon }} mr-2"></i>
+              <span class="font-medium">{{ menuItem?.label }}</span>
+              <i class="pi pi-chevron-down ml-auto"></i>
+            </a>
+            <ul
+              class="list-none py-0 pl-3 pr-0 m-0"
+              [ngClass]="{
+                hidden: isMainMenuId !== menuItem.menuId,
+                'overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out': true
+              }"
+            >
+              <ng-container *ngFor="let submenu of menuItem.subMenu">
+                <li>
+                  <a
+                    pRipple
+                    [ngClass]="
+                      activeTab === submenu.menuId
+                        ? 'bg-bluegray-900 border-gray-600 border-left-3 flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 mt-1'
+                        : 'flex align-items-center cursor-pointer p-3 hover:bg-bluegray-900 border-round text-bluegray-100 hover:text-bluegray-50 transition-duration-150 transition-colors'
+                    "
+                    (click)="
+                      submenu?.command
+                        ? submenu?.command($event)
+                        : moveToRouter(submenu?.routerLink)
+                    "
+                  >
+                    <i class="pi {{ submenu?.icon }} mr-2"></i>
+                    <span class="font-medium">{{ submenu?.label }}</span>
+                  </a>
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+
+          <!-- <li *ngIf="menuItem.isVisible && menuItem.isSumMenu">
+            <a
+              pRipple
+              [ngClass]="
+                isMainMenuId === menuItem.menuId
+                  ? 'flex align-items-center cursor-pointer p-3 bg-bluegray-900 border-round text-bluegray-50 transition-duration-150 transition-colors'
+                  : 'flex align-items-center cursor-pointer p-3  border-round text-bluegray-100 transition-duration-150 transition-colors'
+              "
               pStyleClass="@next"
               enterClass="hidden"
               enterActiveClass="slidedown"
@@ -75,7 +127,7 @@
                 </li></ng-container
               >
             </ul>
-          </li>
+          </li> -->
         </ng-container>
       </ul>
     </div>

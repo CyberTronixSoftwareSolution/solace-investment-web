@@ -146,6 +146,15 @@
       </td>
       <td class="text-center">
         <div class="flex justify-content-center flex-wrap gap-1">
+          <!-- View Button -->
+          <p-button
+            icon="pi pi-eye"
+            pTooltip="View"
+            tooltipPosition="right"
+            styleClass="p-button-secondary"
+            (onClick)="onView(rowData)"
+          ></p-button>
+
           <!-- Edit Button -->
           <p-button
             icon="pi pi-pencil"
