@@ -1,0 +1,334 @@
+<form
+  [formGroup]="FV.formGroup"
+  novalidate
+  (keydown.enter)="$event.preventDefault()"
+>
+  <div class="grid formgrid p-fluid">
+    <div class="field mb-3 col-12 md:col-3">
+      <label for="productCode" class="required">Product Code</label>
+      <input
+        id="productCode"
+        pInputText
+        type="text"
+        formControlName="productCode"
+        maxlength="20"
+      />
+    </div>
+
+    <div class="field mb-3 col-12 md:col-5">
+      <label for="productName" class="required">Product Name</label>
+
+      <input
+        id="productName"
+        pInputText
+        type="text"
+        class="w-full"
+        formControlName="productName"
+        maxlength="200"
+      />
+    </div>
+
+    <div class="field mb-3 col-12 md:col-4">
+      <label for="type" class="required">Type</label>
+
+      <p-dropdown
+        id="type"
+        [options]="typeArr"
+        optionLabel="label"
+        optionValue="value"
+        formControlName="type"
+        appendTo="body"
+        [autoOptionFocus]="false"
+      ></p-dropdown>
+    </div>
+
+    <div class="field mb-3 col-12 md:col-3">
+      <!-- Amount -->
+      <label for="Amount" class="required">Amount</label>
+      <p-inputNumber
+        id="Amount"
+        formControlName="amount"
+        mode="decimal"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+      ></p-inputNumber>
+    </div>
+    <div class="field mb-3 col-12 md:col-3">
+      <label for="minAmount" class="required">Min Amount</label>
+      <p-inputNumber
+        id="minAmount"
+        formControlName="minAmount"
+        mode="decimal"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+      ></p-inputNumber>
+    </div>
+    <div class="field mb-3 col-12 md:col-3">
+      <label for="maxAmount" class="required"> Max Amount</label>
+      <p-inputNumber
+        id="maxAmount"
+        formControlName="maxAmount"
+        mode="decimal"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+      ></p-inputNumber>
+    </div>
+    <div class="field mb-3 col-12 md:col-3">
+      <label for="termsCount" class="required">Terms</label>
+      <p-inputNumber
+        id="termsCount"
+        formControlName="termsCount"
+        [showButtons]="true"
+        [min]="1"
+        [max]="200"
+      ></p-inputNumber>
+    </div>
+
+    <div class="field mb-3 col-12 md:col-4">
+      <label for="interestRate" class="required">Interest Rate</label>
+      <p-inputGroup>
+        <p-inputGroupAddon
+          ><p-checkbox
+            [binary]="true"
+            formControlName="isPercentage"
+            pTooltip="Percentage"
+            tooltipPosition="bottom"
+        /></p-inputGroupAddon>
+        <p-inputGroupAddon *ngIf="!FV.formGroup.get('isPercentage')?.value"
+          >LKR</p-inputGroupAddon
+        >
+
+        <p-inputNumber
+          id="rate"
+          formControlName="rate"
+          mode="decimal"
+          [minFractionDigits]="2"
+          [maxFractionDigits]="2"
+          [min]="0"
+          [max]="FV.formGroup.get('isPercentage')?.value ? 100 : 9999999.99"
+        ></p-inputNumber>
+
+        <p-inputGroupAddon *ngIf="FV.formGroup.get('isPercentage')?.value"
+          >%</p-inputGroupAddon
+        >
+      </p-inputGroup>
+    </div>
+
+    <div
+      class="field mb-3 col-12 md:col-3"
+      *ngIf="FV.formGroup.get('isPercentage')?.value"
+    >
+      <label for="penalty">Calculated Rate</label>
+      <p-inputNumber
+        id="penalty"
+        formControlName="rateAmount"
+        mode="decimal"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        [readonly]="true"
+      ></p-inputNumber>
+    </div>
+
+    <div class="field mb-3 col-12 md:col-4 flex align-items-end">
+      <p-checkbox
+        formControlName="isOpenDeductionCharges"
+        label="Open Deduction Charges"
+        [binary]="true"
+      ></p-checkbox>
+    </div>
+
+    <ng-container *ngIf="!FV.formGroup.get('isOpenDeductionCharges')?.value">
+      <div class="field col-12 mt-3 mb-3">
+        <span class="text-base text-black-alpha-90 font-semibold"
+          >DEDUCTION CHARGES</span
+        >
+      </div>
+
+      <div class="field col-12 md:col-12">
+        <p-table
+          #dt
+          styleClass=""
+          [columns]="chargeCols"
+          [value]="deductionCharges"
+          responsiveLayout="stack"
+          [breakpoint]="'960px'"
+          dataKey="_id"
+          [responsive]="true"
+          styleClass="p-datatable-gridlines"
+          [rowHover]="true"
+          [rowHover]="true"
+        >
+          <!-- Caption -->
+          <ng-template pTemplate="caption" *ngIf="!isView">
+            <div class="grid formgrid">
+              <div class="field col-6 md:col-6">
+                <label
+                  for="deductionChargeName"
+                  class="text-base font-normal required"
+                  >Charge Name</label
+                >
+                <input
+                  id="deductionChargeName"
+                  pInputText
+                  type="text"
+                  class="w-full"
+                  formControlName="deductionChargeName"
+                  maxlength="200"
+                />
+              </div>
+              <div class="field col-6 md:col-6">
+                <label for="line2" class="text-base font-normal required"
+                  >Rate</label
+                >
+
+                <div class="flex gap-3">
+                  <p-inputGroup>
+                    <p-inputGroupAddon
+                      ><p-checkbox
+                        [binary]="true"
+                        formControlName="deductionChargeIsPercentage"
+                        pTooltip="Percentage"
+                        tooltipPosition="bottom"
+                    /></p-inputGroupAddon>
+                    <p-inputGroupAddon
+                      *ngIf="
+                        !FV.formGroup.get('deductionChargeIsPercentage')?.value
+                      "
+                      ><span class="font-normal">LKR</span></p-inputGroupAddon
+                    >
+
+                    <p-inputNumber
+                      id="rate"
+                      formControlName="deductionChargeRate"
+                      mode="decimal"
+                      [minFractionDigits]="2"
+                      [maxFractionDigits]="2"
+                      [min]="0"
+                      [max]="
+                        FV.formGroup.get('deductionChargeIsPercentage')?.value
+                          ? 100
+                          : 9999999.99
+                      "
+                    ></p-inputNumber>
+
+                    <p-inputGroupAddon
+                      *ngIf="
+                        FV.formGroup.get('deductionChargeIsPercentage')?.value
+                      "
+                      ><span class="font-normal">%</span></p-inputGroupAddon
+                    >
+                  </p-inputGroup>
+                  <p-button
+                    icon="pi pi-plus"
+                    pTooltip="Add"
+                    tooltipPosition="bottom"
+                    (onClick)="addDeductionCharge()"
+                  ></p-button>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th
+                *ngFor="let col of columns"
+                [ngClass]="{
+                  'text-right': col.field === 'amount' || col.field === 'rate',
+                }"
+              >
+                {{ col.header }}
+              </th>
+              <th class="text-center" *ngIf="!isView">Action</th>
+            </tr>
+          </ng-template>
+
+          <ng-template
+            pTemplate="body"
+            let-rowData
+            let-columns="columns"
+            let-rowIndex="rowIndex"
+          >
+            <tr>
+              <td
+                *ngFor="let col of columns"
+                [ngClass]="{
+                  'bg-blue': rowIndex % 2 !== 0,
+                  'text-right': col.field === 'amount' || col.field === 'rate',
+                }"
+              >
+                <ng-container *ngIf="col.field === 'amount'">
+                  <span class="p-column-title font-bold">{{ col.header }}</span
+                  >{{ (rowData[col.field] | currency : "" : "") || "-" }}
+                </ng-container>
+
+                <ng-container *ngIf="col.field === 'rate'">
+                  <span class="p-column-title font-bold">{{ col.header }}</span
+                  >{{
+                    rowData.isPercentage
+                      ? (rowData[col.field] | currency : "" : "") + "%"
+                      : (rowData[col.field] | currency : "" : "") || "-"
+                  }}
+                </ng-container>
+
+                <ng-container
+                  *ngIf="col.field != 'amount' && col.field != 'rate'"
+                >
+                  <span class="p-column-title font-bold">{{ col.header }}</span
+                  >{{ rowData[col.field] || "-" }}
+                </ng-container>
+              </td>
+              <td
+                class="text-center"
+                [ngClass]="{ 'bg-blue': rowIndex % 2 !== 0, }"
+                *ngIf="!isView"
+              >
+                <p-button
+                  icon="pi pi-trash"
+                  pTooltip="Delete"
+                  tooltipPosition="right"
+                  styleClass="p-button-danger p-button-outlined"
+                  (onClick)="onDeleteDeductionCharge(rowData)"
+                ></p-button>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td [attr.colspan]="columns.length + 2">
+                <div
+                  class="flex flex-column justify-content-center align-items-center gap-2"
+                  style="height: 100px; width: 100%"
+                >
+                  <i class="pi pi-inbox text-5xl text-gray-400"></i>
+                  <small class="">No Address Found</small>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </ng-container>
+  </div>
+</form>
+
+<div class="grid formgrid">
+  <div class="field mt-1 col-12">
+    <div class="flex justify-content-end gap-2">
+      <button
+        pButton
+        label="SAVE"
+        icon="pi pi-check-circle"
+        class="p-button-primary p-button-sm mb:p-button"
+        (click)="onSave()"
+      ></button>
+      <button
+        pButton
+        label="Cancel"
+        icon="pi pi-times"
+        class="p-button-secondary p-button-sm mb:p-button"
+        (click)="onCancel()"
+      ></button>
+    </div>
+  </div>
+</div>

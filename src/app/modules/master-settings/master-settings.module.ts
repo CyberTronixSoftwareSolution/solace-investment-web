@@ -32,14 +32,17 @@ import { InputIconModule } from "primeng/inputicon";
 import { ImageModule } from "primeng/image";
 import { InputMaskModule } from "primeng/inputmask";
 import { TagModule } from "primeng/tag";
+import { InputGroupModule } from "primeng/inputgroup";
+import { InputGroupAddonModule } from "primeng/inputgroupaddon";
 
 import { MasterSettingsRoutingModule } from "./master-settings-routing.module";
 import { ProductManagementComponent } from "./product-management/product-management.component";
 import { StepsModule } from "primeng/steps";
 import { ToastModule } from "primeng/toast";
+import { AddProductFormComponent } from "./product-management/add-product-form/add-product-form.component";
 
 @NgModule({
-  declarations: [ProductManagementComponent],
+  declarations: [ProductManagementComponent, AddProductFormComponent],
   imports: [
     CommonModule,
     MasterSettingsRoutingModule,
@@ -78,6 +81,8 @@ import { ToastModule } from "primeng/toast";
     ImageModule,
     InputMaskModule,
     TagModule,
+    InputGroupModule,
+    InputGroupAddonModule,
   ],
 })
 export class MasterSettingsModule {}
