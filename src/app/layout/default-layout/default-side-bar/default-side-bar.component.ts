@@ -15,6 +15,7 @@ export class DefaultSideBarComponent implements OnInit {
   activeTab: number = -1;
   moduleIds: number[] = [];
   logInUser: any;
+  isMainMenuId: number = -1;
   constructor(
     private router: Router,
     private masterDataService: MasterDataService,
@@ -25,7 +26,6 @@ export class DefaultSideBarComponent implements OnInit {
     this.moduleIds = this.masterDataService.MenuList;
     this.logInUser = this.masterDataService.User;
     let role = this.masterDataService.Role;
-    let module = this.router.url.split("/")[1];
 
     this.DynamicItems = [
       {
@@ -43,7 +43,6 @@ export class DefaultSideBarComponent implements OnInit {
           role == WellKnownUserRole.SUPERADMIN
             ? "User Management"
             : "Customer Management",
-        labelForRoute: "User",
         icon: "pi pi-users",
         routerLink: "/user",
         isVisible: this.checkUserAuthorizedToAccess([AppModule.UserManagement]),
@@ -51,74 +50,62 @@ export class DefaultSideBarComponent implements OnInit {
       },
 
       {
-        menuId: 3,
+        menuId: 10,
         label: "Loan Management",
-        labelForRoute: "Loan",
         icon: "pi pi-money-bill",
-        routerLink: "/user",
+        routerLink: "/loan",
         isVisible: true,
         isSumMenu: false,
       },
       {
-        menuId: 4,
+        menuId: 11,
         label: "Payment Management",
-        labelForRoute: "Payment",
         icon: "pi pi-wallet",
-        routerLink: "/user",
+        routerLink: "/payment",
         isVisible: true,
         isSumMenu: false,
       },
 
       {
-        menuId: 5,
+        menuId: 12,
         label: "Payroll",
-        labelForRoute: "Payroll",
         icon: "pi pi-receipt",
-        routerLink: "/user",
+        routerLink: "/payroll",
         isVisible: true,
         isSumMenu: false,
       },
       {
-        menuId: 6,
+        menuId: 13,
         label: "Reports",
-        labelForRoute: "report",
         icon: "pi pi-file-o",
-        routerLink: "/user",
+        routerLink: "/report",
         isVisible: true,
         isSumMenu: false,
       },
       {
-        menuId: 7,
+        menuId: 3,
         label: "System Configuration",
-        labelForRoute: "report",
         icon: "pi pi-cog",
-        routerLink: "/user",
-        isVisible: true,
+        isVisible: this.checkUserAuthorizedToAccess([
+          AppModule.SystemConfiguration,
+        ]),
         isSumMenu: true,
         subMenu: [
           {
-            menuId: 61,
-            label: "User Management",
-            labelForRoute: "User",
-            icon: "pi pi-users",
-            routerLink: "/user",
-            isVisible: true,
-            isSumMenu: false,
-          },
-          {
-            menuId: 62,
-            label: "Role Management",
-            labelForRoute: "Role",
-            icon: "pi pi-users",
-            routerLink: "/user",
-            isVisible: true,
+            menuId: 4,
+            label: "Product Management",
+            icon: "pi pi-sitemap",
+            routerLink: "/master-settings/product-management",
+            isVisible: this.checkUserAuthorizedToAccess([
+              AppModule.ProductManagement,
+            ]),
             isSumMenu: false,
           },
         ],
       },
     ];
 
-    this.ModuleActivate(module);
+    this.ModuleActivate(this.router.url);
   }
 
   checkUserAuthorizedToAccess(moduleIds: number[]): boolean {
@@ -133,16 +120,26 @@ export class DefaultSideBarComponent implements OnInit {
   }
 
   moveToRouter(routerLink: string) {
-    debugger;
+    this.ModuleActivate(routerLink);
     this.router.navigate([routerLink]);
   }
 
   ModuleActivate(routeModule: any) {
+    this.activeTab = -1;
+    this.isMainMenuId = -1;
+    debugger;
     this.DynamicItems.forEach((element: any) => {
-      if (
-        element.labelForRoute.toLowerCase().replace(/\s+/g, "-") == routeModule
-      ) {
-        this.activeTab = element.menuId;
+      if (element?.subMenu?.length > 0) {
+        element.subMenu.forEach((subElement: any) => {
+          if (subElement?.routerLink.toLowerCase() == routeModule) {
+            this.isMainMenuId = element.menuId;
+            this.activeTab = subElement.menuId;
+          }
+        });
+      } else {
+        if (element?.routerLink.toLowerCase() == routeModule) {
+          this.activeTab = element.menuId;
+        }
       }
     });
   }

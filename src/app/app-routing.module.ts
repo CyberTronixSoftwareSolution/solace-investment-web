@@ -24,6 +24,14 @@ const routes: Routes = [
       import("./modules/user/user.module").then((m) => m.UserModule),
     // canActivate: [RouteGuardService],
   },
+  {
+    path: "master-settings",
+    loadChildren: () =>
+      import("./modules/master-settings/master-settings.module").then(
+        (m) => m.MasterSettingsModule
+      ),
+    // canActivate: [RouteGuardService],
+  },
 ];
 
 @NgModule({
