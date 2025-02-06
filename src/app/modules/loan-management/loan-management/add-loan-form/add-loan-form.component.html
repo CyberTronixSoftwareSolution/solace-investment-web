@@ -1,0 +1,13 @@
+<p-steps
+  [model]="items"
+  [(ngModel)]="value"
+  [readonly]="false"
+  [activeIndex]="showingIndex"
+  (activeIndexChange)="handleClick($event)"
+>
+</p-steps>
+
+<app-general-information *ngIf="showingIndex == 0"></app-general-information>
+<app-other-details *ngIf="showingIndex == 1"></app-other-details>
+<app-guarantor-details *ngIf="showingIndex == 2"></app-guarantor-details>
+<app-loan-summary *ngIf="showingIndex == 3"></app-loan-summary>

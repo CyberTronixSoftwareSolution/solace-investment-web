@@ -1,0 +1,184 @@
+<form [formGroup]="FV.formGroup" autocomplete="off">
+  <!-- <div class="card"> -->
+  <div class="grid mt-3 p-4">
+    <div class="col-12">
+      <div class="p-fluid grid formgrid align-items-end">
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >RECOVERY OFFICER DETAILS</span
+          >
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <!-- Recovery Officer -->
+          <label for="recoveryOfficer" class="required">Recovery Officer</label>
+          <p-autoComplete
+            id="recoveryOfficer"
+            field="name"
+            [minLength]="1"
+          ></p-autoComplete>
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <!-- COllection Date -->
+          <label for="collectionDate" class="required">Collection Date</label>
+          <p-dropdown [options]="collectingDatesArr"></p-dropdown>
+        </div>
+
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >LOAN DEDUCTION CHARGES</span
+          >
+        </div>
+
+        <div class="field col-12 md:col-12">
+          <p-table
+            #dt
+            styleClass=""
+            [columns]="chargeCols"
+            [value]="deductionCharges"
+            responsiveLayout="stack"
+            [breakpoint]="'960px'"
+            dataKey="_id"
+            [responsive]="true"
+            styleClass="p-datatable-gridlines"
+            [rowHover]="true"
+            [rowHover]="true"
+          >
+            <!-- Caption -->
+            <ng-template pTemplate="caption">
+              <div class="grid formgrid">
+                <div class="field col-6 md:col-6">
+                  <label
+                    for="deductionChargeName"
+                    class="text-base font-normal required"
+                    >Charge Name</label
+                  >
+                  <input
+                    id="deductionChargeName"
+                    pInputText
+                    type="text"
+                    class="w-full"
+                    maxlength="200"
+                  />
+                </div>
+                <div class="field col-6 md:col-6">
+                  <label for="line2" class="text-base font-normal required"
+                    >Rate</label
+                  >
+
+                  <div class="flex gap-3">
+                    <p-inputNumber
+                      id="rate"
+                      formControlName="deductionChargeRate"
+                      mode="decimal"
+                      [minFractionDigits]="2"
+                      [maxFractionDigits]="2"
+                      [min]="0"
+                    ></p-inputNumber>
+                    <p-button
+                      icon="pi pi-plus"
+                      pTooltip="Add"
+                      tooltipPosition="bottom"
+                    ></p-button>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th
+                  *ngFor="let col of columns"
+                  [ngClass]="{
+                    'text-right': col.field === 'amount' || col.field === 'rate',
+                  }"
+                >
+                  {{ col.header }}
+                </th>
+                <th class="text-center">Action</th>
+              </tr>
+            </ng-template>
+
+            <ng-template
+              pTemplate="body"
+              let-rowData
+              let-columns="columns"
+              let-rowIndex="rowIndex"
+            >
+              <tr>
+                <td
+                  *ngFor="let col of columns"
+                  [ngClass]="{
+                    'bg-blue': rowIndex % 2 !== 0,
+                    'text-right': col.field === 'amount' || col.field === 'rate',
+                  }"
+                >
+                  <ng-container *ngIf="col.field === 'amount'">
+                    <span class="p-column-title font-bold">{{
+                      col.header
+                    }}</span
+                    >{{ (rowData[col.field] | currency : "" : "") || "-" }}
+                  </ng-container>
+
+                  <ng-container *ngIf="col.field === 'rate'">
+                    <span class="p-column-title font-bold">{{
+                      col.header
+                    }}</span
+                    >{{
+                      rowData.isPercentage
+                        ? (rowData[col.field] | currency : "" : "") + "%"
+                        : (rowData[col.field] | currency : "" : "") || "-"
+                    }}
+                  </ng-container>
+
+                  <ng-container
+                    *ngIf="col.field != 'amount' && col.field != 'rate'"
+                  >
+                    <span class="p-column-title font-bold">{{
+                      col.header
+                    }}</span
+                    >{{ rowData[col.field] || "-" }}
+                  </ng-container>
+                </td>
+                <td
+                  class="text-center"
+                  [ngClass]="{ 'bg-blue': rowIndex % 2 !== 0, }"
+                >
+                  <p-button
+                    icon="pi pi-trash"
+                    pTooltip="Delete"
+                    tooltipPosition="right"
+                    styleClass="p-button-danger p-button-outlined"
+                  ></p-button>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="summary">
+              <div class="flex justify-content-end">
+                <span
+                  >Total Deduction Charge Amount :
+                  <span class="font-bold">0.00</span></span
+                >
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="columns.length + 2">
+                  <div
+                    class="flex flex-column justify-content-center align-items-center gap-2"
+                    style="height: 100px; width: 100%"
+                  >
+                    <i class="pi pi-inbox text-5xl text-gray-400"></i>
+                    <small class="">No Deduction Charge Found</small>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

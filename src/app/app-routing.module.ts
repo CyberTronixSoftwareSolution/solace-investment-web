@@ -32,6 +32,14 @@ const routes: Routes = [
       ),
     // canActivate: [RouteGuardService],
   },
+  {
+    path: "loan-management",
+    loadChildren: () =>
+      import("./modules/loan-management/loan-management.module").then(
+        (m) => m.LoanManagementModule
+      ),
+    // canActivate: [RouteGuardService],
+  },
 ];
 
 @NgModule({

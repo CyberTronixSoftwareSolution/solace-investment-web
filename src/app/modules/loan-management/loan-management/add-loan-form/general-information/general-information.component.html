@@ -1,0 +1,200 @@
+<form [formGroup]="FV.formGroup" autocomplete="off">
+  <!-- <div class="card"> -->
+  <div class="grid mt-3 p-4">
+    <div class="col-12">
+      <div class="p-fluid grid formgrid align-items-end">
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >LOAN INFORMATION</span
+          >
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <label for="LoanNo" class="required">Loan No</label>
+          <input id="LoanNo" type="text" pInputText maxlength="20" />
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <label for="transactionDate" class="required">Transaction Date</label>
+          <p-calendar
+            id="transactionDate"
+            [showTime]="false"
+            dateFormat="yy-mm-dd"
+            appendTo="body"
+            [readonlyInput]="true"
+          ></p-calendar>
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <label for="reference" class="required">Reference</label>
+          <input id="reference" type="text" pInputText maxlength="20" />
+        </div>
+
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >BORROWER INFORMATION</span
+          >
+        </div>
+
+        <!-- Borrower
+          Code (Customer Code)
+          NIC 
+          Full Name -->
+
+        <div class="field col-12 md:col-6">
+          <label for="borrower" class="required">Borrower</label>
+          <p-autoComplete
+            id="borrower"
+            field="name"
+            [minLength]="1"
+          ></p-autoComplete>
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <label for="code" class="required">Code</label>
+          <input id="code" type="text" pInputText maxlength="20" />
+        </div>
+        <div class="field col-12 md:col-3">
+          <label for="nic" class="required">NIC</label>
+          <input id="nic" type="text" pInputText maxlength="20" />
+        </div>
+
+        <div class="field col-12">
+          <label for="fullName" class="required">Full Name</label>
+
+          <p-inputGroup>
+            <input id="fullName" type="text" pInputText maxlength="200" />
+
+            <button
+              type="button"
+              pButton
+              icon="pi pi-info-circle"
+              class="p-button-info"
+              pTooltip="Borrower Details"
+              tooltipPosition="bottom"
+            ></button>
+          </p-inputGroup>
+        </div>
+
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >PRODUCT INFORMATION</span
+          >
+        </div>
+
+        <div class="field col-12 md:col-4">
+          <label for="product" class="required">Product Name</label>
+          <p-dropdown
+            id="product"
+            [options]="productArr"
+            optionLabel="productName"
+            formControlName="productName"
+            appendTo="body"
+            [autoOptionFocus]="false"
+            (onChange)="onProductChange($event)"
+          ></p-dropdown>
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <label for="productCode" class="required">Product Code</label>
+          <input
+            id="productCode"
+            type="text"
+            pInputText
+            maxlength="20"
+            formControlName="productCode"
+          />
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <!-- Rate -->
+          <label for="rate" class="required">Rate</label>
+
+          <p-inputGroup>
+            <p-inputGroupAddon *ngIf="!selectedProduct?.isPercentage"
+              >LKR</p-inputGroupAddon
+            >
+
+            <p-inputNumber
+              id="rate"
+              mode="decimal"
+              [minFractionDigits]="2"
+              [maxFractionDigits]="2"
+              formControlName="rate"
+              [min]="0"
+              [max]="selectedProduct?.isPercentage ? 100 : 9999999.99"
+            ></p-inputNumber>
+
+            <p-inputGroupAddon *ngIf="selectedProduct?.isPercentage"
+              >%</p-inputGroupAddon
+            >
+          </p-inputGroup>
+        </div>
+
+        <div class="field col-12 md:col-2">
+          <label for="terms" class="required">Terms</label>
+          <p-inputNumber
+            id="terms"
+            [showButtons]="true"
+            [min]="1"
+            [max]="200"
+            formControlName="terms"
+          ></p-inputNumber>
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <!-- Amount -->
+          <label for="amount" class="required">Amount</label>
+          <p-inputNumber
+            id="rate"
+            mode="decimal"
+            [minFractionDigits]="2"
+            [maxFractionDigits]="2"
+            formControlName="amount"
+            [min]="0"
+          ></p-inputNumber>
+        </div>
+
+        <div class="field col-7 md:col-3">
+          <!-- Disbursement Date -->
+          <label for="disbursementDate">Disbursement Date</label>
+          <p-calendar
+            id="disbursementDate"
+            [showTime]="false"
+            dateFormat="yy-mm-dd"
+            appendTo="body"
+            formControlName="disbursementDate"
+            [readonlyInput]="true"
+          ></p-calendar>
+        </div>
+
+        <div class="field col-5 md:col-6">
+          <div class="flex justify-content-end">
+            <p-button
+              styleClass="p-button-sm p-button-outlined p-button-info mb:p-button"
+              label="LOAN SCHEDULE"
+              icon="pi pi-calendar-clock"
+              (onClick)="onClickLoanSchedule()"
+            ></p-button>
+          </div>
+        </div>
+
+        <div class="field col-12">
+          <label for="reason" class="required">Reason</label>
+          <textarea
+            id="reason"
+            pInputTextarea
+            [autoResize]="true"
+            [rows]="3"
+            maxlength="500"
+          ></textarea>
+
+          <!-- {{ FV.getValue("reason")?.length || 0 }}  -->
+          <div style="float: right">
+            <small class="text-500 text-xs">0/ 500</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

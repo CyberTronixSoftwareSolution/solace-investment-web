@@ -50,10 +50,10 @@ export class DefaultSideBarComponent implements OnInit {
       },
 
       {
-        menuId: 10,
+        menuId: 5,
         label: "Loan Management",
         icon: "pi pi-money-bill",
-        routerLink: "/loan",
+        routerLink: "/loan-management",
         isVisible: true,
         isSumMenu: false,
       },

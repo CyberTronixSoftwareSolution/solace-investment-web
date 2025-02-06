@@ -1,0 +1,96 @@
+<form [formGroup]="FV.formGroup" autocomplete="off">
+  <div class="grid mt-3 p-4">
+    <div class="col-12">
+      <div class="p-fluid grid formgrid align-items-end">
+        <div class="field col-12 mt-3 mb-3">
+          <span class="text-base text-black-alpha-90 font-semibold"
+            >GUARANTOR DETAILS</span
+          >
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <!-- Recovery Officer -->
+          <label for="recoveryOfficer" class="required">Guarantor</label>
+          <p-autoComplete
+            id="recoveryOfficer"
+            field="name"
+            [minLength]="1"
+          ></p-autoComplete>
+        </div>
+
+        <div class="field col-12 md:col-3">
+          <label for="code" class="required">Code</label>
+          <input id="code" type="text" pInputText maxlength="20" />
+        </div>
+        <div class="field col-12 md:col-3">
+          <label for="nic" class="required">NIC</label>
+          <input id="nic" type="text" pInputText maxlength="20" />
+        </div>
+
+        <div class="field col-12">
+          <label for="fullName" class="required">Full Name</label>
+
+          <div class="flex gap-2">
+            <input
+              id="fullName"
+              type="text"
+              pInputText
+              maxlength="300"
+              class="w-full"
+            />
+
+            <p-button
+              icon="pi pi-plus"
+              class="p-button-primary"
+              label="ADD"
+            ></p-button>
+          </div>
+        </div>
+
+        <div class="field col-12 md:col-12">
+          <p-table
+            #dt
+            styleClass=""
+            [columns]="cols"
+            [value]="guarantors"
+            responsiveLayout="stack"
+            [breakpoint]="'960px'"
+            dataKey="_id"
+            [responsive]="true"
+            styleClass="p-datatable-gridlines"
+            [rowHover]="true"
+            [rowHover]="true"
+          >
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th
+                  *ngFor="let col of columns"
+                  [ngClass]="{
+                  'text-right': col.field === 'amount' || col.field === 'rate',
+                }"
+                >
+                  {{ col.header }}
+                </th>
+                <th class="text-center">Action</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="columns.length + 2">
+                  <div
+                    class="flex flex-column justify-content-center align-items-center gap-2"
+                    style="height: 100px; width: 100%"
+                  >
+                    <i class="pi pi-inbox text-5xl text-gray-400"></i>
+                    <small class="">No Guarantor Found</small>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
