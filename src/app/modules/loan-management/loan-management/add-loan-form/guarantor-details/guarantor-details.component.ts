@@ -8,6 +8,7 @@ import { AppMessageService } from "src/app/shared/services/app-message.service";
 import { HelperService } from "src/app/shared/services/helper.service";
 import { MasterDataService } from "src/app/shared/services/master-data.service";
 import { PopupService } from "src/app/shared/services/popup.service";
+import { LoanFlowServiceService } from "../loan-flow-service.service";
 
 @Component({
   selector: "app-guarantor-details",
@@ -21,6 +22,8 @@ export class GuarantorDetailsComponent implements OnInit {
   guarantorSuggestionsArr: any[] = [];
   guarantors: any[] = [];
   cols: any[] = [];
+
+  loanDetails: any = null;
   constructor(
     private formBuilder: FormBuilder,
     private datePipe: DatePipe,
@@ -28,7 +31,8 @@ export class GuarantorDetailsComponent implements OnInit {
     private helper: HelperService,
     private messageService: AppMessageService,
     private masterDataService: MasterDataService,
-    private userService: UserService
+    private userService: UserService,
+    private loanFlowService: LoanFlowServiceService
   ) {
     this.createForm();
 
@@ -38,6 +42,9 @@ export class GuarantorDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loanDetails = this.loanFlowService.getLoanDetails();
+
+    this.guarantors = this.loanDetails.guarantors || [];
     this.cols = [
       // Code , Nic, Guarantor Name
       { field: "customerCode", header: "Code" },
@@ -107,12 +114,45 @@ export class GuarantorDetailsComponent implements OnInit {
     );
 
     if (isGuarantorExists) {
-      this.messageService.showErrorAlert("This guarantor is already exists!");
+      this.messageService.showWarnAlert("This guarantor is already exists!");
+      return;
+    }
+
+    // check id if Guarantor is borrower
+    if (this.loanDetails.borrowerDetails._id === this.selectedGuarantor._id) {
+      this.messageService.showWarnAlert(
+        "Borrower cannot be guarantor in same loan!"
+      );
       return;
     }
 
     this.guarantors.push(this.selectedGuarantor);
 
     this.onClearGuarantor();
+  }
+
+  deleteGuarantor(rowData: any) {
+    let confirmationConfig = {
+      message: `Are you sure you want to delete this guarantor?`,
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+    };
+
+    this.messageService.ConfirmPopUp(
+      confirmationConfig,
+      (isConfirm: boolean) => {
+        if (isConfirm) {
+          this.onClearGuarantor();
+
+          this.guarantors = this.guarantors.filter(
+            (guarantor) => guarantor._id != rowData._id
+          );
+
+          this.messageService.showSuccessAlert(
+            "Guarantor deleted successfully!"
+          );
+        }
+      }
+    );
   }
 }

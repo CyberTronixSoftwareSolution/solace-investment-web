@@ -10,6 +10,7 @@ import { MasterDataService } from "src/app/shared/services/master-data.service";
 import { PopupService } from "src/app/shared/services/popup.service";
 import { firstValueFrom, forkJoin } from "rxjs";
 import { LoanScheduleComponent } from "./loan-schedule/loan-schedule.component";
+import { LoanFlowServiceService } from "../loan-flow-service.service";
 
 @Component({
   selector: "app-general-information",
@@ -25,6 +26,8 @@ export class GeneralInformationComponent implements OnInit {
 
   borrowerSuggestionsArr: any[] = [];
 
+  loanDetails: any = null;
+
   constructor(
     private formBuilder: UntypedFormBuilder,
     private datePipe: DatePipe,
@@ -33,7 +36,8 @@ export class GeneralInformationComponent implements OnInit {
     private messageService: AppMessageService,
     private masterDataService: MasterDataService,
     private productService: ProductService,
-    private userService: UserService
+    private userService: UserService,
+    private loanFlowService: LoanFlowServiceService
   ) {
     this.createForm();
   }
@@ -53,7 +57,8 @@ export class GeneralInformationComponent implements OnInit {
       // loan details
       loanNo: ["", [Validators.required]],
       transactionDate: ["", [Validators.required]],
-      reference: ["", [Validators.required]],
+      reference: [""],
+      reason: ["", [Validators.required]],
 
       //Borrower details
       borrower: ["", [Validators.required]],
@@ -73,6 +78,8 @@ export class GeneralInformationComponent implements OnInit {
 
   async loadInitData() {
     try {
+      this.loanDetails = this.loanFlowService.getLoanDetails();
+
       const [productResult] = await firstValueFrom(
         forkJoin([this.productService.GetAllProducts(false)])
       );
@@ -80,8 +87,87 @@ export class GeneralInformationComponent implements OnInit {
       if (productResult.IsSuccessful) {
         this.productArr = productResult.Result;
       }
+
+      this.setValues();
     } catch (error) {
       this.messageService.showErrorAlert(error?.message || error);
+    }
+  }
+
+  setValues() {
+    // loanNo: "",
+    // reference: "",
+    // transactionDate: "",
+    // borrowerDetails: null,
+    // productDetails: null,
+    // reason: "",
+    debugger;
+    if (this.loanDetails?.loanNo) {
+      this.FV.setValue("loanNo", this.loanDetails.loanNo);
+    }
+
+    if (this.loanDetails?.reference) {
+      this.FV.setValue("reference", this.loanDetails.reference);
+    }
+
+    if (this.loanDetails?.transactionDate) {
+      this.FV.setValue("transactionDate", this.loanDetails.transactionDate);
+    }
+
+    if (this.loanDetails?.reason) {
+      this.FV.setValue("reason", this.loanDetails.reason);
+    }
+
+    if (this.loanDetails?.borrowerDetails) {
+      this.selectedBorrower = this.loanDetails.borrowerDetails;
+      this.FV.setValue("borrower", this.loanDetails.borrowerDetails);
+      this.FV.setValue(
+        "borrowerCode",
+        this.loanDetails.borrowerDetails.customerCode
+      );
+      this.FV.setValue(
+        "borrowerNic",
+        this.loanDetails.borrowerDetails.nicNumber
+      );
+      this.FV.setValue(
+        "borrowerFullName",
+        this.loanDetails.borrowerDetails.fullName
+      );
+
+      this.FV.disableField("borrowerCode");
+      this.FV.disableField("borrowerNic");
+      this.FV.disableField("borrowerFullName");
+    }
+
+    if (this.loanDetails?.productDetails) {
+      let selectedProduct = this.productArr.find(
+        (x) => x._id === this.loanDetails.productDetails._id
+      );
+      this.selectedProduct = selectedProduct;
+      this.FV.setValue("productName", selectedProduct);
+      this.FV.setValue(
+        "productCode",
+        this.loanDetails.productDetails.productCode
+      );
+      this.FV.setValue("rate", this.loanDetails.productDetails.rate);
+      this.FV.setValue("amount", this.loanDetails.productDetails.amount);
+      this.FV.setValue("terms", this.loanDetails.productDetails.termsCount);
+      this.FV.setValue(
+        "disbursementDate",
+        this.loanDetails.productDetails?.disbursementDate
+      );
+
+      this.FV.formGroup
+        .get("amount")
+        .setValidators([
+          Validators.required,
+          Validators.min(this.loanDetails.productDetails.minAmount),
+          Validators.max(this.loanDetails.productDetails.maxAmount),
+        ]);
+
+      this.FV.disableField("productCode");
+
+      this.FV.formGroup.get("amount").updateValueAndValidity();
     }
   }
 

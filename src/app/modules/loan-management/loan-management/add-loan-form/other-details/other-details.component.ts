@@ -8,6 +8,7 @@ import { AppMessageService } from "src/app/shared/services/app-message.service";
 import { HelperService } from "src/app/shared/services/helper.service";
 import { MasterDataService } from "src/app/shared/services/master-data.service";
 import { PopupService } from "src/app/shared/services/popup.service";
+import { LoanFlowServiceService } from "../loan-flow-service.service";
 
 @Component({
   selector: "app-other-details",
@@ -25,31 +26,9 @@ export class OtherDetailsComponent implements OnInit {
 
   isOpenDeductionCharges: boolean = false;
   totalDeductionChargeAmount: number = 0;
+  loanDetails: any = null;
 
-  selectedProduct = {
-    _id: "67a0f16eaa422491f666ed36",
-    productName: "Personal Loan Daily",
-    productCode: "PL123",
-    isPercentage: true,
-    rate: 10,
-    rateAmount: 10000,
-    amount: 100000,
-    maxAmount: 500000,
-    minAmount: 50000,
-    termsCount: 12,
-    type: "M",
-    isOpenDeductionCharges: true,
-    deductionCharges: [
-      {
-        deductionChargeName: "Test Charge",
-        isPercentage: true,
-        rate: 5,
-        amount: 5000,
-        _id: "67a4f970995d84705554ddba",
-      },
-    ],
-    status: 1,
-  };
+  selectedProduct: any = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,12 +37,16 @@ export class OtherDetailsComponent implements OnInit {
     private helper: HelperService,
     private messageService: AppMessageService,
     private masterDataService: MasterDataService,
-    private userService: UserService
+    private userService: UserService,
+    private loanFlowService: LoanFlowServiceService
   ) {
     this.createForm();
   }
 
   ngOnInit() {
+    this.loanDetails = this.loanFlowService.getLoanDetails();
+    this.selectedProduct = this.loanDetails.productDetails;
+
     this.chargeCols = [
       { field: "deductionChargeName", header: "Deduction Charge Name" },
       { field: "rate", header: "Rate" },
@@ -91,16 +74,36 @@ export class OtherDetailsComponent implements OnInit {
     if (this.selectedProduct.type == "D") {
       this.FV.disableField("collectionDate");
     }
+
+    this.setValues();
   }
 
   createForm() {
     this.FV.formGroup = this.formBuilder.group({
       collectionDate: ["", [Validators.required]],
       recoveryOfficer: ["", [Validators.required]],
-      isChargesReduceFromLoan: ["", [Validators.required]],
+
+      // deduction charges
+      deductionChargeName: ["", [Validators.required]],
+      deductionChargeRate: ["", [Validators.required]],
+      isChargesReduceFromLoan: [""],
     });
   }
 
+  setValues() {
+    if (this.loanDetails?.recoveryOfficer) {
+      this.FV.setValue("recoveryOfficer", this.loanDetails.recoveryOfficer);
+    }
+
+    if (this.loanDetails?.collectionDate) {
+      this.FV.setValue("collectionDate", this.loanDetails.collectionDate);
+    }
+
+    this.FV.setValue(
+      "isChargesReduceFromLoan",
+      this.loanDetails?.isChargesReduceFromLoan
+    );
+  }
   calculateDeductionCharges() {
     this.totalDeductionChargeAmount = 0;
 
@@ -151,5 +154,74 @@ export class OtherDetailsComponent implements OnInit {
   onRecoveryOfficerClear() {
     this.selectedRecoveryOfficer = null;
     this.FV.clearValues("recoveryOfficer");
+  }
+
+  addDeductionCharge() {
+    let validateParam = "deductionChargeName,deductionChargeRate";
+
+    if (this.FV.validateControllers(validateParam)) {
+      return;
+    }
+
+    let formData = this.FV.formGroup.value;
+
+    let totalAmounts = this.deductionCharges.reduce(
+      (total, item) => total + item.amount,
+      0
+    );
+
+    if (
+      totalAmounts + formData.deductionChargeRate >
+      this.selectedProduct.amount
+    ) {
+      this.messageService.showErrorAlert(
+        "Deduction charge amount should be less than loan amount!"
+      );
+      return;
+    }
+
+    let deductionCharge = {
+      deductionChargeName: formData.deductionChargeName,
+      isPercentage: false,
+      rate: formData.deductionChargeRate,
+      amount: formData.deductionChargeRate,
+      _id: this.helper.generateUniqueId(this.deductionCharges),
+    };
+
+    this.deductionCharges.push(deductionCharge);
+
+    this.clearDeductionCharge();
+    this.calculateDeductionCharges();
+  }
+
+  onDeleteDeductionCharge(rowData: any) {
+    let confirmationConfig = {
+      message: `Are you sure you want to delete this deduction charge?`,
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+    };
+
+    this.messageService.ConfirmPopUp(
+      confirmationConfig,
+      (isConfirm: boolean) => {
+        if (isConfirm) {
+          this.clearDeductionCharge();
+
+          this.deductionCharges = this.deductionCharges.filter(
+            (charge) => charge._id != rowData._id
+          );
+
+          this.calculateDeductionCharges();
+
+          this.messageService.showSuccessAlert(
+            "Deduction charge deleted successfully!"
+          );
+        }
+      }
+    );
+  }
+
+  clearDeductionCharge() {
+    this.FV.clearValues("deductionChargeName,deductionChargeRate");
   }
 }

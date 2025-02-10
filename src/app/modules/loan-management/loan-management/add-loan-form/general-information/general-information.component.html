@@ -33,7 +33,7 @@
         </div>
 
         <div class="field col-12 md:col-3">
-          <label for="reference" class="required">Reference</label>
+          <label for="reference">Reference</label>
           <input
             id="reference"
             type="text"
@@ -222,6 +222,7 @@
             [autoResize]="true"
             [rows]="3"
             maxlength="500"
+            formControlName="reason"
           ></textarea>
 
           <!-- {{ FV.getValue("reason")?.length || 0 }}  -->

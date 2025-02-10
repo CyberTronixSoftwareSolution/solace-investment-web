@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { LoanFlowServiceService } from "../loan-flow-service.service";
 
 @Component({
   selector: "app-loan-summary",
@@ -16,67 +17,29 @@ export class LoanSummaryComponent implements OnInit {
     agreedAmount: 0,
   };
 
-  constructor() {}
+  constructor(private loanFlowService: LoanFlowServiceService) {}
 
   ngOnInit() {
-    this.loanDetails = {
-      isChargesReduceFromLoan: false,
-      product: {
-        _id: "67a8bd05c6059ffd1b004214",
-        productName: "qwdqwdqwd",
-        productCode: "qwdqwd",
-        isPercentage: true,
-        rate: 5,
-        rateAmount: 500,
-        amount: 10000,
-        maxAmount: 20000,
-        minAmount: 2500,
-        termsCount: 10,
-        type: "D",
-        isOpenDeductionCharges: false,
-        deductionCharges: [
-          {
-            deductionChargeName: "Test Charge",
-            isPercentage: true,
-            rate: 2,
-            amount: 200,
-            _id: "67a8bd05c6059ffd1b004215",
-          },
-          {
-            deductionChargeName: "ergerger",
-            isPercentage: false,
-            rate: 2500,
-            amount: 2500,
-            _id: "67a8bd05c6059ffd1b004216",
-          },
-        ],
-        status: 1,
-        createdBy: "6793d2f7161fc34b91ea51eb",
-        updatedBy: "6793d2f7161fc34b91ea51eb",
-        createdAt: "2025-02-09T14:34:45.712Z",
-        updatedAt: "2025-02-09T14:34:45.712Z",
-      },
-    };
-
+    this.loanDetails = this.loanFlowService.getLoanDetails();
     this.calculateLoanSummary();
   }
 
   calculateLoanSummary() {
-    if (this.loanDetails && this.loanDetails.product) {
+    if (this.loanDetails && this.loanDetails.productDetails) {
       let loanAmount = 0;
       let totalInterestAmount = 0;
       let totalDeductionChargeAmount = 0;
       let availableBalance = 0;
       let agreedAmount = 0;
 
-      loanAmount = this.loanDetails.product.amount;
+      loanAmount = this.loanDetails.productDetails.amount;
 
-      totalInterestAmount = this.loanDetails.product.isPercentage
-        ? loanAmount * (this.loanDetails.product.rate / 100)
-        : this.loanDetails.product.rate;
+      totalInterestAmount = this.loanDetails.productDetails.isPercentage
+        ? loanAmount * (this.loanDetails.productDetails.rate / 100)
+        : this.loanDetails.productDetails.rate;
 
       totalDeductionChargeAmount =
-        this.loanDetails.product.deductionCharges.reduce(
+        this.loanDetails.productDetails.deductionCharges.reduce(
           (total, item) => total + item.amount,
           0
         );
