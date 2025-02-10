@@ -1,3 +1,49 @@
-<p>
-  loan-summary works!
-</p>
+<div class="grid mt-3 p-4">
+  <div class="col-12">
+    <p-accordion [multiple]="true" [activeIndex]="[1]">
+      <p-accordionTab header="General Information Summary">
+        <p>Lorem ipsum dolor sit amet...</p>
+      </p-accordionTab>
+      <p-accordionTab header="Loan Summary">
+        <div class="flex flex-column gap-3">
+          <div class="flex justify-content-between">
+            <span>Loan Amount</span>
+            <span>{{ loanSummary?.loanAmount | currency : "" : "" }}</span>
+          </div>
+
+          <div class="flex justify-content-between">
+            <span>Total Interest Amount </span>
+            <span>{{
+              loanSummary?.totalInterestAmount | currency : "" : ""
+            }}</span>
+          </div>
+
+          <div class="flex justify-content-between">
+            <span class="font-bold">Agreed Amount</span>
+            <span class="font-bold">{{
+              loanSummary?.agreedAmount | currency : "" : ""
+            }}</span>
+          </div>
+
+          <div class="flex justify-content-between">
+            <span>Deduction charges is reduce from this loan</span>
+            <span>{{ loanSummary?.isReduceFromLoan ? "Yes" : "No" }}</span>
+          </div>
+
+          <div class="flex justify-content-between">
+            <span>Loan Deduction Charges</span>
+            <span>{{
+              loanSummary?.totalDeductionChargeAmount | currency : "" : ""
+            }}</span>
+          </div>
+          <div class="flex justify-content-between">
+            <span class="font-bold">Available Balance</span>
+            <span class="font-bold text-white bg-cyan-400 p-1 border-round">{{
+              loanSummary?.availableBalance | currency : "" : ""
+            }}</span>
+          </div>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+</div>

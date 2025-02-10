@@ -10,21 +10,40 @@
 
         <div class="field col-12 md:col-6">
           <!-- Recovery Officer -->
-          <label for="recoveryOfficer" class="required">Guarantor</label>
+          <label for="guarantor" class="required">Guarantor</label>
           <p-autoComplete
-            id="recoveryOfficer"
-            field="name"
+            id="guarantor"
+            optionLabel="label"
             [minLength]="1"
+            formControlName="guarantor"
+            [suggestions]="guarantorSuggestionsArr"
+            (completeMethod)="searchGuarantor($event)"
+            (onSelect)="onGuarantorSelect($event)"
+            (onKeyUp)="onGuarantorKeyUp()"
+            [showClear]="true"
+            (onClear)="onClearGuarantor()"
           ></p-autoComplete>
         </div>
 
         <div class="field col-12 md:col-3">
           <label for="code" class="required">Code</label>
-          <input id="code" type="text" pInputText maxlength="20" />
+          <input
+            id="code"
+            type="text"
+            pInputText
+            maxlength="20"
+            formControlName="guarantorCode"
+          />
         </div>
         <div class="field col-12 md:col-3">
           <label for="nic" class="required">NIC</label>
-          <input id="nic" type="text" pInputText maxlength="20" />
+          <input
+            id="nic"
+            type="text"
+            pInputText
+            maxlength="20"
+            formControlName="guarantorNic"
+          />
         </div>
 
         <div class="field col-12">
@@ -37,12 +56,14 @@
               pInputText
               maxlength="300"
               class="w-full"
+              formControlName="guarantorFullName"
             />
 
             <p-button
               icon="pi pi-plus"
               class="p-button-primary"
               label="ADD"
+              (click)="addGuarantor()"
             ></p-button>
           </div>
         </div>
@@ -63,15 +84,44 @@
           >
             <ng-template pTemplate="header" let-columns>
               <tr>
-                <th
-                  *ngFor="let col of columns"
-                  [ngClass]="{
-                  'text-right': col.field === 'amount' || col.field === 'rate',
-                }"
-                >
+                <th *ngFor="let col of columns">
                   {{ col.header }}
                 </th>
                 <th class="text-center">Action</th>
+              </tr>
+            </ng-template>
+
+            <ng-template
+              pTemplate="body"
+              let-rowData
+              let-columns="columns"
+              let-rowIndex="rowIndex"
+            >
+              <tr>
+                <td
+                  *ngFor="let col of columns"
+                  [ngClass]="{
+                  'bg-blue': rowIndex % 2 !== 0,
+                }"
+                >
+                  <ng-container>
+                    <span class="p-column-title font-bold">{{
+                      col.header
+                    }}</span
+                    >{{ rowData[col.field] || "-" }}
+                  </ng-container>
+                </td>
+                <td
+                  class="text-center"
+                  [ngClass]="{ 'bg-blue': rowIndex % 2 !== 0, }"
+                >
+                  <p-button
+                    icon="pi pi-trash"
+                    pTooltip="Delete"
+                    tooltipPosition="right"
+                    styleClass="p-button-danger p-button-outlined"
+                  ></p-button>
+                </td>
               </tr>
             </ng-template>
 

@@ -38,6 +38,7 @@ export class ResourceService {
     updateUser: this.User + "/update",
     deleteUser: this.User + "/delete",
     userProfile: this.User + "/profile",
+    searchByParam: this.User + "/searchByParam",
   };
 
   common = {

@@ -1,3 +1,4 @@
+import { UserService } from "./../../../../../shared/services/api-services/user.service";
 import { ProductService } from "src/app/shared/services/api-services/product.service";
 import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
@@ -18,7 +19,11 @@ import { LoanScheduleComponent } from "./loan-schedule/loan-schedule.component";
 export class GeneralInformationComponent implements OnInit {
   FV = new CommonForm();
   productArr: any[] = [];
+
+  selectedBorrower: any = null;
   selectedProduct: any = null;
+
+  borrowerSuggestionsArr: any[] = [];
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -27,17 +32,35 @@ export class GeneralInformationComponent implements OnInit {
     private helper: HelperService,
     private messageService: AppMessageService,
     private masterDataService: MasterDataService,
-    private productService: ProductService
+    private productService: ProductService,
+    private userService: UserService
   ) {
     this.createForm();
   }
 
   ngOnInit() {
     this.loadInitData();
+
+    // set loan no and transaction date
+    this.FV.setValue("loanNo", "Lone001");
+    this.FV.setValue("transactionDate", new Date());
+    this.FV.disableField("transactionDate");
+    this.FV.disableField("loanNo");
   }
 
   createForm() {
     this.FV.formGroup = this.formBuilder.group({
+      // loan details
+      loanNo: ["", [Validators.required]],
+      transactionDate: ["", [Validators.required]],
+      reference: ["", [Validators.required]],
+
+      //Borrower details
+      borrower: ["", [Validators.required]],
+      borrowerCode: ["", [Validators.required]],
+      borrowerNic: ["", [Validators.required]],
+      borrowerFullName: ["", [Validators.required]],
+
       // Product details
       productName: ["", [Validators.required]],
       productCode: ["", [Validators.required]],
@@ -62,27 +85,40 @@ export class GeneralInformationComponent implements OnInit {
     }
   }
 
-  onProductChange(e: any) {
-    let selectedValue = e.value;
+  async onProductChange(e: any) {
+    try {
+      let productId = e.value._id;
+      let selectedValue = null;
 
-    if (selectedValue) {
-      this.selectedProduct = selectedValue;
+      const productResult = await firstValueFrom(
+        this.productService.GetProductById(productId)
+      );
 
-      this.FV.setValue("productCode", selectedValue.productCode);
-      this.FV.setValue("rate", selectedValue.rate);
-      this.FV.setValue("amount", selectedValue.amount);
-      this.FV.setValue("terms", selectedValue.termsCount);
+      if (productResult.IsSuccessful) {
+        selectedValue = productResult.Result;
+      }
 
-      this.FV.formGroup
-        .get("amount")
-        .setValidators([
-          Validators.required,
-          Validators.min(selectedValue.minAmount),
-          Validators.max(selectedValue.maxAmount),
-        ]);
-      this.FV.disableField("productCode");
+      if (selectedValue) {
+        this.selectedProduct = selectedValue;
 
-      this.FV.formGroup.get("amount").updateValueAndValidity();
+        this.FV.setValue("productCode", selectedValue.productCode);
+        this.FV.setValue("rate", selectedValue.rate);
+        this.FV.setValue("amount", selectedValue.amount);
+        this.FV.setValue("terms", selectedValue.termsCount);
+
+        this.FV.formGroup
+          .get("amount")
+          .setValidators([
+            Validators.required,
+            Validators.min(selectedValue.minAmount),
+            Validators.max(selectedValue.maxAmount),
+          ]);
+        this.FV.disableField("productCode");
+
+        this.FV.formGroup.get("amount").updateValueAndValidity();
+      }
+    } catch (error) {
+      this.messageService.showErrorAlert(error?.message || error);
     }
   }
 
@@ -129,6 +165,37 @@ export class GeneralInformationComponent implements OnInit {
     this.popUpService.OpenModel(LoanScheduleComponent, {
       data: data,
       width: "50vw",
+      header: "LOAN SCHEDULE",
     });
+  }
+
+  async searchBorrower(e: any) {
+    let value = e.query;
+
+    try {
+      const userResult = await firstValueFrom(
+        this.userService.UserSearchByParam("customer", value)
+      );
+
+      if (userResult.IsSuccessful) {
+        this.borrowerSuggestionsArr = userResult.Result;
+      }
+    } catch (error) {
+      this.messageService.showErrorAlert(error?.message || error);
+    }
+  }
+
+  onBorrowerSelect(e: any) {
+    this.selectedBorrower = e.value;
+
+    if (this.selectedBorrower) {
+      this.FV.setValue("borrowerCode", this.selectedBorrower.customerCode);
+      this.FV.setValue("borrowerNic", this.selectedBorrower.nicNumber);
+      this.FV.setValue("borrowerFullName", this.selectedBorrower.fullName);
+
+      this.FV.disableField("borrowerCode");
+      this.FV.disableField("borrowerNic");
+      this.FV.disableField("borrowerFullName");
+    }
   }
 }

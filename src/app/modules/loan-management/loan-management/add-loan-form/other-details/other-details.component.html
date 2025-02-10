@@ -14,15 +14,27 @@
           <label for="recoveryOfficer" class="required">Recovery Officer</label>
           <p-autoComplete
             id="recoveryOfficer"
-            field="name"
+            optionLabel="label"
+            [suggestions]="recoveryOfficerSuggestionsArr"
             [minLength]="1"
+            formControlName="recoveryOfficer"
+            (completeMethod)="searchRecoveryOfficer($event)"
+            (onSelect)="onRecoveryOfficerSelect($event)"
+            (onKeyUp)="onRecoveryOfficerKeyUp()"
+            [showClear]="true"
+            (onClear)="onRecoveryOfficerClear()"
           ></p-autoComplete>
         </div>
 
         <div class="field col-12 md:col-3">
           <!-- COllection Date -->
           <label for="collectionDate" class="required">Collection Date</label>
-          <p-dropdown [options]="collectingDatesArr"></p-dropdown>
+          <p-dropdown
+            [options]="collectingDatesArr"
+            optionLabel="name"
+            optionValue="value"
+            formControlName="collectionDate"
+          ></p-dropdown>
         </div>
 
         <div class="field col-12 mt-3 mb-3">
@@ -46,7 +58,7 @@
             [rowHover]="true"
           >
             <!-- Caption -->
-            <ng-template pTemplate="caption">
+            <ng-template pTemplate="caption" *ngIf="isOpenDeductionCharges">
               <div class="grid formgrid">
                 <div class="field col-6 md:col-6">
                   <label
@@ -95,7 +107,9 @@
                 >
                   {{ col.header }}
                 </th>
-                <th class="text-center">Action</th>
+                <th class="text-center" *ngIf="isOpenDeductionCharges">
+                  Action
+                </th>
               </tr>
             </ng-template>
 
@@ -143,6 +157,7 @@
                 <td
                   class="text-center"
                   [ngClass]="{ 'bg-blue': rowIndex % 2 !== 0, }"
+                  *ngIf="isOpenDeductionCharges"
                 >
                   <p-button
                     icon="pi pi-trash"
@@ -158,7 +173,9 @@
               <div class="flex justify-content-end">
                 <span
                   >Total Deduction Charge Amount :
-                  <span class="font-bold">0.00</span></span
+                  <span class="font-bold">{{
+                    totalDeductionChargeAmount | currency : "" : ""
+                  }}</span></span
                 >
               </div>
             </ng-template>
@@ -177,6 +194,15 @@
               </tr>
             </ng-template>
           </p-table>
+        </div>
+
+        <div class="field col-12 md:col-12">
+          <p-checkbox
+            id="deductionCharge"
+            formControlName="isChargesReduceFromLoan"
+            [binary]="true"
+            label="Deduction charges is reduce from this loan"
+          ></p-checkbox>
         </div>
       </div>
     </div>

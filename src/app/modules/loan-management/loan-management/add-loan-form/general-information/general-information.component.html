@@ -11,7 +11,13 @@
 
         <div class="field col-12 md:col-3">
           <label for="LoanNo" class="required">Loan No</label>
-          <input id="LoanNo" type="text" pInputText maxlength="20" />
+          <input
+            id="LoanNo"
+            type="text"
+            pInputText
+            maxlength="20"
+            formControlName="loanNo"
+          />
         </div>
 
         <div class="field col-12 md:col-3">
@@ -22,12 +28,19 @@
             dateFormat="yy-mm-dd"
             appendTo="body"
             [readonlyInput]="true"
+            formControlName="transactionDate"
           ></p-calendar>
         </div>
 
         <div class="field col-12 md:col-3">
           <label for="reference" class="required">Reference</label>
-          <input id="reference" type="text" pInputText maxlength="20" />
+          <input
+            id="reference"
+            type="text"
+            pInputText
+            maxlength="20"
+            formControlName="reference"
+          />
         </div>
 
         <div class="field col-12 mt-3 mb-3">
@@ -45,25 +58,47 @@
           <label for="borrower" class="required">Borrower</label>
           <p-autoComplete
             id="borrower"
-            field="name"
+            [suggestions]="borrowerSuggestionsArr"
+            optionLabel="label"
             [minLength]="1"
+            formControlName="borrower"
+            (completeMethod)="searchBorrower($event)"
+            (onSelect)="onBorrowerSelect($event)"
           ></p-autoComplete>
         </div>
 
         <div class="field col-12 md:col-3">
           <label for="code" class="required">Code</label>
-          <input id="code" type="text" pInputText maxlength="20" />
+          <input
+            id="code"
+            type="text"
+            pInputText
+            maxlength="20"
+            formControlName="borrowerCode"
+          />
         </div>
         <div class="field col-12 md:col-3">
           <label for="nic" class="required">NIC</label>
-          <input id="nic" type="text" pInputText maxlength="20" />
+          <input
+            id="nic"
+            type="text"
+            pInputText
+            maxlength="20"
+            formControlName="borrowerNic"
+          />
         </div>
 
         <div class="field col-12">
           <label for="fullName" class="required">Full Name</label>
 
           <p-inputGroup>
-            <input id="fullName" type="text" pInputText maxlength="200" />
+            <input
+              id="fullName"
+              type="text"
+              pInputText
+              maxlength="200"
+              formControlName="borrowerFullName"
+            />
 
             <button
               type="button"

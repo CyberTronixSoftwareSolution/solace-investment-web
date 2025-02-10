@@ -85,4 +85,14 @@ export class UserService {
         return response;
       });
   }
+
+  UserSearchByParam(type: string, search: string) {
+    return this.dataAccess
+      .GET(
+        this.resource.user.searchByParam + `?type=${type}&searchName=${search}`
+      )
+      .pipe((response) => {
+        return response;
+      });
+  }
 }

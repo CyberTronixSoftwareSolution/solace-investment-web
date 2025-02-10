@@ -1,3 +1,111 @@
-<p>
-  loan-schedule works!
-</p>
+<p-table
+  #dt
+  styleClass=""
+  [columns]="cols"
+  [value]="loanSchedule"
+  responsiveLayout="stack"
+  [breakpoint]="'960px'"
+  [scrollable]="true"
+  scrollHeight="300px"
+  dataKey="_id"
+  [responsive]="true"
+  styleClass="p-datatable-gridlines"
+  [rowHover]="true"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th
+        *ngFor="let col of columns"
+        [ngClass]="{
+          'text-right':
+            col.field === 'interestPerTerm' ||
+            col.field === 'capital' ||
+            col.field === 'installment',
+          'text-center': col.field === 'index'
+        }"
+      >
+        {{ col.header }}
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template
+    pTemplate="body"
+    let-rowData
+    let-columns="columns"
+    let-rowIndex="rowIndex"
+  >
+    <tr>
+      <td
+        *ngFor="let col of columns"
+        [ngClass]="{
+          'bg-blue': rowIndex % 2 !== 0,
+          'text-right':
+            col.field == 'interestPerTerm' ||
+            col.field == 'capital' ||
+            col.field == 'installment',
+          'text-center': col.field == 'index'
+        }"
+      >
+        <ng-container *ngIf="col.field == 'index'">
+          <span class="p-column-title font-bold">{{ col.header }}</span
+          >{{ rowData[col.field] | number : "2.0-0" }}
+        </ng-container>
+
+        <ng-container
+          *ngIf="
+            col.field == 'interestPerTerm' ||
+            col.field == 'capital' ||
+            col.field == 'installment'
+          "
+        >
+          <span class="p-column-title font-bold">{{ col.header }}</span
+          >{{ rowData[col.field] | currency : "" : "" }}
+        </ng-container>
+
+        <ng-container
+          *ngIf="
+            col.field != 'interestPerTerm' &&
+            col.field != 'capital' &&
+            col.field != 'installment' &&
+            col.field != 'index'
+          "
+        >
+          <span class="p-column-title font-bold">{{ col.header }}</span>
+          {{ rowData[col.field] || "-" }}
+        </ng-container>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <tr>
+      <td [attr.colspan]="2">
+        <span class="font-bold">Total</span>
+      </td>
+      <td class="text-right">
+        {{ totalData?.totalInterest | currency : "" : "" }}
+      </td>
+      <td class="text-right">
+        {{ totalData?.totalCapital | currency : "" : "" }}
+      </td>
+      <td class="text-right">
+        {{ totalData?.totalInstallment | currency : "" : "" }}
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="columns.length + 2">
+        <div
+          class="flex flex-column justify-content-center align-items-center gap-2"
+          style="height: 100px; width: 100%"
+        >
+          <i class="pi pi-inbox text-5xl text-gray-400"></i>
+          <small class="">No Guarantor Found</small>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
