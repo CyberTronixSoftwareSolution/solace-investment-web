@@ -63,13 +63,12 @@ export class OtherDetailsComponent implements OnInit {
       { name: "Sunday", value: "Sunday" },
     ];
 
+    debugger;
     this.isOpenDeductionCharges = this.selectedProduct.isOpenDeductionCharges;
 
-    if (!this.isOpenDeductionCharges) {
-      this.deductionCharges = this.selectedProduct.deductionCharges;
+    this.deductionCharges = this.selectedProduct.deductionCharges;
 
-      this.calculateDeductionCharges();
-    }
+    this.calculateDeductionCharges();
 
     if (this.selectedProduct.type == "D") {
       this.FV.disableField("collectionDate");
@@ -106,13 +105,13 @@ export class OtherDetailsComponent implements OnInit {
   }
   calculateDeductionCharges() {
     this.totalDeductionChargeAmount = 0;
+    if (!this.deductionCharges || this.deductionCharges.length <= 0) return;
 
     if (this.isOpenDeductionCharges) {
       this.deductionCharges.forEach((charge) => {
         this.totalDeductionChargeAmount += charge.amount;
       });
     } else {
-      debugger;
       this.deductionCharges.forEach((charge) => {
         let amount = !charge.isPercentage
           ? charge.rate

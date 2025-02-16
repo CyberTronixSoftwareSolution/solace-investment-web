@@ -11,6 +11,7 @@ import { PopupService } from "src/app/shared/services/popup.service";
 import { firstValueFrom, forkJoin } from "rxjs";
 import { LoanScheduleComponent } from "./loan-schedule/loan-schedule.component";
 import { LoanFlowServiceService } from "../loan-flow-service.service";
+import { LoanService } from "src/app/shared/services/api-services/loan.service";
 
 @Component({
   selector: "app-general-information",
@@ -37,7 +38,8 @@ export class GeneralInformationComponent implements OnInit {
     private masterDataService: MasterDataService,
     private productService: ProductService,
     private userService: UserService,
-    private loanFlowService: LoanFlowServiceService
+    private loanFlowService: LoanFlowServiceService,
+    private loanService: LoanService
   ) {
     this.createForm();
   }
@@ -46,7 +48,6 @@ export class GeneralInformationComponent implements OnInit {
     this.loadInitData();
 
     // set loan no and transaction date
-    this.FV.setValue("loanNo", "Lone001");
     this.FV.setValue("transactionDate", new Date());
     this.FV.disableField("transactionDate");
     this.FV.disableField("loanNo");
@@ -79,6 +80,7 @@ export class GeneralInformationComponent implements OnInit {
   async loadInitData() {
     try {
       this.loanDetails = this.loanFlowService.getLoanDetails();
+      console.log(this.loanDetails);
 
       const [productResult] = await firstValueFrom(
         forkJoin([this.productService.GetAllProducts(false)])
@@ -88,6 +90,14 @@ export class GeneralInformationComponent implements OnInit {
         this.productArr = productResult.Result;
       }
 
+      if (this.loanDetails.loanNo == "" || this.loanDetails.loanNo == null) {
+        const loanResult = await firstValueFrom(this.loanService.GetLoanCode());
+
+        if (loanResult.IsSuccessful) {
+          this.FV.setValue("loanNo", loanResult.Result);
+        }
+      }
+
       this.setValues();
     } catch (error) {
       this.messageService.showErrorAlert(error?.message || error);
@@ -95,13 +105,6 @@ export class GeneralInformationComponent implements OnInit {
   }
 
   setValues() {
-    // loanNo: "",
-    // reference: "",
-    // transactionDate: "",
-    // borrowerDetails: null,
-    // productDetails: null,
-    // reason: "",
-    debugger;
     if (this.loanDetails?.loanNo) {
       this.FV.setValue("loanNo", this.loanDetails.loanNo);
     }

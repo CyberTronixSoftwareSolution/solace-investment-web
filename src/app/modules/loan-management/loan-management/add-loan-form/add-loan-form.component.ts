@@ -1,3 +1,4 @@
+import { LoanService } from "./../../../../shared/services/api-services/loan.service";
 import { LoanFlowServiceService } from "./loan-flow-service.service";
 import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { MenuItem } from "primeng/api";
@@ -38,7 +39,8 @@ export class AddLoanFormComponent implements OnInit {
   constructor(
     private sidebarService: SidebarService,
     private loanFlowService: LoanFlowServiceService,
-    private messageService: AppMessageService
+    private messageService: AppMessageService,
+    private loanService: LoanService
   ) {}
 
   ngOnInit() {
@@ -105,6 +107,8 @@ export class AddLoanFormComponent implements OnInit {
     }
 
     let formData = this.gic.FV.formGroup.value;
+    let loanNo = this.gic.FV.getValue("loanNo");
+    let transactionDate = this.gic.FV.getValue("transactionDate");
 
     // Set Product details
     this.gic.selectedProduct = {
@@ -119,9 +123,9 @@ export class AddLoanFormComponent implements OnInit {
       ...this.loanDetails,
       productDetails: this.gic.selectedProduct,
       borrowerDetails: this.gic.selectedBorrower,
-      loanNo: formData.loanNo,
+      loanNo: loanNo,
       reference: formData.reference,
-      transactionDate: formData.transactionDate,
+      transactionDate: transactionDate,
       reason: formData.reason,
     };
 
@@ -191,5 +195,43 @@ export class AddLoanFormComponent implements OnInit {
     this.showingIndex += 1;
   }
 
-  saveLoan() {}
+  saveLoan() {
+    debugger;
+    if (this.loanDetails?.guarantors?.length < 2) {
+      this.messageService.showWarnAlert(
+        "Please add at least two guarantors to continue!"
+      );
+      return;
+    }
+
+    let guarantors = [];
+    this.loanDetails?.guarantors.map((x: any) => {
+      guarantors.push({
+        guarantor: x._id,
+      });
+    });
+
+    let request = {
+      loanNumber: this.loanDetails?.loanNo,
+      transactionDate: this.loanDetails?.transactionDate,
+      reference: this.loanDetails?.reference || "",
+      borrower: this.loanDetails?.borrowerDetails?._id || "",
+      product: this.loanDetails?.productDetails,
+      reason: this.loanDetails?.reason,
+      recoverOfficer: this.loanDetails?.recoveryOfficer?._id,
+      collectionDate: this.loanDetails?.collectionDate,
+      isDeductionChargesReducedFromLoan:
+        this.loanDetails?.isChargesReduceFromLoan,
+      guarantors: guarantors || [],
+    };
+
+    this.loanService.SaveLoan(request).subscribe((response) => {
+      if (response.IsSuccessful) {
+        this.messageService.showSuccessAlert(response.Message);
+        this.sidebarService.sidebarEvent.emit(true);
+      } else {
+        this.messageService.showErrorAlert(response.Message);
+      }
+    });
+  }
 }

@@ -15,6 +15,7 @@ export class ResourceService {
   private User = this.host + "/user";
   private Common = this.host + "/common";
   private Product = this.host + "/product";
+  private Loan = this.host + "/loan";
 
   auth = {
     login: this.Auth + "/login",
@@ -53,5 +54,10 @@ export class ResourceService {
     getAllProducts: this.Product,
     activeInactiveProduct: this.Product + "/activeInactive",
     getProductById: this.Product,
+  };
+
+  loan = {
+    saveLoan: this.Loan,
+    getLoanCode: this.Loan + "/getLoanCode",
   };
 }

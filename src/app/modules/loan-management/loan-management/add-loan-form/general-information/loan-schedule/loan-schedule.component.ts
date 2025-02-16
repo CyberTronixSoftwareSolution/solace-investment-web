@@ -40,7 +40,6 @@ export class LoanScheduleComponent implements OnInit {
   }
 
   calculateLoanSchedule() {
-    debugger;
     this.loanSchedule = [];
 
     let totalInterest = this.product.rate;
