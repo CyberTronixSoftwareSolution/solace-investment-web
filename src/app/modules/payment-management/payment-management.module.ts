@@ -38,35 +38,16 @@ import { AutoCompleteModule } from "primeng/autocomplete";
 import { StepsModule } from "primeng/steps";
 import { ToastModule } from "primeng/toast";
 
-import { LoanManagementRoutingModule } from "./loan-management-routing.module";
-import { LoanManagementComponent } from "./loan-management/loan-management.component";
-
-import { AddLoanFormComponent } from "./loan-management/add-loan-form/add-loan-form.component";
-import { GeneralInformationComponent } from "./loan-management/add-loan-form/general-information/general-information.component";
-import { LoanSummaryComponent } from "./loan-management/add-loan-form/loan-summary/loan-summary.component";
-import { OtherDetailsComponent } from "./loan-management/add-loan-form/other-details/other-details.component";
-import { GuarantorDetailsComponent } from "./loan-management/add-loan-form/guarantor-details/guarantor-details.component";
-import { LoanScheduleComponent } from "./loan-management/add-loan-form/general-information/loan-schedule/loan-schedule.component";
-import { ViewPaymentSummaryComponent } from "./loan-management/view-payment-summary/view-payment-summary.component";
-import { HandOverLoanComponent } from "./loan-management/hand-over-loan/hand-over-loan.component";
+import { PaymentManagementRoutingModule } from "./payment-management-routing.module";
+import { ReceiptBulkComponent } from "./receipt-bulk/receipt-bulk.component";
+import { PaymentReceiptComponent } from "./payment-receipt/payment-receipt.component";
+import { NgxPrintModule } from "ngx-print";
 
 @NgModule({
-  declarations: [
-    LoanManagementComponent,
-    AddLoanFormComponent,
-    GeneralInformationComponent,
-    LoanManagementComponent,
-    LoanSummaryComponent,
-    OtherDetailsComponent,
-    GuarantorDetailsComponent,
-    LoanScheduleComponent,
-    ViewPaymentSummaryComponent,
-    HandOverLoanComponent,
-  ],
+  declarations: [ReceiptBulkComponent, PaymentReceiptComponent],
   imports: [
     CommonModule,
-    LoanManagementRoutingModule,
-    CommonModule,
+    PaymentManagementRoutingModule,
     ButtonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -105,6 +86,7 @@ import { HandOverLoanComponent } from "./loan-management/hand-over-loan/hand-ove
     InputGroupModule,
     InputGroupAddonModule,
     AutoCompleteModule,
+    NgxPrintModule,
   ],
 })
-export class LoanManagementModule {}
+export class PaymentManagementModule {}

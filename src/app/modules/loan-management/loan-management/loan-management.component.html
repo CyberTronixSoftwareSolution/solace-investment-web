@@ -1,9 +1,197 @@
-<div class="flex justify-content-between align-items-center mb-4">
-  <div class="text-2xl font-semibold">Loan Management</div>
-  <p-button
-    styleClass="p-button-sm mb:p-button"
-    icon="pi pi-plus"
-    label="Add New Loan"
-    (onClick)="onClickAddNew()"
-  ></p-button>
-</div>
+<form [formGroup]="FV.formGroup">
+  <div class="flex justify-content-between align-items-center mb-4">
+    <div class="text-2xl font-semibold">Loan Management</div>
+    <p-button
+      styleClass="p-button-sm mb:p-button"
+      icon="pi pi-plus"
+      label="Add New Loan"
+      (onClick)="onClickAddNew()"
+    ></p-button>
+  </div>
+  <p-table
+    #dt
+    styleClass=""
+    [columns]="cols"
+    [value]="recodes"
+    responsiveLayout="stack"
+    [breakpoint]="'960px'"
+    dataKey="_id"
+    [rows]="10"
+    [responsive]="true"
+    styleClass="p-datatable-gridlines"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [paginator]="true"
+    [rowHover]="true"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="['loanCode', 'customer', 'product']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="grid formgrid p-fluid">
+        <div class="field col-12 md:col-3">
+          <div class="flex justify-content-end md:justify-content-start">
+            <button
+              type="button"
+              pButton
+              pRipple
+              icon="pi pi-file-excel"
+              class="p-button-success"
+              pTooltip="Export to XLS"
+              tooltipPosition="right"
+              (click)="exportToExcel()"
+            ></button>
+          </div>
+        </div>
+        <div class="field hidden md:col-4 md:flex"></div>
+        <div class="field col-5 md:col-2">
+          <p-dropdown
+            id="tripStatus"
+            [options]="status"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Status"
+            formControlName="status"
+            appendTo="body"
+            (onChange)="getAllLoans()"
+          ></p-dropdown>
+        </div>
+        <div class="field col-7 md:col-3">
+          <p-iconField iconPosition="left" class="ml-auto">
+            <p-inputIcon>
+              <i class="pi pi-search"></i>
+            </p-inputIcon>
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Search Loans"
+              styleClass="w-full md:w-12rem"
+            />
+          </p-iconField>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th
+          *ngFor="let col of columns"
+          [ngClass]="{
+            'text-center': col.field == 'status',
+            'text-right': col.field == 'amount' || col.field == 'agreedAmount' || col.field == 'payedAmount',
+          }"
+        >
+          {{ col.header }}
+        </th>
+        <th class="text-center">Action</th>
+      </tr>
+    </ng-template>
+    <ng-template
+      pTemplate="body"
+      let-rowData
+      let-columns="columns"
+      let-rowIndex="rowIndex"
+    >
+      <tr>
+        <td
+          *ngFor="let col of columns"
+          [ngClass]="{
+          'bg-blue': rowIndex % 2 !== 0,
+          'text-right':
+            col.field == 'amount' ||
+            col.field == 'agreedAmount' ||
+            col.field == 'payedAmount',
+          'text-center': col.field == 'status',
+        }"
+        >
+          <ng-container *ngIf="col.field == 'status'">
+            <span class="p-column-title font-bold">Status</span>
+            <div class="text-center">
+              <p-tag
+                value="{{ rowData.statusName }}"
+                severity="secondary"
+                *ngIf="rowData.status == 1"
+                styleClass="p-2"
+              />
+
+              <p-tag
+                value="{{ rowData.statusName }}"
+                severity="info"
+                *ngIf="rowData.status == 2"
+                styleClass="p-2"
+              />
+
+              <p-tag
+                value="{{ rowData.statusName }}"
+                severity="success"
+                *ngIf="rowData.status == 3"
+                styleClass="p-2"
+              />
+            </div>
+          </ng-container>
+
+          <ng-container
+            *ngIf="
+              col.field == 'amount' ||
+              col.field == 'agreedAmount' ||
+              col.field == 'payedAmount'
+            "
+          >
+            <span class="p-column-title font-bold">{{ col.header }}</span>
+            {{ rowData[col.field] | currency : "" : "" }}
+          </ng-container>
+
+          <ng-container
+            *ngIf="
+              col.field != 'status' &&
+              col.field != 'amount' &&
+              col.field != 'agreedAmount' &&
+              col.field != 'payedAmount'
+            "
+          >
+            <span class="p-column-title font-bold">{{ col.header }}</span>
+            {{ rowData[col.field] || "-" }}
+          </ng-container>
+        </td>
+        <td
+          class="text-center"
+          [ngClass]="{
+                'bg-blue': rowIndex % 2 !== 0,
+              }"
+        >
+          <div
+            class="flex flex-wrap justify-content-center align-content-center gap-2"
+          >
+            <button
+              #btn
+              type="button"
+              pButton
+              icon="pi pi-ellipsis-v"
+              (click)="toggleMenu(menu, $event, rowData)"
+            ></button>
+            <p-tieredMenu
+              #menu
+              [model]="filteredItems"
+              [popup]="true"
+              appendTo="body"
+              styleClass="w-16rem"
+            ></p-tieredMenu>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length + 2">
+          <div
+            class="flex flex-column justify-content-center align-items-center gap-2"
+            style="height: 300px; width: 100%"
+          >
+            <i class="pi pi-inbox text-5xl text-gray-400"></i>
+            <small class="">No Loan Found</small>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <!-- </div> -->
+</form>

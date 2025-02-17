@@ -1,0 +1,139 @@
+<p-table
+  #dt
+  styleClass=""
+  [columns]="cols"
+  [value]="paymentDetails"
+  responsiveLayout="stack"
+  [breakpoint]="'960px'"
+  [scrollable]="true"
+  scrollHeight="300px"
+  dataKey="_id"
+  [responsive]="true"
+  styleClass="p-datatable-gridlines"
+  [rowHover]="true"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th
+        *ngFor="let col of columns"
+        [ngClass]="{
+          'text-right':
+            col.field === 'interest' ||
+            col.field === 'capital' ||
+            col.field === 'installment',
+          'text-center': col.field === 'detailIndex' || col.field == 'status'
+        }"
+      >
+        {{ col.header }}
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template
+    pTemplate="body"
+    let-rowData
+    let-columns="columns"
+    let-rowIndex="rowIndex"
+  >
+    <tr>
+      <td
+        *ngFor="let col of columns"
+        [ngClass]="{
+          'bg-blue': rowIndex % 2 !== 0,
+          'text-right':
+            col.field == 'interest' ||
+            col.field == 'capital' ||
+            col.field == 'installment',
+          'text-center': col.field == 'index' || col.field == 'status'
+        }"
+      >
+        <ng-container *ngIf="col.field == 'detailIndex'">
+          <span class="p-column-title font-bold">{{ col.header }}</span
+          >{{ rowData[col.field] | number : "2.0-0" }}
+        </ng-container>
+
+        <ng-container *ngIf="col.field == 'status'">
+          <span class="p-column-title font-bold">{{ col.header }}</span>
+
+          <p-tag
+            value="{{ rowData.statusName }}"
+            severity="secondary"
+            *ngIf="rowData.status == 1"
+            styleClass="p-2"
+          />
+
+          <p-tag
+            value="{{ rowData.statusName }}"
+            severity="success"
+            *ngIf="rowData.status == 2"
+            styleClass="p-2"
+          />
+        </ng-container>
+
+        <ng-container
+          *ngIf="col.field == 'dueDate' || col.field == 'paymentDate'"
+        >
+          <span class="p-column-title font-bold">{{ col.header }}</span
+          >{{ (rowData[col.field] | date : "dd-MM-yyyy") || "-" }}
+        </ng-container>
+
+        <ng-container
+          *ngIf="
+            col.field == 'interest' ||
+            col.field == 'capital' ||
+            col.field == 'installment'
+          "
+        >
+          <span class="p-column-title font-bold">{{ col.header }}</span
+          >{{ rowData[col.field] | currency : "" : "" }}
+        </ng-container>
+
+        <ng-container
+          *ngIf="
+            col.field != 'interest' &&
+            col.field != 'capital' &&
+            col.field != 'installment' &&
+            col.field != 'detailIndex' &&
+            col.field != 'dueDate' &&
+            col.field != 'paymentDate' &&
+            col.field != 'status'
+          "
+        >
+          <span class="p-column-title font-bold">{{ col.header }}</span>
+          {{ rowData[col.field] || "-" }}
+        </ng-container>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <tr>
+      <td [attr.colspan]="loanData.status != 1 ? 4 : 2">
+        <span class="font-bold">Total</span>
+      </td>
+      <td class="text-right">
+        {{ totalInterest | currency : "" : "" }}
+      </td>
+      <td class="text-right">
+        {{ totalCapital | currency : "" : "" }}
+      </td>
+      <td class="text-right">
+        {{ totalInstallment | currency : "" : "" }}
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="columns.length + 2">
+        <div
+          class="flex flex-column justify-content-center align-items-center gap-2"
+          style="height: 100px; width: 100%"
+        >
+          <i class="pi pi-inbox text-5xl text-gray-400"></i>
+          <small class="">No payment Found</small>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

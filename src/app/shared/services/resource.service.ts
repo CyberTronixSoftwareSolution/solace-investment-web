@@ -59,5 +59,10 @@ export class ResourceService {
   loan = {
     saveLoan: this.Loan,
     getLoanCode: this.Loan + "/getLoanCode",
+    getAllLoans: this.Loan,
+    delete: this.Loan + "/delete",
+    getLoanDetailsByHeader: this.Loan + "/getLoanDetails",
+    getLoanById: this.Loan,
+    handOverLoan: this.Loan + "/handOverLoan",
   };
 }

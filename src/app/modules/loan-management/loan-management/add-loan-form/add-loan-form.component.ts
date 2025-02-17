@@ -66,6 +66,7 @@ export class AddLoanFormComponent implements OnInit {
   }
 
   handleClick(index: number): void {
+    debugger;
     let isStepCompleted = this.loanFlowService.getStepValue(index) as boolean;
 
     // isStepCompleted = true;
@@ -105,13 +106,14 @@ export class AddLoanFormComponent implements OnInit {
       this.gic.FV.showErrors();
       return;
     }
+    debugger;
 
     let formData = this.gic.FV.formGroup.value;
     let loanNo = this.gic.FV.getValue("loanNo");
     let transactionDate = this.gic.FV.getValue("transactionDate");
 
     // Set Product details
-    this.gic.selectedProduct = {
+    let product = {
       ...this.gic.selectedProduct,
       rate: formData.rate || 0,
       termsCount: formData.terms || 0,
@@ -121,7 +123,7 @@ export class AddLoanFormComponent implements OnInit {
 
     this.loanDetails = {
       ...this.loanDetails,
-      productDetails: this.gic.selectedProduct,
+      productDetails: product,
       borrowerDetails: this.gic.selectedBorrower,
       loanNo: loanNo,
       reference: formData.reference,
@@ -172,14 +174,20 @@ export class AddLoanFormComponent implements OnInit {
 
     this.showingIndex += 1;
   }
+  ngAfterContentChecked(): void {
+    //Called after every check of the component's or directive's content.
+    //Add 'implements AfterContentChecked' to the class.
+    console.log(this.loanDetails);
+  }
 
   saveGuarantorDetails() {
-    // if (this.gdc.guarantors.length < 2) {
-    //   this.messageService.showWarnAlert(
-    //     "Please add at least two guarantors to continue!"
-    //   );
-    //   return;
-    // }
+    if (this.gdc.guarantors.length < 2) {
+      this.messageService.showWarnAlert(
+        "Please add at least two guarantors to continue!"
+      );
+      return;
+    }
+    debugger;
 
     this.loanDetails = {
       ...this.loanDetails,
@@ -190,7 +198,7 @@ export class AddLoanFormComponent implements OnInit {
     this.loanFlowService.setLoanDetails(this.loanDetails);
 
     // mark step as completed
-    this.loanFlowService.setStepValue(1, true);
+    this.loanFlowService.setStepValue(2, true);
 
     this.showingIndex += 1;
   }
@@ -233,5 +241,9 @@ export class AddLoanFormComponent implements OnInit {
         this.messageService.showErrorAlert(response.Message);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.loanFlowService.resetData();
   }
 }

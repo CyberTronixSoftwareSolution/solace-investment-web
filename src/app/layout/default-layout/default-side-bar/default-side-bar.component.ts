@@ -61,19 +61,20 @@ export class DefaultSideBarComponent implements OnInit {
         menuId: 11,
         label: "Payment Management",
         icon: "pi pi-wallet",
-        routerLink: "/payment",
         isVisible: true,
-        isSumMenu: false,
+        isSumMenu: true,
+        subMenu: [
+          {
+            menuId: 14,
+            label: "Receipt Bulk",
+            icon: "pi pi-tags",
+            routerLink: "/payment-management/receipt-bulk",
+            isVisible: true,
+            isSumMenu: false,
+          },
+        ],
       },
 
-      {
-        menuId: 12,
-        label: "Payroll",
-        icon: "pi pi-receipt",
-        routerLink: "/payroll",
-        isVisible: true,
-        isSumMenu: false,
-      },
       {
         menuId: 13,
         label: "Reports",

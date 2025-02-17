@@ -40,6 +40,14 @@ const routes: Routes = [
       ),
     // canActivate: [RouteGuardService],
   },
+  {
+    path: "payment-management",
+    loadChildren: () =>
+      import("./modules/payment-management/payment-management.module").then(
+        (m) => m.PaymentManagementModule
+      ),
+    // canActivate: [RouteGuardService],
+  },
 ];
 
 @NgModule({

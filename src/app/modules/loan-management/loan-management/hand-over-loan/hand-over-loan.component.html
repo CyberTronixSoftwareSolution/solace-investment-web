@@ -1,0 +1,114 @@
+<form autocomplete="off" [formGroup]="FV.formGroup">
+  <div class="flex flex-column gap-3">
+    <div class="flex justify-content-between">
+      <span>Loan Amount</span>
+      <span>{{ loanData?.amount | currency : "" : "" }}</span>
+    </div>
+
+    <div class="flex justify-content-between">
+      <span>Total Interest Amount </span>
+      <span>{{
+        loanData?.loanSummary?.totalInterestAmount | currency : "" : ""
+      }}</span>
+    </div>
+
+    <div class="flex justify-content-between">
+      <span class="font-bold">Agreed Amount</span>
+      <span class="font-bold">{{
+        loanData?.loanSummary?.agreedAmount | currency : "" : ""
+      }}</span>
+    </div>
+
+    <div class="flex justify-content-between">
+      <span>Deduction charges is reduce from loan</span>
+      <span>{{
+        loanData?.isDeductionChargesReducedFromLoan ? "Yes" : "No"
+      }}</span>
+    </div>
+
+    <div class="flex justify-content-between">
+      <span>Loan Deduction Charges</span>
+      <span>{{
+        loanData?.loanSummary?.totalDeductionCharges | currency : "" : ""
+      }}</span>
+    </div>
+    <div class="flex justify-content-between">
+      <span class="font-bold">Available Balance</span>
+      <span class="font-bold text-white bg-cyan-400 p-1 border-round">{{
+        loanData?.loanSummary?.availableBalance | currency : "" : ""
+      }}</span>
+    </div>
+  </div>
+  <p-divider />
+
+  <div class="p-fluid grid formgrid">
+    <div class="field col-12 md:col-3">
+      <label for="LoanNo">Loan No</label>
+      <input
+        id="LoanNo"
+        type="text"
+        pInputText
+        maxlength="20"
+        formControlName="loanNo"
+        readonly="true"
+      />
+    </div>
+    <div class="field col-12 md:col-4">
+      <label for="product">Product</label>
+      <input
+        id="product"
+        type="text"
+        pInputText
+        maxlength="100"
+        readonly="true"
+        formControlName="product"
+      />
+    </div>
+    <div class="field col-12 md:col-5">
+      <label for="date" class="required">Disbursement Date</label>
+      <p-calendar
+        id="disbursementDate"
+        [showTime]="false"
+        dateFormat="yy-mm-dd"
+        appendTo="body"
+        formControlName="disbursementDate"
+        [readonlyInput]="true"
+      ></p-calendar>
+    </div>
+
+    <div class="field col-12">
+      <label for="handOverRemark">Disbursement Remark</label>
+      <textarea
+        id="remark"
+        pInputTextarea
+        [autoResize]="true"
+        [rows]="3"
+        maxlength="500"
+        formControlName="remark"
+      ></textarea>
+
+      <div style="float: right">
+        <small class="text-500 text-xs"
+          >{{ FV.getValue("remark")?.length || 0 }}/ 500</small
+        >
+      </div>
+    </div>
+
+    <div class="field col-12 md:col-12">
+      <div class="flex justify-content-end gap-2">
+        <p-button
+          label="SAVE"
+          icon="pi pi-check-circle"
+          styleClass="p-button-primary p-button-sm mb:p-button"
+          (onClick)="onSave()"
+        ></p-button>
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          styleClass="p-button-secondary p-button-sm mb:p-button"
+          (onClick)="onCancel()"
+        ></p-button>
+      </div>
+    </div>
+  </div>
+</form>

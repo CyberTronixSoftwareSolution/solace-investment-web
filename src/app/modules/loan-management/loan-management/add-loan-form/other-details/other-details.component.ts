@@ -66,7 +66,7 @@ export class OtherDetailsComponent implements OnInit {
     debugger;
     this.isOpenDeductionCharges = this.selectedProduct.isOpenDeductionCharges;
 
-    this.deductionCharges = this.selectedProduct.deductionCharges;
+    this.deductionCharges = this.selectedProduct.deductionCharges || [];
 
     this.calculateDeductionCharges();
 
@@ -164,10 +164,9 @@ export class OtherDetailsComponent implements OnInit {
 
     let formData = this.FV.formGroup.value;
 
-    let totalAmounts = this.deductionCharges.reduce(
-      (total, item) => total + item.amount,
-      0
-    );
+    let totalAmounts =
+      this.deductionCharges.reduce((total, item) => total + item.amount, 0) ||
+      0;
 
     if (
       totalAmounts + formData.deductionChargeRate >

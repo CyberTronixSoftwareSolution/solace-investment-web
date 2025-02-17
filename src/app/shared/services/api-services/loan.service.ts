@@ -26,4 +26,44 @@ export class LoanService {
         return response;
       });
   }
+
+  GetAllLoans(status: number) {
+    return this.dataAccess
+      .GET(this.resource.loan.getAllLoans + `?status=${status}`)
+      .pipe((response) => {
+        return response;
+      });
+  }
+
+  DeleteLoanByHeader(id: string) {
+    return this.dataAccess
+      .DELETE(this.resource.loan.delete + `/${id}`)
+      .pipe((response) => {
+        return response;
+      });
+  }
+
+  GetLoanDetailsByHeader(headerId: string) {
+    return this.dataAccess
+      .GET(this.resource.loan.getLoanDetailsByHeader + `/${headerId}`)
+      .pipe((response) => {
+        return response;
+      });
+  }
+
+  GetLoanById(id: string) {
+    return this.dataAccess
+      .GET(this.resource.loan.getLoanById + `/${id}`)
+      .pipe((response) => {
+        return response;
+      });
+  }
+
+  HandOverLoan(id: string, body: any) {
+    return this.dataAccess
+      .PUT(this.resource.loan.handOverLoan + `/${id}`, body)
+      .pipe((response) => {
+        return response;
+      });
+  }
 }

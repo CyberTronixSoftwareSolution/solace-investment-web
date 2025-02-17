@@ -146,7 +146,14 @@ export class GeneralInformationComponent implements OnInit {
       let selectedProduct = this.productArr.find(
         (x) => x._id === this.loanDetails.productDetails._id
       );
-      this.selectedProduct = selectedProduct;
+
+      this.selectedProduct = {
+        ...selectedProduct,
+        isOpenDeductionCharges:
+          this.loanDetails.productDetails.isOpenDeductionCharges,
+        deductionCharges: this.loanDetails.productDetails.deductionCharges,
+      };
+
       this.FV.setValue("productName", selectedProduct);
       this.FV.setValue(
         "productCode",
