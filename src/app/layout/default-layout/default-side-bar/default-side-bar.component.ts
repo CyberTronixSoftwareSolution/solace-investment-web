@@ -58,6 +58,14 @@ export class DefaultSideBarComponent implements OnInit {
         isSumMenu: false,
       },
       {
+        menuId: 15,
+        label: "Night Audit",
+        icon: "pi pi-briefcase",
+        routerLink: "/report",
+        isVisible: true,
+        isSumMenu: false,
+      },
+      {
         menuId: 11,
         label: "Payment Management",
         icon: "pi pi-wallet",
@@ -66,9 +74,17 @@ export class DefaultSideBarComponent implements OnInit {
         subMenu: [
           {
             menuId: 14,
-            label: "Receipt Bulk",
+            label: "Receipts Bulk",
             icon: "pi pi-tags",
             routerLink: "/payment-management/receipt-bulk",
+            isVisible: true,
+            isSumMenu: false,
+          },
+          {
+            menuId: 16,
+            label: "Receipts",
+            icon: "pi pi-tag",
+            routerLink: "/payment-management/receipts",
             isVisible: true,
             isSumMenu: false,
           },

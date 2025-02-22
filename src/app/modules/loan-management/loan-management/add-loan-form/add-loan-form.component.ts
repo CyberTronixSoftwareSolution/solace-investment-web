@@ -8,6 +8,7 @@ import { OtherDetailsComponent } from "./other-details/other-details.component";
 import { GuarantorDetailsComponent } from "./guarantor-details/guarantor-details.component";
 import { LoanSummaryComponent } from "./loan-summary/loan-summary.component";
 import { AppMessageService } from "src/app/shared/services/app-message.service";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-add-loan-form",
@@ -40,7 +41,8 @@ export class AddLoanFormComponent implements OnInit {
     private sidebarService: SidebarService,
     private loanFlowService: LoanFlowServiceService,
     private messageService: AppMessageService,
-    private loanService: LoanService
+    private loanService: LoanService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -118,7 +120,9 @@ export class AddLoanFormComponent implements OnInit {
       rate: formData.rate || 0,
       termsCount: formData.terms || 0,
       amount: formData.amount || 0,
-      disbursementDate: formData.disbursementDate || "",
+      disbursementDate: formData.disbursementDate
+        ? this.datePipe.transform(formData.disbursementDate, "yyyy-MM-dd")
+        : "",
     };
 
     this.loanDetails = {
@@ -127,7 +131,7 @@ export class AddLoanFormComponent implements OnInit {
       borrowerDetails: this.gic.selectedBorrower,
       loanNo: loanNo,
       reference: formData.reference,
-      transactionDate: transactionDate,
+      transactionDate: this.datePipe.transform(transactionDate, "yyyy-MM-dd"),
       reason: formData.reason,
     };
 

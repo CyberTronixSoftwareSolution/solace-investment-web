@@ -1,68 +1,92 @@
 <div class="receipt-container" id="demo">
-  <div class="header">
-    <svg class="logo" viewBox="0 0 100 50">
-      <!-- Simplified Crown Regent logo representation -->
-      <rect x="10" y="10" width="30" height="30" fill="#ff0000" />
-      <rect x="40" y="10" width="30" height="30" fill="#0000ff" />
-    </svg>
-    <div class="company-name">CROWN REGENT</div>
+  <div class="flex justify-content-between mb-4 align-items-center">
+    <img src="assets/icons/svg/logo.svg" alt="logo" height="60" />
+    <div class="flex-column justify-content-end align-items-center">
+      <div class="company-name">SOLACE INVESTMENT</div>
+      <div class="company-address">No. 1, Galle Road, Colombo 06</div>
+      <div class="company-address">Tel: 011 223 3333</div>
+    </div>
   </div>
-
-  <div class="receipt-title">RECEIPT DETAILS 2025-01-17</div>
+  <!--  {
+        "id": "67b99abef8447a4cd6f5a551",
+        "receiptNo": "LOA005-1",
+        "receiptDate": "2025-02-21T18:30:00.000Z",
+        "reference": "dbndgn",
+        "customerId": "67b205b3e7a7832b0ee93847",
+        "cusCode": "3/200151001399",
+        "cusName": "MPLH Udari Sithupraba",
+        "nicNumber": "200151001399",
+        "loanId": "67b99ab4f8447a4cd6f5a504",
+        "loanNo": "LOA005",
+        "outStandingAmount": 110000,
+        "paidAmount": 9166.67,
+        "balanceAmount": 100833.33,
+        "printedUser": "(1)John Doe"
+    } -->
+  <div class="receipt-title">
+    RECEIPT DETAILS {{ printData?.receiptDate | date : "yyyy-MM-dd" }}
+  </div>
 
   <div class="details-grid">
     <div class="label">Receipt No</div>
-    <div class="receipt-data">128</div>
+    <div class="receipt-data">{{ printData?.receiptNo }}</div>
 
     <div class="label">Date</div>
-    <div class="receipt-data">2025-01-17</div>
+    <div class="receipt-data">
+      {{ printData?.receiptDate | date : "yyyy-MM-dd" }}
+    </div>
 
     <div class="label">Ref No</div>
-    <div class="receipt-data">-</div>
+    <div class="receipt-data">{{ printData?.reference || "-" }}</div>
 
     <div class="label">Cus Code</div>
-    <div class="receipt-data">CS04725/19862520179</div>
+    <div class="receipt-data">{{ printData?.cusCode }}</div>
 
     <div class="label">Cus Name</div>
-    <div class="receipt-data">R.M.T.D.RATHNAYAKA</div>
+    <div class="receipt-data">{{ printData?.cusName }}</div>
 
     <div class="label">Loan No</div>
-    <div class="receipt-data">HLS128621</div>
+    <div class="receipt-data">{{ printData?.loanNo }}</div>
 
     <div class="label">Description</div>
-    <div class="receipt-data">LOAN PAYMENTS</div>
+    <div class="receipt-data">{{ printData?.description || "-" }}</div>
 
     <div class="label">Print Detail</div>
-    <div class="receipt-data">(CS04608)NUWAN MADUSAN</div>
+    <div class="receipt-data">{{ printData?.printedUser }}</div>
   </div>
 
   <div class="payment-section">
     <div class="payment-title">PAYMENT DETAILS</div>
 
     <div class="payment-grid">
-      <div class="label">Arrears Amount</div>
-      <div class="amount">Rs 0.00</div>
-
       <div class="label">Outstanding Amount</div>
-      <div class="amount">Rs 20,400.00</div>
+      <div class="amount">
+        Rs {{ printData?.outStandingAmount | currency : "" : "" }}
+      </div>
 
       <div class="label">Paid Amount</div>
-      <div class="amount paid-amount">Rs 600.00</div>
+      <div class="amount paid-amount">
+        Rs {{ printData?.paidAmount | currency : "" : "" }}
+      </div>
 
       <div class="label">Balance Amount</div>
-      <div class="amount">Rs 19,800.00</div>
+      <div class="amount">
+        Rs {{ printData?.balanceAmount | currency : "" : "" }}
+      </div>
     </div>
   </div>
 </div>
 
-<div class="flex justify-content-end align-items-center">
-  <button
-    id="print"
-    class="p-button-sm p-button p-component p-ripple"
-    printSectionId="demo"
-    [useExistingCss]="true"
-    ngxPrint
-  >
-    <i class="pi pi-print mr-2" style="font-size: 1rem"></i> Print
-  </button>
-</div>
+<ng-template #templateRef>
+  <div class="flex justify-content-end align-items-center gap-2">
+    <button
+      id="print"
+      class="p-button-sm p-button p-component p-ripple"
+      printSectionId="demo"
+      [useExistingCss]="true"
+      ngxPrint
+    >
+      <i class="pi pi-print mr-2" style="font-size: 1rem"></i> Print
+    </button>
+  </div>
+</ng-template>

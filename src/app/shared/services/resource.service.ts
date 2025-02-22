@@ -64,5 +64,9 @@ export class ResourceService {
     getLoanDetailsByHeader: this.Loan + "/getLoanDetails",
     getLoanById: this.Loan,
     handOverLoan: this.Loan + "/handOverLoan",
+    searchReceiptBulk: this.Loan + "/searchReceiptBulk",
+    searchReceipt: this.Loan + "/searchReceipt",
+    payLoanInstallment: this.Loan + "/payInstallment",
+    printReceipt: this.Loan + "/printReceipt",
   };
 }

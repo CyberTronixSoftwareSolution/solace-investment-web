@@ -251,7 +251,10 @@ export class GeneralInformationComponent implements OnInit {
       rate: formData.rate,
       termsCount: formData.terms,
       amount: formData.amount,
-      disbursementDate: formData.disbursementDate,
+      disbursementDate: this.datePipe.transform(
+        formData.disbursementDate,
+        "yyyy-MM-dd"
+      ),
     };
 
     let data = {

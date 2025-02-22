@@ -42,9 +42,14 @@ import { PaymentManagementRoutingModule } from "./payment-management-routing.mod
 import { ReceiptBulkComponent } from "./receipt-bulk/receipt-bulk.component";
 import { PaymentReceiptComponent } from "./payment-receipt/payment-receipt.component";
 import { NgxPrintModule } from "ngx-print";
+import { ReceiptsComponent } from "./receipts/receipts.component";
 
 @NgModule({
-  declarations: [ReceiptBulkComponent, PaymentReceiptComponent],
+  declarations: [
+    ReceiptBulkComponent,
+    PaymentReceiptComponent,
+    ReceiptsComponent,
+  ],
   imports: [
     CommonModule,
     PaymentManagementRoutingModule,

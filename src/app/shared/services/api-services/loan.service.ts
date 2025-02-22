@@ -66,4 +66,35 @@ export class LoanService {
         return response;
       });
   }
+
+  SearchReceiptBulk(body: any) {
+    return this.dataAccess
+      .POST(this.resource.loan.searchReceiptBulk, body)
+      .pipe((response) => {
+        return response;
+      });
+  }
+
+  SearchReceipts(body: any) {
+    return this.dataAccess
+      .POST(this.resource.loan.searchReceipt, body)
+      .pipe((response) => {
+        return response;
+      });
+  }
+  PayLoanInstallment(loanDetailId: string, body: any) {
+    return this.dataAccess
+      .PUT(this.resource.loan.payLoanInstallment + `/${loanDetailId}`, body)
+      .pipe((response) => {
+        return response;
+      });
+  }
+
+  GetPrintReceiptData(loanDetailId: string) {
+    return this.dataAccess
+      .GET(this.resource.loan.printReceipt + `/${loanDetailId}`)
+      .pipe((response) => {
+        return response;
+      });
+  }
 }

@@ -1,3 +1,4 @@
+import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { UntypedFormBuilder, Validators } from "@angular/forms";
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
@@ -19,7 +20,8 @@ export class HandOverLoanComponent implements OnInit {
     private ref: DynamicDialogRef,
     private formBuilder: UntypedFormBuilder,
     private loanService: LoanService,
-    private messageService: AppMessageService
+    private messageService: AppMessageService,
+    private datePipe: DatePipe
   ) {
     this.createForm();
   }
@@ -58,7 +60,10 @@ export class HandOverLoanComponent implements OnInit {
     let data = this.FV.formGroup.value;
 
     let request = {
-      transactionDate: data.disbursementDate,
+      transactionDate: this.datePipe.transform(
+        data.disbursementDate,
+        "yyyy-MM-dd"
+      ),
       remark: data.remark,
     };
 

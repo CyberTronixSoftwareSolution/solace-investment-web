@@ -3061,7 +3061,7 @@ p:last-child {
   box-sizing: border-box;
   line-height: 48px;
   color: #ababab;
-  cursor: pointer;
+  /* cursor: pointer; */
   text-align: center;
 }
 .widget-control-panel .right-controls a i {

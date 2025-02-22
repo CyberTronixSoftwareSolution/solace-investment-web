@@ -1,5 +1,5 @@
 <div class="flex justify-content-between align-items-center mb-4">
-  <div class="text-2xl font-semibold">Receipt Bulk</div>
+  <div class="text-2xl font-semibold">Receipts</div>
 </div>
 
 <form
@@ -8,16 +8,31 @@
   (keydown.enter)="$event.preventDefault()"
 >
   <div class="grid formgrid p-fluid">
-    <div class="field mb-3 col-12 md:col-3">
+    <div class="field mb-3 col-12 md:col-2">
       <!-- transactionDate -->
-      <label for="transactionDate">Transaction Date</label>
+      <label for="transactionDate">Start Date</label>
       <p-calendar
-        id="transactionDate"
+        id="startDate"
         [showTime]="false"
         dateFormat="yy-mm-dd"
         appendTo="body"
         [readonlyInput]="true"
-        formControlName="transactionDate"
+        formControlName="startDate"
+        (onSelect)="onSelectStartDate()"
+      ></p-calendar>
+    </div>
+
+    <div class="field mb-3 col-12 md:col-2">
+      <!-- transactionDate -->
+      <label for="transactionDate">End Date</label>
+      <p-calendar
+        id="endDate"
+        [showTime]="false"
+        dateFormat="yy-mm-dd"
+        appendTo="body"
+        [readonlyInput]="true"
+        [minDate]="FV.formGroup.get('startDate').value"
+        formControlName="endDate"
       ></p-calendar>
     </div>
     <div class="field mb-3 col-12 md:col-3">
@@ -31,7 +46,7 @@
         optionLabel="productName"
       ></p-dropdown>
     </div>
-    <div class="field mb-3 col-12 md:col-3">
+    <div class="field mb-3 col-12 md:col-2">
       <!-- searchType -->
       <label for="searchType">Search Type</label>
       <p-dropdown
@@ -116,14 +131,13 @@
           let-columns="columns"
           let-rowIndex="rowIndex"
         >
-          <tr *ngIf="editDataId != rowData.detailId">
+          <tr>
             <td
               *ngFor="let col of columns"
               [ngClass]="{
           'bg-blue': rowIndex % 2 !== 0,
           'text-right':
                   col.field == 'loanAmount' ||
-                  col.field == 'loanBalance' ||
                   col.field == 'termInstallAmount' || col.field == 'paymentAmount' || col.field == 'installment',
           'text-center': col.field == 'status',
         }"
@@ -131,7 +145,6 @@
               <ng-container
                 *ngIf="
                   col.field == 'loanAmount' ||
-                  col.field == 'loanBalance' ||
                   col.field == 'termInstallAmount' ||
                   col.field == 'installment'
                 "
@@ -145,26 +158,24 @@
 
                 <p-tag
                   value="{{ rowData.statusName }}"
-                  severity="secondary"
-                  *ngIf="rowData.status == 1"
-                  styleClass="p-2"
-                />
-
-                <p-tag
-                  value="{{ rowData.statusName }}"
                   severity="success"
                   *ngIf="rowData.status == 2"
                   styleClass="p-2"
                 />
               </ng-container>
 
+              <ng-container *ngIf="col.field == 'paymentDate'">
+                <span class="p-column-title font-bold">{{ col.header }}</span>
+                {{ rowData[col.field] | date : "dd-MM-yyyy" }}
+              </ng-container>
+
               <ng-container
                 *ngIf="
                   col.field != 'status' &&
                   col.field != 'loanAmount' &&
-                  col.field != 'loanBalance' &&
                   col.field != 'termInstallAmount' &&
-                  col.field != 'installment'
+                  col.field != 'installment' &&
+                  col.field != 'paymentDate'
                 "
               >
                 <span class="p-column-title font-bold">{{ col.header }}</span>
@@ -180,14 +191,6 @@
               <div
                 class="flex flex-wrap justify-content-center align-content-center gap-2"
               >
-                <p-button
-                  icon="pi pi-pencil"
-                  pTooltip="Edit"
-                  tooltipPosition="bottom"
-                  (onClick)="onClickEdit(rowData)"
-                  *ngIf="rowData.status == 1"
-                ></p-button>
-
                 <p-button
                   icon="pi pi-print"
                   pTooltip="Print Receipt"
@@ -195,102 +198,6 @@
                   class="p-button-print"
                   styleClass="p-button-info"
                   (onClick)="printReceipt(rowData)"
-                  *ngIf="rowData.status == 2"
-                ></p-button>
-              </div>
-            </td>
-          </tr>
-
-          <tr *ngIf="editDataId == rowData.detailId">
-            <td
-              *ngFor="let col of columns"
-              [ngClass]="{
-                'bg-blue': rowIndex % 2 !== 0,
-                'text-right':
-                        col.field == 'loanAmount' ||
-                        col.field == 'loanBalance' ||
-                        col.field == 'termInstallAmount' || col.field == 'paymentAmount' || col.field == 'installment',
-                'text-center': col.field == 'status',
-                    }"
-            >
-              <ng-container
-                *ngIf="
-                  col.field == 'loanAmount' ||
-                  col.field == 'loanBalance' ||
-                  col.field == 'termInstallAmount' ||
-                  col.field == 'installment'
-                "
-              >
-                <span class="p-column-title font-bold">{{ col.header }}</span>
-                {{ rowData[col.field] | currency : "" : "" }}
-              </ng-container>
-
-              <ng-container *ngIf="col.field == 'paymentAmount'">
-                <span class="p-column-title font-bold">{{ col.header }}</span>
-                <p-inputNumber
-                  formControlName="payment"
-                  [minFractionDigits]="2"
-                  [maxFractionDigits]="2"
-                  styleClass="w-10rem"
-                ></p-inputNumber>
-              </ng-container>
-
-              <ng-container *ngIf="col.field == 'status'">
-                <span class="p-column-title font-bold">{{ col.header }}</span>
-
-                <p-tag
-                  value="{{ rowData.statusName }}"
-                  severity="secondary"
-                  *ngIf="rowData.status == 1"
-                  styleClass="p-2"
-                />
-
-                <p-tag
-                  value="{{ rowData.statusName }}"
-                  severity="success"
-                  *ngIf="rowData.status == 2"
-                  styleClass="p-2"
-                />
-              </ng-container>
-
-              <ng-container
-                *ngIf="
-                  col.field != 'status' &&
-                  col.field != 'loanAmount' &&
-                  col.field != 'loanBalance' &&
-                  col.field != 'termInstallAmount' &&
-                  col.field != 'paymentAmount' &&
-                  col.field != 'installment'
-                "
-              >
-                <span class="p-column-title font-bold">{{ col.header }}</span>
-                {{ rowData[col.field] || "-" }}
-              </ng-container>
-            </td>
-            <td
-              class="text-center"
-              [ngClass]="{
-                'bg-blue': rowIndex % 2 !== 0,
-              }"
-            >
-              <div
-                class="flex flex-wrap justify-content-center align-content-center gap-2"
-              >
-                <!-- Save Btn -->
-                <p-button
-                  icon="pi pi-save"
-                  pTooltip="Save"
-                  tooltipPosition="bottom"
-                  (onClick)="onHandleUpdate(rowData)"
-                ></p-button>
-
-                <!-- Cancel Btn -->
-                <p-button
-                  icon="pi pi-times"
-                  pTooltip="Cancel"
-                  tooltipPosition="bottom"
-                  styleClass="p-button-danger"
-                  (onClick)="onHandleCancel(rowData)"
                 ></p-button>
               </div>
             </td>
