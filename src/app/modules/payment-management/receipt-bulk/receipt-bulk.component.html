@@ -133,7 +133,8 @@
                   col.field == 'loanAmount' ||
                   col.field == 'loanBalance' ||
                   col.field == 'termInstallAmount' ||
-                  col.field == 'installment'
+                  col.field == 'installment' ||
+                  col.field == 'paymentAmount'
                 "
               >
                 <span class="p-column-title font-bold">{{ col.header }}</span>
@@ -164,7 +165,8 @@
                   col.field != 'loanAmount' &&
                   col.field != 'loanBalance' &&
                   col.field != 'termInstallAmount' &&
-                  col.field != 'installment'
+                  col.field != 'installment' &&
+                  col.field != 'paymentAmount'
                 "
               >
                 <span class="p-column-title font-bold">{{ col.header }}</span>

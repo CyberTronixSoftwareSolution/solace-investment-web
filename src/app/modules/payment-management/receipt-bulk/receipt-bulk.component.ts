@@ -167,7 +167,7 @@ export class ReceiptBulkComponent implements OnInit {
     this.FV.setValue("product", "-1");
 
     this.recodes = [];
-    this.onSearch();
+    // this.onSearch();
   }
 
   onClickEdit(rowData: any) {

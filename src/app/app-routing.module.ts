@@ -48,6 +48,12 @@ const routes: Routes = [
       ),
     // canActivate: [RouteGuardService],
   },
+  {
+    path: "report",
+    loadChildren: () =>
+      import("./modules/report/report.module").then((m) => m.ReportModule),
+    // canActivate: [RouteGuardService],
+  },
 ];
 
 @NgModule({

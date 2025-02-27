@@ -1,0 +1,331 @@
+<div id="demo">
+  <div class="flex justify-content-between mb-2 align-items-center">
+    <div class="flex-column justify-content-end align-items-start">
+      <div class="font-bold text-xl">SOLACE INVESTMENT</div>
+      <div>No. 1, Galle Road, Colombo 06</div>
+      <div>Tel: 011 223 3333</div>
+    </div>
+
+    <div class="flex flex-column justify-content-center align-items-center">
+      <div class="font-bold text-xl">REPAYMENT REPORT</div>
+      <div
+        class="flex flex-wrap justify-content-center align-content-center gap-3 text-sm"
+      >
+        <span>Date: {{ fromDate | date : "dd-MM-yyyy" }}</span>
+        <span>Product : {{ product ? product.productName : "All" }} </span>
+        <span
+          >Recovery Officer :
+          {{ recoveryOfficer ? recoveryOfficer.fullName : "All" }}
+        </span>
+        <span
+          >Collection Day : {{ collectionDate ? collectionDate.value : "All" }}
+        </span>
+      </div>
+    </div>
+    <img src="assets/icons/svg/logo.svg" alt="logo" height="60" />
+  </div>
+  <hr />
+
+  <table>
+    <thead>
+      <tr>
+        <th class="text-center">#</th>
+        <th>Loan No</th>
+        <th>Customer</th>
+        <th>Phone No</th>
+        <th class="text-right">Loan Amount</th>
+        <th class="text-right">Rental</th>
+        <th class="text-right">Balance</th>
+        <th class="text-right">Arrears</th>
+        <th width="50px"></th>
+        <th width="50px"></th>
+        <th width="50px"></th>
+        <th width="50px"></th>
+        <th width="50px"></th>
+        <th width="50px"></th>
+        <th width="50px"></th>
+        <th width="50px"></th>
+        <th width="50px"></th>
+        <th width="50px"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let loanData of printData; let i = index">
+        <td class="text-center">{{ i + 1 }}</td>
+        <td>{{ loanData?.loanNo }}</td>
+        <td>{{ loanData?.customerName }}</td>
+        <td>{{ loanData?.mobileNo }}</td>
+        <td class="numeric">{{ loanData?.loanAmount | currency : "" : "" }}</td>
+        <td class="numeric">
+          {{ loanData?.installment | currency : "" : "" }}
+        </td>
+        <td class="numeric">{{ loanData?.balance | currency : "" : "" }}</td>
+        <td class="numeric">{{ loanData?.arrears | currency : "" : "" }}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <!-- Print 10 empty rows -->
+      <tr *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
+        <td style="height: 20px"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td style="height: 20px"></td>
+        <td></td>
+        <td>TOTAL AMOUNT</td>
+        <td></td>
+        <td class="numeric">{{ totalLoanAmount | currency : "" : "" }}</td>
+        <td class="numeric">{{ totalInstallment | currency : "" : "" }}</td>
+        <td class="numeric">{{ totalBalance | currency : "" : "" }}</td>
+        <td class="numeric">{{ totalArrears | currency : "" : "" }}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td style="height: 20px"></td>
+        <td></td>
+        <td>TOTAL DUE AMOUNT</td>
+        <td></td>
+        <td colspan="4"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td style="height: 20px"></td>
+        <td></td>
+        <td>SETTLEMENT DUE</td>
+        <td></td>
+        <td colspan="4"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td style="height: 20px"></td>
+        <td></td>
+        <td>SETTLEMENT AND COLLECTION TOTAL</td>
+        <td></td>
+        <td colspan="4"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td style="height: 20px"></td>
+        <td></td>
+        <td>NO OF UNDER PAYMENT</td>
+        <td></td>
+        <td colspan="4"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td style="height: 20px"></td>
+        <td></td>
+        <td>UNDER PAYMENT AMOUNT</td>
+        <td></td>
+        <td colspan="4"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td style="height: 20px"></td>
+        <td></td>
+        <td>NO OF NON PAYMENT</td>
+        <td></td>
+        <td colspan="4"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td style="height: 20px"></td>
+        <td></td>
+        <td>NON PAYMENT AMOUNT</td>
+        <td></td>
+        <td colspan="4"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td style="height: 20px"></td>
+        <td></td>
+        <td>ACTIVE CONTRACT</td>
+        <td></td>
+        <td colspan="4"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td style="height: 20px"></td>
+        <td></td>
+        <td>SLIP NO</td>
+        <td></td>
+        <td colspan="4"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td style="height: 20px"></td>
+        <td></td>
+        <td>EXECUTIVE SIGNATURE</td>
+        <td></td>
+        <td colspan="4"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td style="height: 20px"></td>
+        <td></td>
+        <td>MANAGER SIGNATURE</td>
+        <td></td>
+        <td colspan="4"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #templateRef>
+  <div class="flex justify-content-end align-items-center gap-2">
+    <button
+      id="print"
+      class="p-button-sm p-button p-component p-ripple"
+      printSectionId="demo"
+      [useExistingCss]="true"
+      ngxPrint
+    >
+      <i class="pi pi-file-pdf mr-2" style="font-size: 1rem"></i> Export PDF
+    </button>
+  </div>
+</ng-template>

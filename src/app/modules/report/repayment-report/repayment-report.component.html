@@ -1,0 +1,177 @@
+<div class="flex justify-content-between align-items-center mb-4">
+  <div class="text-2xl font-semibold">Repayment Report</div>
+</div>
+
+<form
+  [formGroup]="FV.formGroup"
+  novalidate
+  (keydown.enter)="$event.preventDefault()"
+>
+  <div class="grid formgrid p-fluid">
+    <div class="field mb-3 col-6 md:col-3">
+      <!-- transactionDate -->
+      <label for="startDate">Date From</label>
+      <p-calendar
+        id="startDate"
+        [showTime]="false"
+        dateFormat="yy-mm-dd"
+        appendTo="body"
+        [readonlyInput]="true"
+        formControlName="startDate"
+      ></p-calendar>
+    </div>
+    <div class="field mb-3 col-6 md:col-3">
+      <!-- product -->
+      <label for="product">Product</label>
+      <p-dropdown
+        [options]="productArr"
+        id="product"
+        formControlName="product"
+        optionLabel="productName"
+        placeholder="Select a Product"
+      ></p-dropdown>
+    </div>
+    <div class="field mb-3 col-6 md:col-3">
+      <label for="recoveryOfficer">Recovery Officer</label>
+      <p-autoComplete
+        id="recoveryOfficer"
+        optionLabel="label"
+        [suggestions]="recoveryOfficerSuggestionsArr"
+        [minLength]="1"
+        formControlName="recoveryOfficer"
+        (completeMethod)="searchRecoveryOfficer($event)"
+        [showClear]="true"
+        placeholder="Select a Recovery Officer"
+      ></p-autoComplete>
+    </div>
+    <div class="field mb-3 col-6 md:col-3">
+      <!-- searchCode -->
+      <label for="searchCode">Collection Day</label>
+      <p-dropdown
+        [options]="collectionDatesArr"
+        id="collectionDates"
+        formControlName="collectionDate"
+        optionLabel="name"
+        placeholder="Select a Collection Day"
+      ></p-dropdown>
+    </div>
+
+    <div class="field col-12">
+      <div class="flex justify-content-end gap-2">
+        <p-button
+          label="Search"
+          icon="pi pi-search"
+          styleClass="p-button-primary p-button-sm mb:p-button"
+          (onClick)="onSearch()"
+        ></p-button>
+
+        <p-button
+          label="Print"
+          icon="pi pi-print"
+          styleClass="p-button-success p-button-sm mb:p-button"
+          (onClick)="onPrint()"
+          *ngIf="recodes.length > 0"
+        ></p-button>
+
+        <p-button
+          label="Clear"
+          icon="pi pi-times"
+          styleClass="p-button-secondary p-button-sm mb:p-button"
+          (onClick)="onClear()"
+        ></p-button>
+      </div>
+    </div>
+
+    <div class="field mb-3 col-12">
+      <p-table
+        styleClass=""
+        [columns]="cols"
+        [value]="recodes"
+        responsiveLayout="stack"
+        [breakpoint]="'960px'"
+        dataKey="_id"
+        [rows]="10"
+        [responsive]="true"
+        styleClass="p-datatable-gridlines"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [paginator]="true"
+        [rowHover]="true"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['loanCode', 'customer', 'product']"
+      >
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th
+              *ngFor="let col of columns"
+              [ngClass]="{
+              'text-right': col.field == 'loanAmount' || col.field == 'installment' || col.field == 'balance' || col.field == 'arrears',
+            }"
+            >
+              {{ col.header }}
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template
+          pTemplate="body"
+          let-rowData
+          let-columns="columns"
+          let-rowIndex="rowIndex"
+        >
+          <tr>
+            <td
+              *ngFor="let col of columns"
+              [ngClass]="{
+                'bg-blue': rowIndex % 2 !== 0,
+                'text-right':
+                  col.field == 'loanAmount' ||
+                  col.field == 'installment' ||
+                  col.field == 'balance' ||
+                  col.field == 'arrears'
+              }"
+            >
+              <ng-container
+                *ngIf="
+                  col.field == 'loanAmount' ||
+                  col.field == 'installment' ||
+                  col.field == 'balance' ||
+                  col.field == 'arrears'
+                "
+              >
+                <span class="p-column-title font-bold">{{ col.header }}</span>
+                {{ rowData[col.field] | currency : "" : "" }}
+              </ng-container>
+
+              <ng-container
+                *ngIf="
+                  col.field != 'loanAmount' &&
+                  col.field != 'installment' &&
+                  col.field != 'balance' &&
+                  col.field != 'arrears'
+                "
+              >
+                <span class="p-column-title font-bold">{{ col.header }}</span>
+                {{ rowData[col.field] || "-" }}
+              </ng-container>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td [attr.colspan]="columns.length + 2">
+              <div
+                class="flex flex-column justify-content-center align-items-center gap-2"
+                style="height: 300px; width: 100%"
+              >
+                <i class="pi pi-inbox text-5xl text-gray-400"></i>
+                <small class="">No Data Found</small>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</form>
