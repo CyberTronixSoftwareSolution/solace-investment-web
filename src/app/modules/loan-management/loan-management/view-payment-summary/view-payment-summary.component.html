@@ -68,6 +68,13 @@
             *ngIf="rowData.status == 2"
             styleClass="p-2"
           />
+
+          <p-tag
+            value="{{ rowData.statusName }}"
+            severity="warning"
+            *ngIf="rowData.status == 3"
+            styleClass="p-2"
+          />
         </ng-container>
 
         <ng-container

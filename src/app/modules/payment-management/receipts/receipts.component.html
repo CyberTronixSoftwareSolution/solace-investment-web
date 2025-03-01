@@ -163,6 +163,13 @@
                   *ngIf="rowData.status == 2"
                   styleClass="p-2"
                 />
+
+                <p-tag
+                  value="{{ rowData.statusName }}"
+                  severity="warning"
+                  *ngIf="rowData.status == 3"
+                  styleClass="p-2"
+                />
               </ng-container>
 
               <ng-container *ngIf="col.field == 'paymentDate'">
@@ -199,6 +206,7 @@
                   tooltipPosition="bottom"
                   class="p-button-print"
                   styleClass="p-button-info"
+                  [disabled]="rowData.status != 2"
                   (onClick)="printReceipt(rowData)"
                 ></p-button>
               </div>

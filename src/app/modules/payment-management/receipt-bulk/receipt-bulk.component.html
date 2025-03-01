@@ -157,6 +157,13 @@
                   *ngIf="rowData.status == 2"
                   styleClass="p-2"
                 />
+
+                <p-tag
+                  value="{{ rowData.statusName }}"
+                  severity="warning"
+                  *ngIf="rowData.status == 3"
+                  styleClass="p-2"
+                />
               </ng-container>
 
               <ng-container
@@ -180,15 +187,38 @@
               }"
             >
               <div
-                class="flex flex-wrap justify-content-center align-content-center gap-2"
+                class="flex flex-wrap justify-content-center align-content-center gap-1"
               >
+                <p-button
+                  icon="pi pi-angle-double-right"
+                  pTooltip="Shift installment to next"
+                  tooltipPosition="bottom"
+                  styleClass="p-button-warning"
+                  *ngIf="rowData.status == 1"
+                  [disabled]="rowData.status == 2 || rowData.isLastInstallment"
+                  (onClick)="onClickShift(rowData, false)"
+                ></p-button>
+
+                <p-button
+                  icon="pi pi-undo"
+                  pTooltip="Undo shift installment"
+                  tooltipPosition="bottom"
+                  styleClass="p-button-warning p-button-outlined"
+                  *ngIf="rowData.status == 3"
+                  [disabled]="rowData.status == 2 || rowData.isLastInstallment"
+                  (onClick)="onClickShift(rowData, true)"
+                ></p-button>
+
                 <p-button
                   icon="pi pi-pencil"
                   pTooltip="Edit"
                   tooltipPosition="bottom"
                   (onClick)="onClickEdit(rowData)"
-                  *ngIf="rowData.status == 1"
+                  [disabled]="rowData.status == 2 || rowData.status == 3"
                 ></p-button>
+                <!--  
+                *ngIf="rowData.status == 1"
+                -->
 
                 <p-button
                   icon="pi pi-print"

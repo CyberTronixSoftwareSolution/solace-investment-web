@@ -218,4 +218,32 @@ export class ReceiptBulkComponent implements OnInit {
     this.FV.clearValue("payment");
     this.editDataId = "";
   }
+
+  onClickShift(rowData: any, isUndo: boolean = false) {
+    let confirmationConfig = {
+      message: `Are you sure you want to ${
+        isUndo ? "undo shift" : "shift"
+      } this installment to next installment?`,
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+    };
+
+    this.messageService.ConfirmPopUp(
+      confirmationConfig,
+      (isConfirm: boolean) => {
+        if (isConfirm) {
+          this.loanService
+            .ShiftInstallment(rowData.detailId, isUndo)
+            .subscribe((response) => {
+              if (response.IsSuccessful) {
+                this.messageService.showSuccessAlert(response.Message);
+                this.onSearch();
+              } else {
+                this.messageService.showErrorAlert(response.Message);
+              }
+            });
+        }
+      }
+    );
+  }
 }

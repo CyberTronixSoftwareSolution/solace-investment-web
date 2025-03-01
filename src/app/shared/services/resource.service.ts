@@ -69,6 +69,7 @@ export class ResourceService {
     searchReceipt: this.Loan + "/searchReceipt",
     payLoanInstallment: this.Loan + "/payInstallment",
     printReceipt: this.Loan + "/printReceipt",
+    shiftInstallment: this.Loan + "/shiftInstallment",
   };
 
   report = {

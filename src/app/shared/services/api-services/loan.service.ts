@@ -97,4 +97,16 @@ export class LoanService {
         return response;
       });
   }
+
+  ShiftInstallment(loanDetailId: string, isUndo = false) {
+    return this.dataAccess
+      .PUT(
+        this.resource.loan.shiftInstallment +
+          `/${loanDetailId}?isUndo=${isUndo}`,
+        null
+      )
+      .pipe((response) => {
+        return response;
+      });
+  }
 }
