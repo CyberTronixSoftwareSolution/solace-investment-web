@@ -57,6 +57,7 @@ export class ReceiptBulkComponent implements OnInit {
       { field: "loanNo", header: "Loan No" },
       { field: "loanAmount", header: "Loan Amount" },
       { field: "loanBalance", header: "Loan Balance" },
+      { field: "deuDate", header: "Due Date" },
       { field: "installment", header: "Installment" },
       { field: "status", header: "Status" },
       { field: "termInstallAmount", header: "Term Install Amount" },
@@ -69,7 +70,7 @@ export class ReceiptBulkComponent implements OnInit {
   }
   createForm() {
     this.FV.formGroup = this.formBuilder.group({
-      transactionDate: ["", [Validators.required]],
+      transactionDate: [""],
       product: ["", [Validators.required]],
       searchType: ["", [Validators.required]],
       searchCode: ["", [Validators.required]],
@@ -132,7 +133,7 @@ export class ReceiptBulkComponent implements OnInit {
 
   onSearch() {
     this.recodes = [];
-    let validateParams = "transactionDate,product,searchType";
+    let validateParams = "product,searchType";
     let searchType = this.FV.getValue("searchType");
 
     if (searchType != -1) {
@@ -143,12 +144,10 @@ export class ReceiptBulkComponent implements OnInit {
       return;
     }
 
-    let transactionDate = this.FV.getValue("transactionDate");
     let searchCode = this.FV.getValue("searchCode");
     let product = this.FV.getTrimValue("product");
 
     let request = {
-      transactionDate: this.datePipe.transform(transactionDate, "yyyy-MM-dd"),
       product: product,
       searchType: searchType.toString(),
       searchCode: searchCode,
@@ -205,6 +204,8 @@ export class ReceiptBulkComponent implements OnInit {
             this.onSearch();
             this.editDataId = "";
             this.FV.clearValue("payment");
+
+            this.printReceipt(rowData);
           } else {
             this.messageService.showErrorAlert(response.Message);
           }

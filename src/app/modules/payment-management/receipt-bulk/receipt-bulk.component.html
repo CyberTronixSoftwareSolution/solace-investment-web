@@ -89,6 +89,7 @@
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [globalFilterFields]="['loanCode', 'customer', 'product']"
+        [paginatorDropdownAppendTo]="'body'"
       >
         <ng-template pTemplate="header" let-columns>
           <tr>
@@ -166,6 +167,11 @@
                 />
               </ng-container>
 
+              <ng-container *ngIf="col.field == 'deuDate'">
+                <span class="p-column-title font-bold">{{ col.header }}</span>
+                {{ rowData[col.field] | date : "dd-MM-yyyy" }}
+              </ng-container>
+
               <ng-container
                 *ngIf="
                   col.field != 'status' &&
@@ -173,7 +179,8 @@
                   col.field != 'loanBalance' &&
                   col.field != 'termInstallAmount' &&
                   col.field != 'installment' &&
-                  col.field != 'paymentAmount'
+                  col.field != 'paymentAmount' &&
+                  col.field != 'deuDate'
                 "
               >
                 <span class="p-column-title font-bold">{{ col.header }}</span>
@@ -285,6 +292,11 @@
                 />
               </ng-container>
 
+              <ng-container *ngIf="col.field == 'deuDate'">
+                <span class="p-column-title font-bold">{{ col.header }}</span>
+                {{ rowData[col.field] | date : "dd-MM-yyyy" }}
+              </ng-container>
+
               <ng-container
                 *ngIf="
                   col.field != 'status' &&
@@ -292,7 +304,8 @@
                   col.field != 'loanBalance' &&
                   col.field != 'termInstallAmount' &&
                   col.field != 'paymentAmount' &&
-                  col.field != 'installment'
+                  col.field != 'installment' &&
+                  col.field != 'deuDate'
                 "
               >
                 <span class="p-column-title font-bold">{{ col.header }}</span>

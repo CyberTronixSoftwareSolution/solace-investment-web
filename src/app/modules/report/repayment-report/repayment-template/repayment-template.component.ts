@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { CompanyInfo } from "src/app/shared/data/comapanyInfo";
 import { SidebarService } from "src/app/shared/services/sidebar.service";
 
 @Component({
@@ -18,7 +19,7 @@ export class RepaymentTemplateComponent implements OnInit {
   totalInstallment: number = 0;
   totalBalance: number = 0;
   totalArrears: number = 0;
-
+  companyInfo: any = CompanyInfo;
   ngOnInit() {
     this.sidebarService.setFooterTemplate(this.templateRef);
     let sidebarData: any = this.sidebarService.getData();

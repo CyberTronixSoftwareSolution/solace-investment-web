@@ -2,27 +2,12 @@
   <div class="flex justify-content-between mb-4 align-items-center">
     <img src="assets/icons/svg/logo.svg" alt="logo" height="60" />
     <div class="flex-column justify-content-end align-items-center">
-      <div class="company-name">SOLACE INVESTMENT</div>
-      <div class="company-address">No. 1, Galle Road, Colombo 06</div>
-      <div class="company-address">Tel: 011 223 3333</div>
+      <div class="company-name uppercase">{{ companyInfo?.name }}</div>
+      <div class="company-address">{{ companyInfo?.address }}</div>
+      <div class="company-address">Tel: {{ companyInfo?.phoneNumber }}</div>
     </div>
   </div>
-  <!--  {
-        "id": "67b99abef8447a4cd6f5a551",
-        "receiptNo": "LOA005-1",
-        "receiptDate": "2025-02-21T18:30:00.000Z",
-        "reference": "dbndgn",
-        "customerId": "67b205b3e7a7832b0ee93847",
-        "cusCode": "3/200151001399",
-        "cusName": "MPLH Udari Sithupraba",
-        "nicNumber": "200151001399",
-        "loanId": "67b99ab4f8447a4cd6f5a504",
-        "loanNo": "LOA005",
-        "outStandingAmount": 110000,
-        "paidAmount": 9166.67,
-        "balanceAmount": 100833.33,
-        "printedUser": "(1)John Doe"
-    } -->
+
   <div class="receipt-title">
     RECEIPT DETAILS {{ printData?.receiptDate | date : "yyyy-MM-dd" }}
   </div>

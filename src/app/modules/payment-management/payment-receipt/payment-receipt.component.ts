@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { CompanyInfo } from "src/app/shared/data/comapanyInfo";
 import { SidebarService } from "src/app/shared/services/sidebar.service";
 
 @Component({
@@ -9,6 +10,7 @@ import { SidebarService } from "src/app/shared/services/sidebar.service";
 export class PaymentReceiptComponent implements OnInit {
   @ViewChild("templateRef", { static: true }) templateRef: TemplateRef<any>;
   printData: any;
+  companyInfo: any = CompanyInfo;
   constructor(private sidebarService: SidebarService) {}
 
   ngOnInit() {

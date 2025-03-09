@@ -331,7 +331,7 @@ export class PersonalDetailsComponent implements OnInit {
 
   validateAndShowNicDetails() {
     debugger;
-    let nicNumber = this.FV.getValue("nicNumber").trim();
+    let nicNumber = this.FV.getValue("nicNumber").trim().toUpperCase();
     var dayText = 0;
     var year = "";
     var month = "";
@@ -340,7 +340,10 @@ export class PersonalDetailsComponent implements OnInit {
 
     if (
       (nicNumber.length === 10 &&
-        (nicNumber.charAt(9) === "V" || nicNumber.charAt(9) === "X") &&
+        (nicNumber.charAt(9) === "V" ||
+          nicNumber.charAt(9) === "v" ||
+          nicNumber.charAt(9) === "X" ||
+          nicNumber.charAt(9) === "x") &&
         !isNaN(Number(...nicNumber.slice(0, 9)))) ||
       (nicNumber.length === 12 && !isNaN(Number(nicNumber)))
     ) {

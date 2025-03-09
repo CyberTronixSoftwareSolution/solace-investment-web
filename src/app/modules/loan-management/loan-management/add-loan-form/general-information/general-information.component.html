@@ -59,12 +59,37 @@
           <p-autoComplete
             id="borrower"
             [suggestions]="borrowerSuggestionsArr"
-            optionLabel="label"
             [minLength]="1"
             formControlName="borrower"
             (completeMethod)="searchBorrower($event)"
             (onSelect)="onBorrowerSelect($event)"
-          ></p-autoComplete>
+          >
+            <ng-template let-borrower pTemplate="item">
+              <div class="flex flex-column gap-2">
+                <div class="flex justify-content-between align-items-center">
+                  <div class="font-semibold">{{ borrower.label }}</div>
+                </div>
+
+                <div
+                  class="flex justify-content-between align-items-end text-sm"
+                >
+                  <span>
+                    {{ borrower.nicNumber }}
+                  </span>
+
+                  <span>
+                    {{ borrower.mobileNos }}
+                  </span>
+                </div>
+              </div>
+            </ng-template>
+
+            <ng-template let-driver pTemplate="selectedItem">
+              <div class="flex align-items-center gap-2">
+                <div>{{ driver.fullName }}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
         </div>
 
         <div class="field col-12 md:col-3">

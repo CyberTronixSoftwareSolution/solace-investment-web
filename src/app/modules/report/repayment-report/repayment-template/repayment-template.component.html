@@ -1,9 +1,9 @@
 <div id="demo">
   <div class="flex justify-content-between mb-2 align-items-center">
     <div class="flex-column justify-content-end align-items-start">
-      <div class="font-bold text-xl">SOLACE INVESTMENT</div>
-      <div>No. 1, Galle Road, Colombo 06</div>
-      <div>Tel: 011 223 3333</div>
+      <div class="font-bold text-xl uppercase">{{ companyInfo?.name }}</div>
+      <div>{{ companyInfo?.address }}</div>
+      <div>Tel: {{ companyInfo?.phoneNumber }}</div>
     </div>
 
     <div class="flex flex-column justify-content-center align-items-center">
