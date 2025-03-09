@@ -1,6 +1,6 @@
 import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CommonForm } from "src/app/shared/services/app-common-form";
 import { AddUserControlFlowService } from "../add-user-control-flow.service";
 import {
@@ -114,7 +114,7 @@ export class PersonalDetailsComponent implements OnInit {
       role: ["", Validators.required],
       mobileNo1: ["", Validators.required],
       mobileNo2: [""],
-      residenceNo: ["", Validators.required],
+      residenceNo: [""],
       email: [""],
       specialNote: ["", [Validators.maxLength(500)]],
 

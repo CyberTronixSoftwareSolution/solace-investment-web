@@ -24,6 +24,7 @@
             class="w-full"
             formControlName="SFullName"
             maxlength="200"
+            appUppercase
           />
         </div>
 
@@ -55,6 +56,7 @@
             class="w-full"
             formControlName="SOccupation"
             maxlength="200"
+            appUppercase
           />
         </div>
 
@@ -124,6 +126,7 @@
                     class="w-full"
                     formControlName="FiFullName"
                     maxlength="200"
+                    appUppercase
                   />
                 </div>
                 <div class="field col-12 md:col-4">
@@ -140,7 +143,7 @@
                       formControlName="FiNic"
                       maxlength="12"
                       oninput="this.value = this.value.replace(/[^0-9XVxv]/g, '').substring(0, 12)"
-                      (input)="FiNic.value = FiNic.value.toUpperCase()"
+                      appUppercase
                     />
 
                     <p-button

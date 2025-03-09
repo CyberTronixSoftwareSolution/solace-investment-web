@@ -1,14 +1,14 @@
 export const userRoles = [
   {
-    name: "Super Admin",
+    name: "SUPER ADMIN",
     id: 1,
   },
   {
-    name: "Admin",
+    name: "ADMIN",
     id: 2,
   },
   {
-    name: "Customer",
+    name: "CUSTOMER",
     id: 3,
   },
 ];

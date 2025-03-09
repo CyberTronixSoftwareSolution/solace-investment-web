@@ -6,6 +6,7 @@ import { CurrencyConverterPipe } from "./shared/pipes/currency-converter.pipe";
 import { TruncatePipe } from "./shared/pipes/truncate.pipe";
 import { DateConverterPipe } from "./shared/pipes/date-converter.pipe";
 import { DateAgoPipe } from "./shared/pipes/date-ago.pipe";
+import { UppercaseDirective } from "./shared/directives/uppercase.directive";
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { DateAgoPipe } from "./shared/pipes/date-ago.pipe";
     TruncatePipe,
     DateConverterPipe,
     DateAgoPipe,
+    UppercaseDirective,
   ],
   imports: [CommonModule],
   exports: [
@@ -20,6 +22,7 @@ import { DateAgoPipe } from "./shared/pipes/date-ago.pipe";
     TruncatePipe,
     DateConverterPipe,
     DateAgoPipe,
+    UppercaseDirective,
   ],
 })
 export class SharedModule {}

@@ -40,6 +40,7 @@ import { ProductManagementComponent } from "./product-management/product-managem
 import { StepsModule } from "primeng/steps";
 import { ToastModule } from "primeng/toast";
 import { AddProductFormComponent } from "./product-management/add-product-form/add-product-form.component";
+import { SharedModule } from "src/app/shared.module";
 
 @NgModule({
   declarations: [ProductManagementComponent, AddProductFormComponent],
@@ -83,6 +84,7 @@ import { AddProductFormComponent } from "./product-management/add-product-form/a
     TagModule,
     InputGroupModule,
     InputGroupAddonModule,
+    SharedModule,
   ],
 })
 export class MasterSettingsModule {}

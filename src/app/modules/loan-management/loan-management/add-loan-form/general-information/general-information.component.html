@@ -40,6 +40,7 @@
             pInputText
             maxlength="20"
             formControlName="reference"
+            appUppercase
           />
         </div>
 
@@ -100,6 +101,7 @@
             pInputText
             maxlength="20"
             formControlName="borrowerCode"
+            appUppercase
           />
         </div>
         <div class="field col-12 md:col-3">
@@ -110,6 +112,7 @@
             pInputText
             maxlength="20"
             formControlName="borrowerNic"
+            appUppercase
           />
         </div>
 
@@ -123,6 +126,7 @@
               pInputText
               maxlength="200"
               formControlName="borrowerFullName"
+              appUppercase
             />
 
             <button
@@ -152,6 +156,7 @@
             appendTo="body"
             [autoOptionFocus]="false"
             (onChange)="onProductChange($event)"
+            [filter]="true"
           ></p-dropdown>
         </div>
 
@@ -163,6 +168,7 @@
             pInputText
             maxlength="20"
             formControlName="productCode"
+            appUppercase
           />
         </div>
 
@@ -248,11 +254,14 @@
             [rows]="3"
             maxlength="500"
             formControlName="reason"
+            appUppercase
           ></textarea>
 
           <!-- {{ FV.getValue("reason")?.length || 0 }}  -->
           <div style="float: right">
-            <small class="text-500 text-xs">0/ 500</small>
+            <small class="text-500 text-xs"
+              >{{ FV.getValue("reason")?.length || 0 }}/ 500</small
+            >
           </div>
         </div>
       </div>

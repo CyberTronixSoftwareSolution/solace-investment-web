@@ -1,102 +1,102 @@
 const genders = [
   {
-    name: "Male",
+    name: "MALE",
     id: 1,
   },
   {
-    name: "Female",
+    name: "FEMALE",
     id: 2,
   },
   {
-    name: "Other",
+    name: "OTHER",
     id: 3,
   },
 ];
 
 const titles = [
   {
-    name: "Mr.",
+    name: "MR.",
     id: 1,
   },
   {
-    name: "Mrs.",
+    name: "MRS.",
     id: 2,
   },
   {
-    name: "Miss",
+    name: "MISS",
     id: 3,
   },
   {
-    name: "Ms.",
+    name: "MS.",
     id: 4,
   },
   {
-    name: "Dr.",
+    name: "DR.",
     id: 5,
   },
 ];
 
 const civilStatus = [
   {
-    name: "Single",
+    name: "SINGLE",
     id: 1,
   },
   {
-    name: "Married",
+    name: "MARRIED",
     id: 2,
   },
   {
-    name: "Divorced",
+    name: "DIVORCED",
     id: 3,
   },
   {
-    name: "Widowed",
+    name: "WIDOWED",
     id: 4,
   },
   {
-    name: "Separated",
+    name: "SEPARATED",
     id: 5,
   },
 ];
 
 const addressTypes = [
   {
-    name: "Home",
+    name: "HOME",
     id: 1,
   },
   {
-    name: "Office",
+    name: "OFFICE",
     id: 2,
   },
   {
-    name: "Other",
+    name: "OTHER",
     id: 3,
   },
 ];
 
 const relationTypes = [
   {
-    name: "Father",
+    name: "FATHER",
     id: 1,
   },
   {
-    name: "Mother",
+    name: "MOTHER",
     id: 2,
   },
   {
-    name: "Brother",
+    name: "BROTHER",
     id: 3,
   },
   {
-    name: "Sister",
+    name: "SISTER",
     id: 4,
   },
   {
-    name: "Son",
+    name: "SON",
     id: 5,
   },
   {
-    name: "Daughter",
+    name: "DAUGHTER",
     id: 6,
   },
 ];

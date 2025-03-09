@@ -21,26 +21,26 @@ export class DeductionChargesReportComponent implements OnInit {
   searchTypeArr: any[] = [
     {
       id: 1,
-      name: "Customer NIC",
+      name: "CUSTOMER NIC",
     },
     {
       id: 2,
-      name: "Customer Code",
+      name: "CUSTOMER CODE",
     },
     {
       id: 3,
-      name: "Loan No",
+      name: "LOAN NO",
     },
   ];
   reduceFromLoanArr: any[] = [
     {
       id: 1,
-      name: "Yes",
+      name: "YES",
     },
 
     {
       id: 2,
-      name: "No",
+      name: "NO",
     },
   ];
 

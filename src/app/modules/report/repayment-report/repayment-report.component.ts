@@ -51,13 +51,13 @@ export class RepaymentReportComponent implements OnInit {
     ];
 
     this.collectionDatesArr = [
-      { name: "Monday", value: "Monday" },
-      { name: "Tuesday", value: "Tuesday" },
-      { name: "Wednesday", value: "Wednesday" },
-      { name: "Thursday", value: "Thursday" },
-      { name: "Friday", value: "Friday" },
-      { name: "Saturday", value: "Saturday" },
-      { name: "Sunday", value: "Sunday" },
+      { name: "MONDAY", value: "MONDAY" },
+      { name: "TUESDAY", value: "TUESDAY" },
+      { name: "WEDNESDAY", value: "WEDNESDAY" },
+      { name: "THURSDAY", value: "THURSDAY" },
+      { name: "FRIDAY", value: "FRIDAY" },
+      { name: "SATURDAY", value: "SATURDAY" },
+      { name: "SUNDAY", value: "SUNDAY" },
     ];
 
     this.FV.setValue("startDate", new Date());

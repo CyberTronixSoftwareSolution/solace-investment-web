@@ -19,21 +19,21 @@ export class ReceiptsComponent implements OnInit {
   FV = new CommonForm();
   productArr: any[] = [];
   searchTypeArr: any[] = [
-    {
-      id: -1,
-      name: "None",
-    },
+    // {
+    //   id: -1,
+    //   name: "NONE",
+    // },
     {
       id: 1,
-      name: "Customer NIC",
+      name: "CUSTOMER NIC",
     },
     {
       id: 2,
-      name: "Customer Code",
+      name: "CUSTOMER CODE",
     },
     {
       id: 3,
-      name: "Loan No",
+      name: "LOAN NO",
     },
   ];
   cols: any[] = [];
@@ -70,8 +70,8 @@ export class ReceiptsComponent implements OnInit {
     this.FV.formGroup = this.formBuilder.group({
       startDate: ["", [Validators.required]],
       endDate: ["", [Validators.required]],
-      product: ["", [Validators.required]],
-      searchType: ["", [Validators.required]],
+      product: [""],
+      searchType: [""],
       searchCode: ["", [Validators.required]],
     });
   }
@@ -84,15 +84,7 @@ export class ReceiptsComponent implements OnInit {
 
       if (productResult.IsSuccessful) {
         this.productArr = productResult.Result;
-
-        this.productArr.unshift({
-          _id: "-1",
-          productName: "None",
-        });
       }
-
-      this.FV.setValue("product", "-1");
-      this.FV.setValue("searchType", -1);
     } catch (error: any) {
       this.messageService.showErrorAlert(error?.message || error);
     }
@@ -110,7 +102,7 @@ export class ReceiptsComponent implements OnInit {
   onSearch() {
     this.recodes = [];
     let validateParams = "startDate,endDate,product,searchType";
-    let searchType = this.FV.getValue("searchType");
+    let searchType = this.FV.getValue("searchType") || -1;
 
     if (searchType != -1) {
       validateParams += ",searchCode";
@@ -123,7 +115,7 @@ export class ReceiptsComponent implements OnInit {
     let startDate = this.FV.getValue("startDate");
     let endDate = this.FV.getValue("endDate");
     let searchCode = this.FV.getValue("searchCode");
-    let product = this.FV.getTrimValue("product");
+    let product = this.FV.getTrimValue("product") || "-1";
 
     let request = {
       startDate: this.datePipe.transform(startDate, "yyyy-MM-dd"),
@@ -144,8 +136,6 @@ export class ReceiptsComponent implements OnInit {
     this.FV.setValue("startDate", new Date());
     this.FV.setValue("endDate", new Date());
     this.FV.clearValues("product,searchType,searchCode");
-    this.FV.setValue("searchType", -1);
-    this.FV.setValue("product", "-1");
 
     this.recodes = [];
     this.onSearch();

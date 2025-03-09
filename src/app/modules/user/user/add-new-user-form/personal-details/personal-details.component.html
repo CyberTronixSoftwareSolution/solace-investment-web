@@ -8,7 +8,7 @@
             >GENERAL DETAILS</span
           >
         </div>
-   
+
         <div class="field col-12 md:col-3">
           <label for="nic" class="required">NIC Number</label>
           <input
@@ -19,8 +19,8 @@
             pInputText
             maxlength="12"
             (input)="
-              nicNumber.value = nicNumber.value.toUpperCase();
-              validateAndShowNicDetails()
+              validateAndShowNicDetails();
+              nicNumber.value = nicNumber.value.toUpperCase()
             "
             oninput="this.value = this.value.replace(/[^0-9XVxv]/g, '').substring(0, 12)"
           />
@@ -47,6 +47,7 @@
               pInputText
               maxlength="200"
               class="w-fit"
+              appUppercase
             />
           </div>
         </div>
@@ -60,7 +61,7 @@
             formControlName="initials"
             pInputText
             maxlength="50"
-            (input)="initials.value = initials.value.toUpperCase()"
+            appUppercase
           />
         </div>
         <div class="field col-12 md:col-3">
@@ -72,6 +73,7 @@
             formControlName="firstName"
             pInputText
             maxlength="200"
+            appUppercase
           />
         </div>
         <div class="field col-12 md:col-3">
@@ -83,6 +85,7 @@
             formControlName="lastName"
             pInputText
             maxlength="200"
+            appUppercase
           />
         </div>
 
@@ -139,6 +142,7 @@
             formControlName="occupation"
             pInputText
             maxlength="200"
+            appUppercase
           />
         </div>
 
@@ -165,6 +169,7 @@
             [autoResize]="true"
             [rows]="3"
             [cols]="30"
+            appUppercase
           ></textarea>
 
           <div style="float: right">
@@ -224,6 +229,7 @@
                     class="w-full"
                     formControlName="line1"
                     maxlength="200"
+                    appUppercase
                   />
                 </div>
                 <div class="field col-6 md:col-3">
@@ -237,6 +243,7 @@
                     class="w-full"
                     formControlName="line2"
                     maxlength="200"
+                    appUppercase
                   />
                 </div>
                 <div class="field col-6 md:col-4">
@@ -251,6 +258,7 @@
                       class="w-full"
                       formControlName="line3"
                       maxlength="200"
+                      appUppercase
                     />
                     <p-button
                       icon="pi pi-plus"
@@ -348,7 +356,7 @@
         </div>
 
         <div class="field col-6 md:col-3">
-          <label for="residenceNo" class="required">Residence No </label>
+          <label for="residenceNo">Residence No </label>
           <p-inputMask
             mask="(999) 999-9999"
             formControlName="residenceNo"

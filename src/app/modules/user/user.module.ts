@@ -45,6 +45,7 @@ import { ExpensesIncomeDetailsComponent } from "./user/add-new-user-form/expense
 import { FamilyDetailsComponent } from "./user/add-new-user-form/family-details/family-details.component";
 import { PersonalDetailsComponent } from "./user/add-new-user-form/personal-details/personal-details.component";
 import { ProfileComponent } from "./profile/profile.component";
+import { SharedModule } from "src/app/shared.module";
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { ProfileComponent } from "./profile/profile.component";
     ImageModule,
     InputMaskModule,
     TagModule,
+    SharedModule,
   ],
 })
 export class UserModule {}

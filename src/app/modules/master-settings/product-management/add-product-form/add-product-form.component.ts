@@ -45,9 +45,9 @@ export class AddProductFormComponent implements OnInit {
     this.productInfo = dialogConfig.productInfo;
 
     this.typeArr = [
-      { label: "Daily", value: "D" },
-      { label: "Weekly", value: "W" },
-      { label: "Monthly", value: "M" },
+      { label: "DAILY", value: "D" },
+      { label: "WEEKLY", value: "W" },
+      { label: "MONTHLY", value: "M" },
     ];
 
     this.chargeCols = [

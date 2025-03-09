@@ -49,6 +49,7 @@ import { GuarantorDetailsComponent } from "./loan-management/add-loan-form/guara
 import { LoanScheduleComponent } from "./loan-management/add-loan-form/general-information/loan-schedule/loan-schedule.component";
 import { ViewPaymentSummaryComponent } from "./loan-management/view-payment-summary/view-payment-summary.component";
 import { HandOverLoanComponent } from "./loan-management/hand-over-loan/hand-over-loan.component";
+import { SharedModule } from "src/app/shared.module";
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { HandOverLoanComponent } from "./loan-management/hand-over-loan/hand-ove
     InputGroupModule,
     InputGroupAddonModule,
     AutoCompleteModule,
+    SharedModule,
   ],
 })
 export class LoanManagementModule {}

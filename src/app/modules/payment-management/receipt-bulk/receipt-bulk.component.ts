@@ -19,21 +19,21 @@ export class ReceiptBulkComponent implements OnInit {
   FV = new CommonForm();
   productArr: any[] = [];
   searchTypeArr: any[] = [
-    {
-      id: -1,
-      name: "None",
-    },
+    // {
+    //   id: -1,
+    //   name: "NONE",
+    // },
     {
       id: 1,
-      name: "Customer NIC",
+      name: "CUSTOMER NIC",
     },
     {
       id: 2,
-      name: "Customer Code",
+      name: "CUSTOMER CODE",
     },
     {
       id: 3,
-      name: "Loan No",
+      name: "LOAN NO",
     },
   ];
   cols: any[] = [];
@@ -71,8 +71,8 @@ export class ReceiptBulkComponent implements OnInit {
   createForm() {
     this.FV.formGroup = this.formBuilder.group({
       transactionDate: [""],
-      product: ["", [Validators.required]],
-      searchType: ["", [Validators.required]],
+      product: [""],
+      searchType: [""],
       searchCode: ["", [Validators.required]],
 
       // for Payament
@@ -88,15 +88,7 @@ export class ReceiptBulkComponent implements OnInit {
 
       if (productResult.IsSuccessful) {
         this.productArr = productResult.Result;
-
-        this.productArr.unshift({
-          _id: "-1",
-          productName: "None",
-        });
       }
-
-      this.FV.setValue("product", "-1");
-      this.FV.setValue("searchType", -1);
     } catch (error: any) {
       this.messageService.showErrorAlert(error?.message || error);
     }
@@ -132,9 +124,8 @@ export class ReceiptBulkComponent implements OnInit {
   }
 
   onSearch() {
-    this.recodes = [];
     let validateParams = "product,searchType";
-    let searchType = this.FV.getValue("searchType");
+    let searchType = this.FV.getValue("searchType") || -1;
 
     if (searchType != -1) {
       validateParams += ",searchCode";
@@ -145,13 +136,15 @@ export class ReceiptBulkComponent implements OnInit {
     }
 
     let searchCode = this.FV.getValue("searchCode");
-    let product = this.FV.getTrimValue("product");
+    let product = this.FV.getTrimValue("product") || "-1";
 
     let request = {
       product: product,
       searchType: searchType.toString(),
       searchCode: searchCode,
     };
+
+    this.recodes = [];
 
     this.loanService.SearchReceiptBulk(request).subscribe((response) => {
       if (response.IsSuccessful) {
@@ -162,8 +155,6 @@ export class ReceiptBulkComponent implements OnInit {
 
   onClear() {
     this.FV.clearValues("product,searchType,searchCode");
-    this.FV.setValue("searchType", -1);
-    this.FV.setValue("product", "-1");
 
     this.recodes = [];
     // this.onSearch();
