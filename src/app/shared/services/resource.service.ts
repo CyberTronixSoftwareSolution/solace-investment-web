@@ -17,6 +17,7 @@ export class ResourceService {
   private Product = this.host + "/product";
   private Loan = this.host + "/loan";
   private Report = this.host + "/report";
+  private Dashboard = this.host + "/dashboard";
 
   auth = {
     login: this.Auth + "/login",
@@ -75,5 +76,10 @@ export class ResourceService {
   report = {
     repaymentReport: this.Report + "/repaymentReport",
     deductionChargeReport: this.Report + "/deductionChargeReport  ",
+  };
+
+  dashboard = {
+    getStatistic: this.Dashboard + "/getStatistic",
+    getCollectionSummary: this.Dashboard + "/getCollectionSummary",
   };
 }

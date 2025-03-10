@@ -1,29 +1,19 @@
 <div class="text-2xl font-semibold">Dashboard</div>
-<!-- <div
-  class="surface-section flex align-items-center justify-content-center w-full mb:w-full mmin-h-screen overflow-scroll"
->
-  <video
-    id="background-video"
-    class="w-5 h-5 object-cover"
-    playsinline
-    autoplay
-    [muted]="true"
-    loop
-  >
-    <source
-      src="../../../assets/video/Computer troubleshooting.mp4"
-      type="video/webm"
-    />
-  </video>
-</div> -->
+
+<!--      "pendingLoans": 0,
+        "activeLoans": 6,
+        "todayCollection": 0,
+        "totalArrears": 243666.6666666666 -->
 
 <div class="grid mt-3 overflow-y-scroll">
   <div class="col-12 lg:col-6 xl:col-3">
-    <div class="surface-card shadow-2 p-2 border-1 border-50 border-round">
+    <div class="surface-card shadow-2 p-3 border-1 border-50 border-round">
       <div class="flex justify-content-between mb-3">
         <div>
           <span class="block text-xl font-semibold mb-3">PENDING LOANS</span>
-          <div class="text-900 font-semibold text-xl">0</div>
+          <div class="text-900 font-semibold text-xl">
+            {{ dashBoardStatistic?.pendingLoans || 0 }}
+          </div>
         </div>
         <div
           class="flex align-items-center justify-content-center bg-blue-100 border-round"
@@ -35,11 +25,13 @@
     </div>
   </div>
   <div class="col-12 lg:col-6 xl:col-3">
-    <div class="surface-card shadow-2 p-2 border-1 border-50 border-round">
+    <div class="surface-card shadow-2 p-3 border-1 border-50 border-round">
       <div class="flex justify-content-between mb-3">
         <div>
           <span class="block text-xl font-semibold mb-3">ACTIVE LOANS</span>
-          <div class="text-900 font-semibold text-xl">0</div>
+          <div class="text-900 font-semibold text-xl">
+            {{ dashBoardStatistic?.activeLoans || 0 }}
+          </div>
         </div>
         <div
           class="flex align-items-center justify-content-center bg-green-100 border-round"
@@ -51,11 +43,14 @@
     </div>
   </div>
   <div class="col-12 lg:col-6 xl:col-3">
-    <div class="surface-card shadow-2 p-2 border-1 border-50 border-round">
+    <div class="surface-card shadow-2 p-3 border-1 border-50 border-round">
       <div class="flex justify-content-between mb-3">
         <div>
           <span class="block text-xl font-semibold mb-3">TODAY COLLECTION</span>
-          <div class="text-900 font-semibold text-xl">LKR 0.00</div>
+          <div class="text-900 font-semibold text-xl">
+            LKR
+            {{ dashBoardStatistic?.todayCollection || 0 | number : "1.2-2" }}
+          </div>
         </div>
         <div
           class="flex align-items-center justify-content-center bg-cyan-100 border-round"
@@ -67,11 +62,13 @@
     </div>
   </div>
   <div class="col-12 lg:col-6 xl:col-3">
-    <div class="surface-card shadow-2 p-2 border-1 border-50 border-round">
+    <div class="surface-card shadow-2 p-3 border-1 border-50 border-round">
       <div class="flex justify-content-between mb-3">
         <div>
           <span class="block text-xl font-semibold mb-3">TOTAL ARREARS</span>
-          <div class="text-900 font-semibold text-xl">LKR 0.00</div>
+          <div class="text-900 font-semibold text-xl">
+            LKR {{ dashBoardStatistic?.totalArrears || 0 | number : "1.2-2" }}
+          </div>
         </div>
         <div
           class="flex align-items-center justify-content-center bg-red-100 border-round"
@@ -84,7 +81,7 @@
   </div>
 
   <div class="col-12">
-    <div class="surface-card shadow-2 p-2 border-1 border-50 border-round">
+    <div class="surface-card shadow-2 p-3 border-1 border-50 border-round">
       <span class="block text-xl font-semibold mb-3"
         >MONTHLY COLLECTION ANALYSIS</span
       >
@@ -93,7 +90,7 @@
         type="line"
         [data]="monthlyCollectionData"
         [options]="monthlyCollectionOptions"
-        styleClass="h-10rem"
+        styleClass="h-2rem"
       />
     </div>
   </div>
