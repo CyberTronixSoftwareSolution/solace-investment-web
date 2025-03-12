@@ -12,9 +12,9 @@ export class ViewPaymentSummaryComponent implements OnInit {
   paymentDetails: any[] = [];
   loanData: any = null;
   cols: any[] = [];
-  totalInterest: number = 0;
-  totalCapital: number = 0;
-  totalInstallment: number = 0;
+  // totalInterest: number = 0;
+  // totalCapital: number = 0;
+  // totalInstallment: number = 0;
   constructor(
     private config: DynamicDialogConfig,
     private ref: DynamicDialogRef,
@@ -46,11 +46,11 @@ export class ViewPaymentSummaryComponent implements OnInit {
       ];
     }
 
-    this.paymentDetails.forEach((element: any) => {
-      this.totalInterest += element.interest;
-      this.totalCapital += element.capital;
-      this.totalInstallment += element.installment;
-      console.log(this.datePipe.transform(element.dueDate, "dd-MM-yyyy"));
-    });
+    // this.paymentDetails.forEach((element: any) => {
+    //   this.totalInterest += element.interest;
+    //   this.totalCapital += element.capital;
+    //   this.totalInstallment += element.installment;
+    //   console.log(this.datePipe.transform(element.dueDate, "dd-MM-yyyy"));
+    // });
   }
 }

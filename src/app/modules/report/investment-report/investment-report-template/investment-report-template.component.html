@@ -1,0 +1,76 @@
+<div id="demo">
+  <div class="flex justify-content-between mb-2 align-items-center">
+    <div class="flex-column justify-content-end align-items-start">
+      <div class="font-bold text-xl uppercase">{{ companyInfo?.name }}</div>
+      <div>{{ companyInfo?.address }}</div>
+      <div>Tel: {{ companyInfo?.phoneNumber }}</div>
+    </div>
+
+    <div class="flex flex-column justify-content-center align-items-center">
+      <div class="font-bold text-xl">INVESTMENT REPORT</div>
+      <div
+        class="flex flex-wrap justify-content-center align-content-center gap-2 text-sm"
+        style="width: 200px"
+      >
+        <span
+          >Date Start: {{ selectedData?.fromDate | date : "dd-MM-yyyy" }}</span
+        >
+        <span>Date End: {{ selectedData?.toDate | date : "dd-MM-yyyy" }}</span>
+        <span>Product : {{ selectedData?.product }} </span>
+        <span
+          >Recovery Officer :
+          {{ selectedData?.recoveryOfficer }}
+        </span>
+      </div>
+    </div>
+    <img src="assets/icons/svg/logo.svg" alt="logo" height="60" />
+  </div>
+  <hr />
+
+  <table>
+    <thead>
+      <tr>
+        <th class="text-center">#</th>
+        <th>Loan No</th>
+        <th>Product</th>
+        <th>Trans Date</th>
+        <th class="text-right">Loan Amount</th>
+        <th class="text-right">Investment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let loanData of printData; let i = index">
+        <td class="text-center">{{ i + 1 }}</td>
+        <td>{{ loanData?.loanNo }}</td>
+        <td>{{ loanData?.productName }}</td>
+        <td>{{ loanData?.transactionDate | date : "yyyy-MM-dd" }}</td>
+        <td class="numeric">{{ loanData?.loanAmount | currency : "" : "" }}</td>
+        <td class="numeric">{{ loanData?.investment | currency : "" : "" }}</td>
+      </tr>
+
+      <tr>
+        <td class="font-bold" colspan="4">Total Amount</td>
+        <td class="font-bold numeric">
+          {{ totalAmount | currency : "" : "" }}
+        </td>
+        <td class="font-bold numeric">
+          {{ totalInvestment | currency : "" : "" }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #templateRef>
+  <div class="flex justify-content-end align-items-center gap-2">
+    <button
+      id="print"
+      class="p-button-sm p-button p-component p-ripple"
+      printSectionId="demo"
+      [useExistingCss]="true"
+      ngxPrint
+    >
+      <i class="pi pi-file-pdf mr-2" style="font-size: 1rem"></i> Export PDF
+    </button>
+  </div>
+</ng-template>

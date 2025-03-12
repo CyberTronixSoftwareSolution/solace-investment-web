@@ -9,6 +9,9 @@ import { AppMessageService } from "src/app/shared/services/app-message.service";
 import { firstValueFrom } from "rxjs";
 import { LoanService } from "src/app/shared/services/api-services/loan.service";
 import { DatePipe } from "@angular/common";
+import { MasterDataService } from "src/app/shared/services/master-data.service";
+import { WellKnownUserRole } from "src/app/shared/enums/well-known-user-role.enum";
+import { UserService } from "src/app/shared/services/api-services/user.service";
 
 @Component({
   selector: "app-receipt-bulk",
@@ -36,9 +39,12 @@ export class ReceiptBulkComponent implements OnInit {
       name: "LOAN NO",
     },
   ];
+
   cols: any[] = [];
   recodes: any[] = [];
   editDataId: string = "";
+  recoveryOfficerSuggestionsArr: any[] = [];
+  isShowCollector: boolean = false;
   constructor(
     private popUpService: PopupService,
     private sidebarService: SidebarService,
@@ -46,7 +52,9 @@ export class ReceiptBulkComponent implements OnInit {
     private ProductService: ProductService,
     private messageService: AppMessageService,
     private loanService: LoanService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private masterDataService: MasterDataService,
+    private userService: UserService
   ) {
     this.createForm();
   }
@@ -63,6 +71,9 @@ export class ReceiptBulkComponent implements OnInit {
       { field: "termInstallAmount", header: "Term Install Amount" },
       { field: "paymentAmount", header: "Payment" },
     ];
+
+    this.isShowCollector =
+      this.masterDataService.Role == WellKnownUserRole.SUPERADMIN || false;
     this.loadInitialData();
 
     this.FV.setValue("transactionDate", new Date());
@@ -74,6 +85,7 @@ export class ReceiptBulkComponent implements OnInit {
       product: [""],
       searchType: [""],
       searchCode: ["", [Validators.required]],
+      recoveryOfficer: [""],
 
       // for Payament
       payment: ["", [Validators.required]],
@@ -137,11 +149,13 @@ export class ReceiptBulkComponent implements OnInit {
 
     let searchCode = this.FV.getValue("searchCode");
     let product = this.FV.getTrimValue("product") || "-1";
+    let recoverOfficer = this.FV.getValue("recoveryOfficer")._id || "";
 
     let request = {
       product: product,
       searchType: searchType.toString(),
       searchCode: searchCode,
+      recoverOfficer: this.isShowCollector ? recoverOfficer : "",
     };
 
     this.recodes = [];
@@ -237,5 +251,21 @@ export class ReceiptBulkComponent implements OnInit {
         }
       }
     );
+  }
+
+  async searchRecoveryOfficer(e: any) {
+    let value = e.query;
+
+    try {
+      const userResult = await firstValueFrom(
+        this.userService.UserSearchByParam("admin", value)
+      );
+
+      if (userResult.IsSuccessful) {
+        this.recoveryOfficerSuggestionsArr = userResult.Result;
+      }
+    } catch (error) {
+      this.messageService.showErrorAlert(error?.message || error);
+    }
   }
 }

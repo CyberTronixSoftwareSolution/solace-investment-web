@@ -115,6 +115,14 @@ export class DefaultSideBarComponent implements OnInit {
             isVisible: true,
             isSumMenu: false,
           },
+          {
+            menuId: 19,
+            label: "Investment Report",
+            icon: "pi pi-file",
+            routerLink: "/report/investment-report",
+            isVisible: true,
+            isSumMenu: false,
+          },
         ],
       },
       {

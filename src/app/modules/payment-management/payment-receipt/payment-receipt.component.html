@@ -1,6 +1,6 @@
-<div class="receipt-container" id="demo">
+<div class="receipt-container print-bg" id="demo">
   <div class="flex justify-content-between mb-4 align-items-center">
-    <img src="assets/icons/svg/logo.svg" alt="logo" height="60" />
+    <img src="../../../../assets/images/logo.png" alt="logo" height="60" />
     <div class="flex-column justify-content-end align-items-center">
       <div class="company-name uppercase">{{ companyInfo?.name }}</div>
       <div class="company-address">{{ companyInfo?.address }}</div>
@@ -73,5 +73,20 @@
     >
       <i class="pi pi-print mr-2" style="font-size: 1rem"></i> Print
     </button>
+
+    <button
+      pButton
+      label="Download"
+      icon="pi pi-download"
+      (click)="downloadAsImage()"
+      class="p-button-success p-button-sm mb:p-button"
+    ></button>
+
+    <!-- <button
+      pButton
+      label="Direct Print"
+      icon="pi pi-print"
+      class="p-button-success p-button-sm mb:p-button"
+    ></button> -->
   </div>
 </ng-template>

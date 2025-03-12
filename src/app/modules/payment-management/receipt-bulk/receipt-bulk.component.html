@@ -8,7 +8,7 @@
   (keydown.enter)="$event.preventDefault()"
 >
   <div class="grid formgrid p-fluid">
-    <div class="field mb-3 col-12 md:col-3">
+    <div class="field mb-3 col-12 md:{{ isShowCollector ? 'col-2' : 'col-3' }}">
       <!-- transactionDate -->
       <label for="transactionDate">Transaction Date</label>
       <p-calendar
@@ -31,7 +31,22 @@
         optionLabel="productName"
       ></p-dropdown>
     </div>
-    <div class="field mb-3 col-12 md:col-3">
+
+    <div class="field mb-3 col-12 md:col-2" *ngIf="isShowCollector">
+      <!-- searchType -->
+      <label for="recoveryOfficer">Recovery Officer</label>
+      <p-autoComplete
+        id="recoveryOfficer"
+        optionLabel="label"
+        [suggestions]="recoveryOfficerSuggestionsArr"
+        [minLength]="1"
+        formControlName="recoveryOfficer"
+        (completeMethod)="searchRecoveryOfficer($event)"
+        [showClear]="true"
+      ></p-autoComplete>
+    </div>
+
+    <div class="field mb-3 col-12 md:{{ isShowCollector ? 'col-2' : 'col-3' }}">
       <!-- searchType -->
       <label for="searchType">Search Type</label>
       <p-dropdown
@@ -42,6 +57,7 @@
         optionLabel="name"
       ></p-dropdown>
     </div>
+
     <div class="field mb-3 col-12 md:col-3">
       <!-- searchCode -->
       <label for="searchCode">Search Code</label>

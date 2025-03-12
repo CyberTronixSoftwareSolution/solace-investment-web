@@ -1,5 +1,5 @@
 <div class="flex justify-content-between align-items-center mb-4">
-  <div class="text-2xl font-semibold">Receipts</div>
+  <div class="text-2xl font-semibold">Investment Report</div>
 </div>
 
 <form
@@ -8,9 +8,9 @@
   (keydown.enter)="$event.preventDefault()"
 >
   <div class="grid formgrid p-fluid">
-    <div class="field mb-3 col-12 md:col-2">
+    <div class="field mb-3 col-6 md:col-3">
       <!-- transactionDate -->
-      <label for="transactionDate">Start Date</label>
+      <label for="startDate">Date From</label>
       <p-calendar
         id="startDate"
         [showTime]="false"
@@ -18,36 +18,35 @@
         appendTo="body"
         [readonlyInput]="true"
         formControlName="startDate"
-        (onSelect)="onSelectStartDate()"
+        (onSelect)="onStartDateSelect()"
       ></p-calendar>
     </div>
 
-    <div class="field mb-3 col-12 md:col-2">
+    <div class="field mb-3 col-6 md:col-3">
       <!-- transactionDate -->
-      <label for="transactionDate">End Date</label>
+      <label for="endDate">Date To</label>
       <p-calendar
         id="endDate"
         [showTime]="false"
         dateFormat="yy-mm-dd"
         appendTo="body"
         [readonlyInput]="true"
-        [minDate]="FV.formGroup.get('startDate').value"
         formControlName="endDate"
+        [minDate]="FV.formGroup.get('startDate').value"
       ></p-calendar>
     </div>
-    <div class="field mb-3 col-12 md:col-3">
+    <div class="field mb-3 col-6 md:col-3">
       <!-- product -->
       <label for="product">Product</label>
       <p-dropdown
         [options]="productArr"
         id="product"
         formControlName="product"
-        optionValue="_id"
         optionLabel="productName"
+        placeholder="Select a Product"
       ></p-dropdown>
     </div>
-    <div class="field mb-3 col-12 md:col-3" *ngIf="isShowCollector">
-      <!-- searchType -->
+    <div class="field mb-3 col-6 md:col-3">
       <label for="recoveryOfficer">Recovery Officer</label>
       <p-autoComplete
         id="recoveryOfficer"
@@ -57,44 +56,54 @@
         formControlName="recoveryOfficer"
         (completeMethod)="searchRecoveryOfficer($event)"
         [showClear]="true"
+        placeholder="Select a Recovery Officer"
       ></p-autoComplete>
     </div>
 
-    <div class="field mb-3 col-12 md:col-2">
+    <div class="field mb-3 col-12 md:col-3">
       <!-- searchType -->
       <label for="searchType">Search Type</label>
       <p-dropdown
         [options]="searchTypeArr"
         id="searchType"
         formControlName="searchType"
+        placeholder="Select a Search Type"
         optionValue="id"
         optionLabel="name"
       ></p-dropdown>
     </div>
     <div class="field mb-3 col-12 md:col-3">
-      <!-- searchCode -->
       <label for="searchCode">Search Code</label>
-      <div class="flex align-items-center gap-2">
-        <input
-          id="searchCode"
-          type="text"
-          pInputText
-          formControlName="searchCode"
-          maxlength="50"
-        />
+      <input
+        id="searchCode"
+        type="text"
+        pInputText
+        formControlName="searchCode"
+        maxlength="50"
+      />
+    </div>
 
+    <div class="field col-12">
+      <div class="flex justify-content-end gap-2">
         <p-button
+          label="Search"
           icon="pi pi-search"
-          styleClass="p-button-primary"
-          pTooltip="Search"
-          tooltipPosition="bottom"
+          styleClass="p-button-primary p-button-sm mb:p-button"
           (onClick)="onSearch()"
         ></p-button>
+
         <p-button
+          label="Print"
+          icon="pi pi-print"
+          styleClass="p-button-success p-button-sm mb:p-button"
+          (onClick)="onPrint()"
+          *ngIf="recodes.length > 0"
+        ></p-button>
+
+        <p-button
+          label="Clear"
           icon="pi pi-times"
-          styleClass="p-button-secondary"
-          pTooltip="Clear"
-          tooltipPosition="bottom"
+          styleClass="p-button-secondary p-button-sm mb:p-button"
           (onClick)="onClear()"
         ></p-button>
       </div>
@@ -102,7 +111,6 @@
 
     <div class="field mb-3 col-12">
       <p-table
-        #dt
         styleClass=""
         [columns]="cols"
         [value]="recodes"
@@ -124,21 +132,14 @@
             <th
               *ngFor="let col of columns"
               [ngClass]="{
-                'text-center': col.field == 'status',
-                'text-right':
-                  col.field == 'loanAmount' ||
-                  col.field == 'loanBalance' ||
-                  col.field == 'termInstallAmount' ||
-                  col.field == 'paymentAmount' ||
-                  col.field == 'installment',
-                'w-12rem': col.field == 'paymentAmount'
-              }"
+              'text-right': col.field == 'investment' || col.field == 'loanAmount' || col.field == 'balance' || col.field == 'arrears',
+            }"
             >
               {{ col.header }}
             </th>
-            <th class="text-center">Action</th>
           </tr>
         </ng-template>
+
         <ng-template
           pTemplate="body"
           let-rowData
@@ -149,84 +150,50 @@
             <td
               *ngFor="let col of columns"
               [ngClass]="{
-          'bg-blue': rowIndex % 2 !== 0,
-          'text-right':
-                  col.field == 'loanAmount' ||
-                  col.field == 'termInstallAmount' || col.field == 'paymentAmount' || col.field == 'installment',
-          'text-center': col.field == 'status',
-        }"
+                'bg-blue': rowIndex % 2 !== 0,
+                'text-right':
+                  col.field == 'investment' || col.field == 'loanAmount'
+              }"
             >
               <ng-container
-                *ngIf="
-                  col.field == 'loanAmount' ||
-                  col.field == 'termInstallAmount' ||
-                  col.field == 'installment' ||
-                  col.field == 'paymentAmount'
-                "
+                *ngIf="col.field == 'investment' || col.field == 'loanAmount'"
               >
                 <span class="p-column-title font-bold">{{ col.header }}</span>
                 {{ rowData[col.field] | currency : "" : "" }}
               </ng-container>
 
-              <ng-container *ngIf="col.field == 'status'">
+              <ng-container *ngIf="col.field == 'transactionDate'">
                 <span class="p-column-title font-bold">{{ col.header }}</span>
-
-                <p-tag
-                  value="{{ rowData.statusName }}"
-                  severity="success"
-                  *ngIf="rowData.status == 2"
-                  styleClass="p-2"
-                />
-
-                <p-tag
-                  value="{{ rowData.statusName }}"
-                  severity="warning"
-                  *ngIf="rowData.status == 3"
-                  styleClass="p-2"
-                />
-              </ng-container>
-
-              <ng-container *ngIf="col.field == 'paymentDate'">
-                <span class="p-column-title font-bold">{{ col.header }}</span>
-                {{ rowData[col.field] | date : "dd-MM-yyyy" }}
+                {{ rowData[col.field] | date : "yyyy-MM-dd" }}
               </ng-container>
 
               <ng-container
                 *ngIf="
-                  col.field != 'status' &&
+                  col.field != 'investment' &&
                   col.field != 'loanAmount' &&
-                  col.field != 'termInstallAmount' &&
-                  col.field != 'installment' &&
-                  col.field != 'paymentDate' &&
-                  col.field != 'paymentAmount'
+                  col.field != 'transactionDate'
                 "
               >
                 <span class="p-column-title font-bold">{{ col.header }}</span>
                 {{ rowData[col.field] || "-" }}
               </ng-container>
             </td>
-            <td
-              class="text-center"
-              [ngClass]="{
-                'bg-blue': rowIndex % 2 !== 0,
-              }"
-            >
-              <div
-                class="flex flex-wrap justify-content-center align-content-center gap-2"
-              >
-                <p-button
-                  icon="pi pi-print"
-                  pTooltip="Print Receipt"
-                  tooltipPosition="bottom"
-                  class="p-button-print"
-                  styleClass="p-button-info"
-                  [disabled]="rowData.status != 2"
-                  (onClick)="printReceipt(rowData)"
-                ></p-button>
-              </div>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="footer" let-columns>
+          <tr>
+            <td [attr.colspan]="3">Total Amount</td>
+
+            <td class="text-right">
+              {{ totalAmount | currency : "" : "" }}
+            </td>
+            <td class="text-right">
+              {{ totalInvestment | currency : "" : "" }}
             </td>
           </tr>
         </ng-template>
+
         <ng-template pTemplate="emptymessage" let-columns>
           <tr>
             <td [attr.colspan]="columns.length + 2">
@@ -235,7 +202,7 @@
                 style="height: 300px; width: 100%"
               >
                 <i class="pi pi-inbox text-5xl text-gray-400"></i>
-                <small class="">No Loan Found</small>
+                <small class="">No Data Found</small>
               </div>
             </td>
           </tr>

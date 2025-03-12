@@ -26,4 +26,12 @@ export class ReportService {
         return response;
       });
   }
+
+  GetInvestmentReportData(body: any) {
+    return this.dataAccess
+      .POST(this.resource.report.investmentReport, body)
+      .pipe((response) => {
+        return response;
+      });
+  }
 }

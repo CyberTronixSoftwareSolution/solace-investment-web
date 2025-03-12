@@ -3,7 +3,7 @@
             size: A4;
             margin: 10mm;
         }
-        
+
         .receipt-container {
             max-width: 800px;
             margin: 0 auto;
@@ -78,7 +78,10 @@
         }
         
         @media print {
-      
+            body {
+                background-color: white !important; /* Ensures white background */
+            }
+
             .label {
                 font-size: 20px;
             }

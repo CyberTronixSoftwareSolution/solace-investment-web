@@ -43,12 +43,16 @@ import { ReportRoutingModule } from "./report-routing.module";
 import { RepaymentReportComponent } from "./repayment-report/repayment-report.component";
 import { DeductionChargesReportComponent } from "./deduction-charges-report/deduction-charges-report.component";
 import { RepaymentTemplateComponent } from "./repayment-report/repayment-template/repayment-template.component";
+import { InvestmentReportComponent } from "./investment-report/investment-report.component";
+import { InvestmentReportTemplateComponent } from "./investment-report/investment-report-template/investment-report-template.component";
 
 @NgModule({
   declarations: [
     RepaymentReportComponent,
     DeductionChargesReportComponent,
     RepaymentTemplateComponent,
+    InvestmentReportComponent,
+    InvestmentReportTemplateComponent,
   ],
   imports: [
     CommonModule,
