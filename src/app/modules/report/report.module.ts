@@ -45,6 +45,8 @@ import { DeductionChargesReportComponent } from "./deduction-charges-report/dedu
 import { RepaymentTemplateComponent } from "./repayment-report/repayment-template/repayment-template.component";
 import { InvestmentReportComponent } from "./investment-report/investment-report.component";
 import { InvestmentReportTemplateComponent } from "./investment-report/investment-report-template/investment-report-template.component";
+import { DailyManagerReportComponent } from "./daily-manager-report/daily-manager-report.component";
+import { DailyManagerReportTemplateComponent } from "./daily-manager-report/daily-manager-report-template/daily-manager-report-template.component";
 
 @NgModule({
   declarations: [
@@ -53,6 +55,8 @@ import { InvestmentReportTemplateComponent } from "./investment-report/investmen
     RepaymentTemplateComponent,
     InvestmentReportComponent,
     InvestmentReportTemplateComponent,
+    DailyManagerReportComponent,
+    DailyManagerReportTemplateComponent,
   ],
   imports: [
     CommonModule,

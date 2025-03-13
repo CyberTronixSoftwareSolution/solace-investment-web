@@ -1,0 +1,29 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+}
+
+th, td {
+    border: 0.1px solid #474747;
+    padding:  10px 3px 1px 3px; 
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.numeric {
+    text-align: right;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.empty-cell {
+    background-color: #ffffff;
+}

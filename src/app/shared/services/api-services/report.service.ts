@@ -34,4 +34,15 @@ export class ReportService {
         return response;
       });
   }
+
+  GetDailyManagerReportData(selectedDate: string) {
+    return this.dataAccess
+      .GET(
+        this.resource.report.dailyManagerReport +
+          `?selectedDate=${selectedDate}`
+      )
+      .pipe((response) => {
+        return response;
+      });
+  }
 }

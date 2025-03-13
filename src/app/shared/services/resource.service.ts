@@ -77,6 +77,7 @@ export class ResourceService {
     repaymentReport: this.Report + "/repaymentReport",
     deductionChargeReport: this.Report + "/deductionChargeReport  ",
     investmentReport: this.Report + "/investmentReport",
+    dailyManagerReport: this.Report + "/dailyManagerReport",
   };
 
   dashboard = {

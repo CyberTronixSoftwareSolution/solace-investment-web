@@ -123,6 +123,14 @@ export class DefaultSideBarComponent implements OnInit {
             isVisible: true,
             isSumMenu: false,
           },
+          {
+            menuId: 20,
+            label: "Daily Manager Report",
+            icon: "pi pi-file",
+            routerLink: "/report/daily-manager-report",
+            isVisible: true,
+            isSumMenu: false,
+          },
         ],
       },
       {

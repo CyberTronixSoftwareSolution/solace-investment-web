@@ -4,6 +4,7 @@ import { DefaultLayoutComponent } from "src/app/layout/default-layout/default-la
 import { RepaymentReportComponent } from "./repayment-report/repayment-report.component";
 import { DeductionChargesReportComponent } from "./deduction-charges-report/deduction-charges-report.component";
 import { InvestmentReportComponent } from "./investment-report/investment-report.component";
+import { DailyManagerReportComponent } from "./daily-manager-report/daily-manager-report.component";
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: "investment-report",
         component: InvestmentReportComponent,
+      },
+      {
+        path: "daily-manager-report",
+        component: DailyManagerReportComponent,
       },
     ],
   },

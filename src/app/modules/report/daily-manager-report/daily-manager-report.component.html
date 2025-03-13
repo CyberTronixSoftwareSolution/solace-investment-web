@@ -1,0 +1,93 @@
+<div class="flex justify-content-between align-items-center mb-4">
+  <div class="text-2xl font-semibold">Daily Manager Report</div>
+</div>
+
+<form
+  [formGroup]="FV.formGroup"
+  novalidate
+  (keydown.enter)="$event.preventDefault()"
+>
+  <div class="grid formgrid p-fluid">
+    <div class="field mb-3 col-12 md:col-4">
+      <!-- transactionDate -->
+      <div class="flex align-items-end gap-2">
+        <div class="flex flex-column gap-1 w-full">
+          <label for="startDate">Selected Date</label>
+          <p-calendar
+            id="startDate"
+            [showTime]="false"
+            dateFormat="yy-mm-dd"
+            appendTo="body"
+            [readonlyInput]="true"
+            formControlName="selectedDate"
+          ></p-calendar>
+        </div>
+
+        <p-button
+          label="Generate"
+          icon="pi pi-sparkles"
+          (onClick)="onPrint()"
+        ></p-button>
+      </div>
+    </div>
+
+    <div class="field mb-3 col-12">
+      <div class="flex flex-column text-justify gap-3 mb-3">
+        <span class="font-bold text-2xl">Description</span>
+        <span>
+          The Daily Manager Report provides a comprehensive snapshot of daily
+          activities and financial metrics within the loan management system. It
+          is designed to give managers and stakeholders a clear overview of the
+          day's operations and financial performance.</span
+        >
+      </div>
+
+      <span class="font-bold text-2xl">Sections</span>
+      <div
+        class="p-4 bg-blue-100 border border-blue-300 rounded-lg shadow-md mt-2"
+      >
+        <h3 class="text-lg font-semibold mb-2">Today's Added Loans</h3>
+        <p class="text-sm">
+          Displays the total number and value of loans added to the system on
+          the current day.
+        </p>
+        <p class="text-sm">
+          This section helps track the influx of new loans into the system,
+          facilitating better resource allocation and workload management.
+        </p>
+      </div>
+
+      <!-- Today's Handover Loans -->
+      <div
+        class="p-4 bg-green-100 border border-green-300 rounded-lg shadow-md"
+      >
+        <h3 class="text-lg font-semibold mb-2">Today's Handover Loans</h3>
+        <p class="text-sm">
+          Highlights the loans that have been successfully handed over to
+          borrowers on the current day.
+        </p>
+        <p class="text-sm">
+          Includes loan IDs, borrower information, and handover timestamps to
+          monitor processing efficiency.
+        </p>
+      </div>
+
+      <!-- Total Collection (Daily Income) -->
+      <div
+        class="p-4 bg-yellow-100 border border-yellow-300 rounded-lg shadow-md"
+      >
+        <h3 class="text-lg font-semibold mb-2">
+          Total Collection (Daily Income)
+        </h3>
+        <p class="text-sm">
+          Summarizes the total amount collected from borrowers on the current
+          day.
+        </p>
+        <p class="text-sm">
+          Includes payments received against loan installments, penalties, or
+          other financial transactions.
+        </p>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,324 @@
+<div id="demo">
+  <div class="flex justify-content-between mb-2 align-items-center">
+    <div class="flex-column justify-content-end align-items-start">
+      <div class="font-bold text-xl uppercase">{{ companyInfo?.name }}</div>
+      <div>{{ companyInfo?.address }}</div>
+      <div>Tel: {{ companyInfo?.phoneNumber }}</div>
+    </div>
+
+    <div class="flex flex-column justify-content-center align-items-center">
+      <div class="font-bold text-xl">DAILY MANAGER REPORT</div>
+      <div
+        class="flex flex-wrap justify-content-center align-content-center gap-2 text-sm"
+        style="width: 200px"
+      >
+        <span
+          >Date: {{ selectedData?.selectedDate | date : "dd-MM-yyyy" }}</span
+        >
+      </div>
+    </div>
+    <img src="assets/icons/svg/logo.svg" alt="logo" height="60" />
+  </div>
+  <hr />
+
+  <section class="mt-3">
+    <div class="grid formgrid p-fluid">
+      <div class="field mb-2 col-12">
+        <span class="text-xl text-black-alpha-90 font-semibold"
+          >NEWLY ADDED LOANS</span
+        >
+      </div>
+
+      <div class="field mb-3 col-12">
+        <table>
+          <thead>
+            <tr>
+              <th class="text-center">#</th>
+              <th>Loan No</th>
+              <th>Product</th>
+              <th>Borrower</th>
+              <th>Disturbance Date</th>
+              <th>Added By</th>
+              <th class="text-right">Loan Amount</th>
+              <th class="text-right">Agreed Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let loan of newLoanData.newLoans; let i = index">
+              <td class="text-center">
+                {{ i + 1 }}
+              </td>
+              <td>{{ loan?.loanNo }}</td>
+              <td>
+                {{ loan?.product }}
+              </td>
+              <td>{{ loan?.borrower }}</td>
+              <td>{{ loan?.disturbanceDate | date : "yyyy-MM-dd" }}</td>
+              <td>
+                {{
+                  loan?.addedBy + " at " + (loan?.addedTime | date : "h:mm a")
+                }}
+              </td>
+              <td class="numeric">
+                {{ loan?.loanAmount | currency : "" : "" }}
+              </td>
+              <td class="numeric">
+                {{ loan?.agreedAmount | currency : "" : "" }}
+              </td>
+            </tr>
+
+            <tr *ngIf="newLoanData.newLoans.length > 0">
+              <td class="font-bold" colspan="6">Total Amount</td>
+              <td class="font-bold numeric">
+                {{ newLoanData?.totalAmount | currency : "" : "" }}
+              </td>
+              <td class="font-bold numeric">
+                {{ newLoanData?.totalAgreedAmount | currency : "" : "" }}
+              </td>
+            </tr>
+
+            <tr *ngIf="newLoanData.newLoans.length <= 0">
+              <td class="font-bold text-center h-3rem" colspan="8">
+                New loan not found for today
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-3">
+    <div class="grid formgrid p-fluid">
+      <div class="field mb-2 col-12">
+        <span class="text-xl text-black-alpha-90 font-semibold"
+          >DEDUCTION CHARGES</span
+        >
+      </div>
+
+      <div class="field mb-3 col-12">
+        <table>
+          <thead>
+            <tr>
+              <th class="text-center">#</th>
+              <th>Loan No</th>
+              <th>Product</th>
+              <th>Borrower</th>
+              <th>Charge Name</th>
+              <th>Deduct From Loan</th>
+              <th>Added By</th>
+              <th class="text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let deduction of todayDeductionChargeData.todayDeductionChargeLoans;
+                let i = index
+              "
+            >
+              <td class="text-center">
+                {{ i + 1 }}
+              </td>
+              <td>{{ deduction?.loanNo }}</td>
+              <td>
+                {{ deduction?.product }}
+              </td>
+              <td>{{ deduction?.borrower }}</td>
+              <td>{{ deduction?.chargeName }}</td>
+              <td>
+                {{ deduction?.IsDeductFromLoan ? "Yes" : "No" }}
+              </td>
+              <td>
+                {{ deduction?.addedBy }}
+              </td>
+              <td class="numeric">
+                {{ deduction?.chargeAmount | currency : "" : "" }}
+              </td>
+            </tr>
+
+            <tr
+              *ngIf="
+                todayDeductionChargeData.todayDeductionChargeLoans.length > 0
+              "
+            >
+              <td class="font-bold" colspan="7">Total Amount</td>
+
+              <td class="font-bold numeric">
+                {{
+                  todayDeductionChargeData?.totalDeductionChargeAmount
+                    | currency : "" : ""
+                }}
+              </td>
+            </tr>
+
+            <tr
+              *ngIf="
+                todayDeductionChargeData.todayDeductionChargeLoans.length <= 0
+              "
+            >
+              <td class="font-bold text-center h-3rem" colspan="8">
+                Deduction charge not found for today
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-3">
+    <div class="grid formgrid p-fluid">
+      <div class="field mb-2 col-12">
+        <span class="text-xl text-black-alpha-90 font-semibold"
+          >TODAY HANDOVER LOANS</span
+        >
+      </div>
+
+      <div class="field mb-3 col-12">
+        <table>
+          <thead>
+            <tr>
+              <th class="text-center">#</th>
+              <th>Loan No</th>
+              <th>Product</th>
+              <th>Borrower</th>
+              <th>Disturbance Date</th>
+              <th>Hand over By</th>
+              <th>Remark</th>
+              <th class="text-right">Loan Amount</th>
+              <th class="text-right">Agreed Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let loan of handOverLoanData?.handOverLoans;
+                let i = index
+              "
+            >
+              <td class="text-center">
+                {{ i + 1 }}
+              </td>
+              <td>{{ loan?.loanNo }}</td>
+              <td>
+                {{ loan?.product }}
+              </td>
+              <td>
+                {{ loan?.borrower }}
+              </td>
+              <td>{{ loan?.disturbanceDate | date : "yyyy-MM-dd" }}</td>
+              <td>
+                {{ loan?.handoverBy }}
+              </td>
+              <td>
+                {{ loan?.remark || "-" }}
+              </td>
+              <td class="numeric">
+                {{ loan?.loanAmount | currency : "" : "" }}
+              </td>
+              <td class="numeric">
+                {{ loan?.agreedAmount | currency : "" : "" }}
+              </td>
+            </tr>
+
+            <tr *ngIf="handOverLoanData?.handOverLoans.length > 0">
+              <td class="font-bold" colspan="7">Total Amount</td>
+              <td class="font-bold numeric">
+                {{ handOverLoanData?.totalAmount | currency : "" : "" }}
+              </td>
+              <td class="font-bold numeric">
+                {{ handOverLoanData?.totalAgreedAmount | currency : "" : "" }}
+              </td>
+            </tr>
+
+            <tr *ngIf="handOverLoanData?.handOverLoans.length <= 0">
+              <td class="font-bold text-center h-3rem" colspan="9">
+                Handover loan not found for today
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section class="mt-3">
+    <div class="grid formgrid p-fluid">
+      <div class="field mb-3 col-12">
+        <span class="text-xl text-black-alpha-90 font-semibold"
+          >TODAY COLLECTION</span
+        >
+      </div>
+
+      <div class="field mb-3 col-12">
+        <table>
+          <thead>
+            <tr>
+              <th class="text-center">#</th>
+              <th>Loan No</th>
+              <th>Product</th>
+              <th>Borrower</th>
+              <th>Payment Time</th>
+              <th>Collector</th>
+              <th class="text-right">Loan Balance</th>
+              <th class="text-right">Payed Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let collection of todayCollectLoanData.todayCollectionLoans;
+                let i = index
+              "
+            >
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>
+                {{ collection?.loanNo }}
+              </td>
+              <td>{{ collection?.product }}</td>
+              <td>{{ collection?.borrower }}</td>
+              <td>{{ collection?.paymentTime | date : "h:mm a" }}</td>
+              <td>{{ collection?.collector }}n</td>
+              <td class="numeric">
+                {{ collection?.loanBalance | currency : "" : "" }}
+              </td>
+              <td class="numeric">
+                {{ collection?.payedAmount | currency : "" : "" }}
+              </td>
+            </tr>
+
+            <tr *ngIf="todayCollectLoanData.todayCollectionLoans.length > 0">
+              <td class="font-bold" colspan="7">Total Amount</td>
+              <td class="font-bold numeric">
+                {{
+                  todayCollectLoanData?.totalCollectionAmount
+                    | currency : "" : ""
+                }}
+              </td>
+            </tr>
+
+            <tr *ngIf="todayCollectLoanData.todayCollectionLoans.length <= 0">
+              <td class="font-bold text-center h-3rem" colspan="9">
+                Loan collection not found for today
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<ng-template #templateRef>
+  <div class="flex justify-content-end align-items-center gap-2">
+    <button
+      id="print"
+      class="p-button-sm p-button p-component p-ripple"
+      printSectionId="demo"
+      [useExistingCss]="true"
+      ngxPrint
+    >
+      <i class="pi pi-file-pdf mr-2" style="font-size: 1rem"></i> Export PDF
+    </button>
+  </div>
+</ng-template>
