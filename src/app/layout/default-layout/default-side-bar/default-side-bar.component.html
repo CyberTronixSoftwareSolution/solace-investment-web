@@ -59,7 +59,7 @@
               }"
             >
               <ng-container *ngFor="let submenu of menuItem.subMenu">
-                <li>
+                <li *ngIf="submenu.isVisible">
                   <a
                     pRipple
                     [ngClass]="

@@ -96,7 +96,9 @@ export class DefaultSideBarComponent implements OnInit {
         label: "Reports",
         icon: "pi pi-file-o",
         routerLink: "/report",
-        isVisible: true,
+        isVisible: this.checkUserAuthorizedToAccess([
+          AppModule.ReportManagement,
+        ]),
         isSumMenu: true,
         subMenu: [
           {
@@ -104,7 +106,9 @@ export class DefaultSideBarComponent implements OnInit {
             label: "Repayment Report",
             icon: "pi pi-file",
             routerLink: "/report/repayment-report",
-            isVisible: true,
+            isVisible: this.checkUserAuthorizedToAccess([
+              AppModule.RepaymentReport,
+            ]),
             isSumMenu: false,
           },
           {
@@ -112,7 +116,9 @@ export class DefaultSideBarComponent implements OnInit {
             label: "Deduction Charges Report",
             icon: "pi pi-file",
             routerLink: "/report/deduction-charges-report",
-            isVisible: true,
+            isVisible: this.checkUserAuthorizedToAccess([
+              AppModule.DeductionChargeReport,
+            ]),
             isSumMenu: false,
           },
           {
@@ -120,7 +126,9 @@ export class DefaultSideBarComponent implements OnInit {
             label: "Investment Report",
             icon: "pi pi-file",
             routerLink: "/report/investment-report",
-            isVisible: true,
+            isVisible: this.checkUserAuthorizedToAccess([
+              AppModule.InvestmentReport,
+            ]),
             isSumMenu: false,
           },
           {
@@ -128,7 +136,9 @@ export class DefaultSideBarComponent implements OnInit {
             label: "Daily Manager Report",
             icon: "pi pi-file",
             routerLink: "/report/daily-manager-report",
-            isVisible: true,
+            isVisible: this.checkUserAuthorizedToAccess([
+              AppModule.DailyManagerReport,
+            ]),
             isSumMenu: false,
           },
         ],
@@ -156,10 +166,14 @@ export class DefaultSideBarComponent implements OnInit {
       },
     ];
 
-    this.ModuleActivate(this.router.url);
+    debugger;
+    this.checkUserAuthorizedToAccess([AppModule.DeductionChargeReport]);
+    this.checkUserAuthorizedToAccess([AppModule.DailyManagerReport]),
+      this.ModuleActivate(this.router.url);
   }
 
   checkUserAuthorizedToAccess(moduleIds: number[]): boolean {
+    debugger;
     let flag: boolean = false;
 
     moduleIds.forEach((element) => {
